@@ -555,14 +555,14 @@ const SDR_SCORES = {
   "Jesse Shorr": {jan:6.36,feb:5.21,mar:5.4,avg:5.66,gap:2.16,act:3.0,tier:"PASS"},
   "Blake Peremel": {jan:4.8,feb:5.28,mar:6.9,avg:5.66,gap:2.16,act:3.0,tier:"PASS"},
   "Tim Lan": {jan:4.48,feb:4.5,mar:7.7,avg:5.56,gap:2.06,act:3.0,tier:"PASS"},
-  "Anand Pandey": {jan:4.87,feb:5.34,mar:4.6,avg:4.94,gap:1.44,act:3.0,tier:"PASS"},
+  "Anand Pandey": {jan:4.87,feb:5.34,mar:14.4,avg:8.2,gap:4.7,act:3.0,tier:"PASS"},
   "Joshua Bylsma": {jan:6.07,feb:2.96,mar:4.8,avg:4.61,gap:1.11,act:3.0,tier:"PASS"},
   "Francois Dore": {jan:3.17,feb:4.88,mar:5.3,avg:4.45,gap:0.95,act:3.0,tier:"PASS"},
   "Savannah Peck": {jan:2.31,feb:4.09,mar:6.9,avg:4.43,gap:0.93,act:3.0,tier:"PASS"},
   "Enzo Bizuti": {jan:null,feb:null,mar:4,avg:4,gap:0.5,act:3.0,tier:"PASS"},
   "Alyssa Perez": {jan:6.12,feb:3.92,mar:1.9,avg:3.98,gap:0.48,act:3.0,tier:"PASS"},
   "Rebecca Barnes": {jan:3.59,feb:5.44,mar:2.7,avg:3.91,gap:0.41,act:3.0,tier:"PASS"},
-  "Harjit Sawhney": {jan:5.86,feb:4.1,mar:1.2,avg:3.72,gap:0.22,act:3.0,tier:"PASS"},
+  "Harjit Sawhney": {jan:5.86,feb:4.1,mar:6,avg:5.32,gap:1.82,act:3.0,tier:"PASS"},
   "Cesar Garcia": {jan:3.98,feb:4.1,mar:3,avg:3.69,gap:0.19,act:3.0,tier:"PASS"},
   "Korbin Kirk": {jan:2.98,feb:2.39,mar:4.6,avg:3.32,gap:-0.18,act:3.0,tier:"DEVELOP"},
   "Kirk Skilling": {jan:null,feb:null,mar:3.3,avg:3.3,gap:-0.2,act:3.0,tier:"DEVELOP"},
@@ -594,39 +594,39 @@ const SDR_OBS_THRESHOLD  = 3.0;
 const APR_ELAPSED = 1.0; // July 15: period closed (30-day ranking 6/16 → 7/15)
 
 // Company-level totals (Edd-confirmed). June 2026: 1,811 MQL / 479 SQL / 310 booked meetings.
-// July 2026 (6/16-7/15 report): 1,219 MQL / 521 SQL / 374 booked meetings — record meetings, +20.6% vs June.
+// July 2026 (6/16-7/15 report): 1,219 MQL / 561 SQL / 414 booked meetings — record meetings, +33.5% vs June.
 // SQLs include booked meetings (also reported separately). MARCH_CO = prior period, APR_MTD_CO = current period.
 const MARCH_CO = {mql:1811, sql:479, mtg:310};
-const APR_MTD_CO = {mql:1219, sql:521, mtg:374};
+const APR_MTD_CO = {mql:1219, sql:561, mtg:414};
 
 const REP_PACE={
   "Dominic Libertoski": {marchRank:2, aprRank:1, marchSQL:46, marchFlips:33, marchMQL:140, curMQL:59, curSQL:67, curMtg:56},
   "Kellee Madonia": {marchRank:1, aprRank:2, marchSQL:38, marchFlips:35, marchMQL:65, curMQL:23, curSQL:45, curMtg:43},
-  "Manuel Linero": {marchRank:null, aprRank:3, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:7, curSQL:31, curMtg:30},
-  "Savannah Peck": {marchRank:12, aprRank:4, marchSQL:23, marchFlips:11, marchMQL:125, curMQL:45, curSQL:19, curMtg:19},
-  "Blake Peremel": {marchRank:6, aprRank:5, marchSQL:20, marchFlips:16, marchMQL:75, curMQL:75, curSQL:22, curMtg:18},
-  "Tim Lan": {marchRank:9, aprRank:6, marchSQL:24, marchFlips:11, marchMQL:82, curMQL:63, curSQL:31, curMtg:18},
-  "Eric Tuttle": {marchRank:3, aprRank:7, marchSQL:33, marchFlips:29, marchMQL:38, curMQL:1, curSQL:16, curMtg:14},
-  "Jesse Shorr": {marchRank:7, aprRank:8, marchSQL:20, marchFlips:15, marchMQL:54, curMQL:42, curSQL:17, curMtg:14},
-  "Enzo Bizuti": {marchRank:null, aprRank:9, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:8, curSQL:11, curMtg:11},
-  "Francois Dore": {marchRank:8, aprRank:10, marchSQL:17, marchFlips:16, marchMQL:37, curMQL:19, curSQL:26, curMtg:11},
-  "Joshua Bylsma": {marchRank:16, aprRank:11, marchSQL:19, marchFlips:7, marchMQL:50, curMQL:44, curSQL:20, curMtg:11},
-  "Korbin Kirk": {marchRank:21, aprRank:12, marchSQL:9, marchFlips:6, marchMQL:39, curMQL:19, curSQL:18, curMtg:11},
-  "Anand Pandey": {marchRank:5, aprRank:13, marchSQL:25, marchFlips:18, marchMQL:79, curMQL:118, curSQL:21, curMtg:10},
-  "Kirk Skilling": {marchRank:null, aprRank:14, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:14, curSQL:9, curMtg:9},
-  "Johan Vrey": {marchRank:14, aprRank:15, marchSQL:12, marchFlips:11, marchMQL:32, curMQL:28, curSQL:8, curMtg:8},
-  "Rebecca Barnes": {marchRank:4, aprRank:16, marchSQL:23, marchFlips:17, marchMQL:62, curMQL:14, curSQL:9, curMtg:7},
-  "Cesar Garcia": {marchRank:11, aprRank:17, marchSQL:29, marchFlips:11, marchMQL:90, curMQL:26, curSQL:16, curMtg:6},
-  "Alyssa Perez": {marchRank:13, aprRank:18, marchSQL:15, marchFlips:9, marchMQL:144, curMQL:93, curSQL:6, curMtg:5},
-  "Daniel Davies": {marchRank:19, aprRank:19, marchSQL:13, marchFlips:6, marchMQL:52, curMQL:34, curSQL:13, curMtg:5},
-  "Derek Sindelman": {marchRank:25, aprRank:20, marchSQL:3, marchFlips:2, marchMQL:44, curMQL:50, curSQL:5, curMtg:5},
-  "Solana Victoria": {marchRank:null, aprRank:21, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:35, curSQL:5, curMtg:5},
-  "Bill O'Leary": {marchRank:18, aprRank:22, marchSQL:9, marchFlips:6, marchMQL:78, curMQL:69, curSQL:8, curMtg:4},
-  "Stephanie Hackert": {marchRank:15, aprRank:23, marchSQL:19, marchFlips:5, marchMQL:139, curMQL:88, curSQL:14, curMtg:4},
-  "Alli Fowler": {marchRank:20, aprRank:24, marchSQL:8, marchFlips:4, marchMQL:33, curMQL:15, curSQL:7, curMtg:3},
-  "Ariel Wolfe": {marchRank:23, aprRank:25, marchSQL:5, marchFlips:4, marchMQL:42, curMQL:46, curSQL:5, curMtg:3},
-  "Franco Genovese": {marchRank:null, aprRank:26, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:2, curSQL:3, curMtg:2},
-  "Harjit Sawhney": {marchRank:10, aprRank:27, marchSQL:20, marchFlips:12, marchMQL:82, curMQL:38, curSQL:8, curMtg:2},
+  "Manuel Linero": {marchRank:null, aprRank:4, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:7, curSQL:31, curMtg:30},
+  "Savannah Peck": {marchRank:12, aprRank:5, marchSQL:23, marchFlips:11, marchMQL:125, curMQL:45, curSQL:19, curMtg:19},
+  "Blake Peremel": {marchRank:6, aprRank:6, marchSQL:20, marchFlips:16, marchMQL:75, curMQL:75, curSQL:22, curMtg:18},
+  "Tim Lan": {marchRank:9, aprRank:7, marchSQL:24, marchFlips:11, marchMQL:82, curMQL:63, curSQL:31, curMtg:18},
+  "Eric Tuttle": {marchRank:3, aprRank:9, marchSQL:33, marchFlips:29, marchMQL:38, curMQL:1, curSQL:16, curMtg:14},
+  "Jesse Shorr": {marchRank:7, aprRank:10, marchSQL:20, marchFlips:15, marchMQL:54, curMQL:42, curSQL:17, curMtg:14},
+  "Enzo Bizuti": {marchRank:null, aprRank:11, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:8, curSQL:11, curMtg:11},
+  "Francois Dore": {marchRank:8, aprRank:12, marchSQL:17, marchFlips:16, marchMQL:37, curMQL:19, curSQL:26, curMtg:11},
+  "Joshua Bylsma": {marchRank:16, aprRank:13, marchSQL:19, marchFlips:7, marchMQL:50, curMQL:44, curSQL:20, curMtg:11},
+  "Korbin Kirk": {marchRank:21, aprRank:14, marchSQL:9, marchFlips:6, marchMQL:39, curMQL:19, curSQL:18, curMtg:11},
+  "Anand Pandey": {marchRank:5, aprRank:3, marchSQL:25, marchFlips:18, marchMQL:79, curMQL:118, curSQL:48, curMtg:37},
+  "Kirk Skilling": {marchRank:null, aprRank:15, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:14, curSQL:9, curMtg:9},
+  "Johan Vrey": {marchRank:14, aprRank:16, marchSQL:12, marchFlips:11, marchMQL:32, curMQL:28, curSQL:8, curMtg:8},
+  "Rebecca Barnes": {marchRank:4, aprRank:17, marchSQL:23, marchFlips:17, marchMQL:62, curMQL:14, curSQL:9, curMtg:7},
+  "Cesar Garcia": {marchRank:11, aprRank:18, marchSQL:29, marchFlips:11, marchMQL:90, curMQL:26, curSQL:16, curMtg:6},
+  "Alyssa Perez": {marchRank:13, aprRank:19, marchSQL:15, marchFlips:9, marchMQL:144, curMQL:93, curSQL:6, curMtg:5},
+  "Daniel Davies": {marchRank:19, aprRank:20, marchSQL:13, marchFlips:6, marchMQL:52, curMQL:34, curSQL:13, curMtg:5},
+  "Derek Sindelman": {marchRank:25, aprRank:21, marchSQL:3, marchFlips:2, marchMQL:44, curMQL:50, curSQL:5, curMtg:5},
+  "Solana Victoria": {marchRank:null, aprRank:22, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:35, curSQL:5, curMtg:5},
+  "Bill O'Leary": {marchRank:18, aprRank:23, marchSQL:9, marchFlips:6, marchMQL:78, curMQL:69, curSQL:8, curMtg:4},
+  "Stephanie Hackert": {marchRank:15, aprRank:24, marchSQL:19, marchFlips:5, marchMQL:139, curMQL:88, curSQL:14, curMtg:4},
+  "Alli Fowler": {marchRank:20, aprRank:25, marchSQL:8, marchFlips:4, marchMQL:33, curMQL:15, curSQL:7, curMtg:3},
+  "Ariel Wolfe": {marchRank:23, aprRank:26, marchSQL:5, marchFlips:4, marchMQL:42, curMQL:46, curSQL:5, curMtg:3},
+  "Franco Genovese": {marchRank:null, aprRank:27, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:2, curSQL:3, curMtg:2},
+  "Harjit Sawhney": {marchRank:10, aprRank:8, marchSQL:20, marchFlips:12, marchMQL:82, curMQL:38, curSQL:21, curMtg:15},
   "Michele Harris": {marchRank:28, aprRank:28, marchSQL:2, marchFlips:1, marchMQL:16, curMQL:13, curSQL:3, curMtg:2},
   "Abraham Abouzeid": {marchRank:null, aprRank:29, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:0, curSQL:1, curMtg:1},
   "Cameron Horton": {marchRank:null, aprRank:30, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:13, curSQL:1, curMtg:1},
@@ -942,12 +942,12 @@ function PersonCharts({accounts,perf,repName}) {
 // ─── COMPANY TAB ──────────────────────────────────────────────────────────────
 // ─── COMPANY PACE CARD ─────────────────────────────────────────────────────────
 // July 2026 period complete (6/16-7/15). Compares June vs July company totals.
-// Story: meetings hit a record 374 (+20.6%) and SQLs rose 8.8% on a third less MQL volume — efficiency compounding into growth.
+// Story: meetings hit a record 414 (+33.5%) and SQLs rose 17.1% on a third less MQL volume — efficiency compounding into growth.
 function CompanyPaceCard(){
   const GROWTH = [
     {label:"MQLs",     pct:-32.7, absNow:APR_MTD_CO.mql, absMarch:MARCH_CO.mql, desc:"raw volume vs June 2026"},
-    {label:"SQLs",     pct:8.8, absNow:APR_MTD_CO.sql, absMarch:MARCH_CO.sql, desc:"vs June 2026 · incl. booked meetings"},
-    {label:"Meetings", pct:20.6,  absNow:APR_MTD_CO.mtg, absMarch:MARCH_CO.mtg, desc:"record high · vs June 2026"},
+    {label:"SQLs",     pct:17.1, absNow:APR_MTD_CO.sql, absMarch:MARCH_CO.sql, desc:"vs June 2026 · incl. booked meetings"},
+    {label:"Meetings", pct:33.5,  absNow:APR_MTD_CO.mtg, absMarch:MARCH_CO.mtg, desc:"record high · vs June 2026"},
   ];
   const pctCol = (p) => p>=10?G : p>=0?"#8ed122" : p>=-10?"#f5c518" : "#ef4444";
   return(
@@ -958,8 +958,8 @@ function CompanyPaceCard(){
             <div style={{width:16,height:2,background:G}}/>
             <div style={{fontSize:13,fontWeight:800,letterSpacing:"2px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY}}>July 2026 — Period Complete (6/16–7/15)</div>
           </div>
-          <div style={{fontSize:28,fontWeight:900,color:TEXT,fontFamily:FONT_DISPLAY,letterSpacing:"-0.5px",lineHeight:1.15}}>Booked meetings hit a record 374 — <span style={{color:G}}>efficiency is compounding</span></div>
-          <div style={{fontSize:15,color:MUTED,fontFamily:FONT_BODY,marginTop:8,lineHeight:1.55}}>July 2026 (6/16–7/15): <span style={{color:"#e8e8e8"}}>374 booked meetings vs 310 in June — up 20.6%</span>, and SQLs rose 8.8% (479 → 521) even as raw MQL volume fell by a third (1,811 → 1,219).<br/>Fewer raw leads, more qualified conversations, more meetings booked: the efficiency gains in our process and platform are now driving <span style={{color:G}}>outright growth</span>. Booked meetings are the highest on record — <span style={{color:G}}>~53% above the pre-ramp March baseline (244)</span>. SQLs include booked meetings, reported separately.</div>
+          <div style={{fontSize:28,fontWeight:900,color:TEXT,fontFamily:FONT_DISPLAY,letterSpacing:"-0.5px",lineHeight:1.15}}>Booked meetings hit a record 414 — <span style={{color:G}}>efficiency is compounding</span></div>
+          <div style={{fontSize:15,color:MUTED,fontFamily:FONT_BODY,marginTop:8,lineHeight:1.55}}>July 2026 (6/16–7/15): <span style={{color:"#e8e8e8"}}>414 booked meetings vs 310 in June — up 33.5%</span>, and SQLs rose 17.1% (479 → 561) even as raw MQL volume fell by a third (1,811 → 1,219).<br/>Fewer raw leads, more qualified conversations, more meetings booked: the efficiency gains in our process and platform are now driving <span style={{color:G}}>outright growth</span>. Booked meetings are the highest on record — <span style={{color:G}}>~70% above the pre-ramp March baseline (244)</span>. SQLs include booked meetings, reported separately.</div>
         </div>
         <div style={{background:"#0a0a0a",border:"1px solid "+BORDER,color:TEXT,borderRadius:8,padding:"10px 18px",textAlign:"center",minWidth:120}}>
           <div style={{fontSize:9,color:MUTED,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",fontFamily:FONT_BODY}}>Status</div>
@@ -2477,7 +2477,7 @@ function RepLeaderboard({onSelect}){
     <div style={{background:"linear-gradient(135deg, #20200a 0%, #141414 65%)",border:"1px solid #3a3512",borderLeft:"3px solid #ffd700",borderRadius:10,padding:"14px 18px",marginBottom:20}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8,marginBottom:10}}>
         <div style={{fontSize:12,fontWeight:800,color:"#ffd700",fontFamily:FONT_BODY,letterSpacing:"1.5px",textTransform:"uppercase"}}>🚀 Outstanding Increases — Booked Meetings vs May Report (4/16–5/15)</div>
-        <div style={{fontSize:11,color:MUTED,fontFamily:FONT_BODY}}>Ranked reps: <span style={{color:G,fontWeight:800}}>{totCurMtg}</span> vs {totPrevMtg} in May report{teamMtgPct!=null && <span style={{color:G,fontWeight:800}}> · +{teamMtgDelta} ({teamMtgPct>0?"+":""}{teamMtgPct}%)</span>} · Team total incl. non-ranked: 374</div>
+        <div style={{fontSize:11,color:MUTED,fontFamily:FONT_BODY}}>Ranked reps: <span style={{color:G,fontWeight:800}}>{totCurMtg}</span> vs {totPrevMtg} in May report{teamMtgPct!=null && <span style={{color:G,fontWeight:800}}> · +{teamMtgDelta} ({teamMtgPct>0?"+":""}{teamMtgPct}%)</span>} · Team total incl. non-ranked: 414</div>
       </div>
       <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
         {gainers.map(g=>(
@@ -2569,7 +2569,7 @@ function RepLeaderboard({onSelect}){
         ))}
       </div>
       <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY,marginTop:8}}>
-        Counted in the 374 team total; excluded from rep ranking. Also logged this window: Merv 1 Mtg / 1 SQL · Matt Guthrie 1 SQL · Grant Paris 3 MQL · Venus Powers 1 MQL · Alex (Aixigo) 3 MQL. SQLs include booked meetings.
+        Counted in the 414 team total; excluded from rep ranking. Also logged this window: Merv 1 Mtg / 1 SQL · Matt Guthrie 1 SQL · Grant Paris 3 MQL · Venus Powers 1 MQL · Alex (Aixigo) 3 MQL. SQLs include booked meetings.
       </div>
     </div>
   </div>);
