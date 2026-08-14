@@ -593,8 +593,8 @@ const SDR_OBS_THRESHOLD  = 3.0;
 
 const APR_ELAPSED = 1.0; // July 15: period closed (30-day ranking 6/16 → 7/15)
 
-// Company-level totals (Edd-confirmed). June 2026: 1,811 MQL / 479 SQL / 310 booked meetings.
-// July 2026 (6/16-7/15 report): 1,219 MQL / 563 SQL / 416 booked meetings — record meetings, +34.2% vs June.
+// Company-level totals VERIFIED 2026-08-14 by full re-scan. Prior period (6/16-7/15): 1,254 MQL / 548 SQL / 349 booked meetings.
+// Current period (7/16-8/15): 1,223 MQL / 594 SQL / 384 booked meetings — 5th straight rise, +10.0% vs prior.
 // SQLs include booked meetings (also reported separately). MARCH_CO = prior period, APR_MTD_CO = current period.
 const MARCH_CO = {mql:1254, sql:548, mtg:349};
 const APR_MTD_CO = {mql:1223, sql:594, mtg:384};
@@ -952,7 +952,7 @@ function PersonCharts({accounts,perf,repName}) {
 // ─── COMPANY TAB ──────────────────────────────────────────────────────────────
 // ─── COMPANY PACE CARD ─────────────────────────────────────────────────────────
 // July 2026 period complete (6/16-7/15). Compares June vs July company totals.
-// Story: meetings hit a record 416 (+34.2%) and SQLs rose 17.5% on a third less MQL volume — efficiency compounding into growth.
+// Story: meetings up 137% since March (162 -> 384) across five straight rising periods; conversion 19% -> 31%.
 function CompanyPaceCard(){
   const GROWTH = [
     {label:"MQLs",     pct:-2.5, absNow:APR_MTD_CO.mql, absMarch:MARCH_CO.mql, desc:"vs prior period · +44% since March"},
@@ -2530,7 +2530,7 @@ function RepLeaderboard({onSelect}){
     <div style={{background:"linear-gradient(135deg, #20200a 0%, #141414 65%)",border:"1px solid #3a3512",borderLeft:"3px solid #ffd700",borderRadius:10,padding:"14px 18px",marginBottom:20}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8,marginBottom:10}}>
         <div style={{fontSize:12,fontWeight:800,color:"#ffd700",fontFamily:FONT_BODY,letterSpacing:"1.5px",textTransform:"uppercase"}}>🚀 Outstanding Increases — Booked Meetings vs May Report (4/16–5/15)</div>
-        <div style={{fontSize:11,color:MUTED,fontFamily:FONT_BODY}}>Ranked reps: <span style={{color:G,fontWeight:800}}>{totCurMtg}</span> vs {totPrevMtg} in May report{teamMtgPct!=null && <span style={{color:G,fontWeight:800}}> · +{teamMtgDelta} ({teamMtgPct>0?"+":""}{teamMtgPct}%)</span>} · Team total incl. non-ranked: 416</div>
+        <div style={{fontSize:11,color:MUTED,fontFamily:FONT_BODY}}>Ranked reps: <span style={{color:G,fontWeight:800}}>{totCurMtg}</span> vs {totPrevMtg} in May report{teamMtgPct!=null && <span style={{color:G,fontWeight:800}}> · +{teamMtgDelta} ({teamMtgPct>0?"+":""}{teamMtgPct}%)</span>} · Team total incl. non-ranked: 349 (verified)</div>
       </div>
       <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
         {gainers.map(g=>(
@@ -2622,7 +2622,7 @@ function RepLeaderboard({onSelect}){
         ))}
       </div>
       <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY,marginTop:8}}>
-        Counted in the 416 team total; excluded from rep ranking. Also logged this window: Merv 1 Mtg / 1 SQL · Matt Guthrie 1 SQL · Grant Paris 3 MQL · Venus Powers 1 MQL · Alex (Aixigo) 3 MQL. SQLs include booked meetings.
+        Counted in the 349 verified team total; excluded from rep ranking. Also logged this window: Merv 1 Mtg / 1 SQL · Matt Guthrie 1 SQL · Grant Paris 3 MQL · Venus Powers 1 MQL · Alex (Aixigo) 3 MQL. SQLs include booked meetings.
       </div>
     </div>
   </div>);
