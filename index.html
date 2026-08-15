@@ -11,72 +11,70 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
 <style>
-/* ═══ MARTAL DESIGN SYSTEM v2.3 — DUO / LIGHT AURORA GLASS ═══════════════
-   Light field + aurora blooms + frosted glass surfaces.
-   Palette: Charcoal #181818 · Vibrant Green #80B122 · Bright Blue #2D9CDB
+/* ═══ MARTAL GROUP DESIGN SYSTEM — DUO / GLASS MORPHIC ═══════════════════
+   Pulled directly from the canonical Martal Group Design System project
+   (tokens/colors.css, tokens/glass.css, components/surfaces/GlassCard.jsx,
+   ui_kits/website/Header.jsx). Same tokens the marketing site and AI SDR
+   platform UI kit use — this is not a bespoke reskin.
    ══════════════════════════════════════════════════════════════════════ */
 :root{
   /* --- brand core --- */
-  --charcoal:#181818; --green:#80B122; --blue:#2D9CDB;
-  /* --- neutral ramp --- */
-  --n0:#FFFFFF; --n25:#FAFAFA; --n50:#F4F4F5; --n100:#E9E9EB; --n200:#D6D6D9;
-  --n300:#B8B8BC; --n400:#919196; --n500:#6B6B70; --n600:#4D4D51; --n700:#37373A;
-  --n800:#242425; --n900:#181818;
+  --mg-charcoal:#181818; --mg-green-500:#80b122; --mg-blue-500:#2d9cdb;
+  --mg-green-400:#98c548; --mg-green-600:#66901b; --mg-green-100:#e6f1cf; --mg-green-50:#f3f8e6;
+  --mg-blue-400:#57b2e5; --mg-blue-600:#2588bf; --mg-blue-100:#d5edf8; --mg-blue-50:#eaf6fc;
+  --mg-black:#0d0d0d; --mg-ink-900:#181818; --mg-ink-800:#242424; --mg-ink-700:#303030;
+  --mg-ink-600:#3d3d3d; --mg-ink-500:#565656; --mg-ink-400:#7a7a7a; --mg-ink-300:#a3a3a3;
+  --mg-ink-200:#cfcfcf; --mg-ink-100:#e7e7e7; --mg-ink-50:#f4f4f4; --mg-white:#ffffff;
 
-  /* --- the light field: DUO liquid mesh (glass.css --liquid-duo-light) --- */
-  /* The aurora divs carry the colour; the field stays a quiet wash so glass
-     reads white and body copy never sits on a dense bloom (light-glass-v2 §3). */
+  /* --- semantic surfaces / text (colors.css) --- */
+  --surface-page:#ffffff; --surface-card:#ffffff; --surface-muted:#f4f4f4; --surface-sunken:#e7e7e7;
+  --text-strong:#181818; --text-body:#303030; --text-muted:#7a7a7a;
+  --border-subtle:#e7e7e7; --border-default:#cfcfcf;
+
+  /* --- glass fills (glass.css) --- */
+  --glass-light-strong:rgba(255,255,255,.72); --glass-light-faint:rgba(255,255,255,.35);
+  --glass-dark:rgba(24,24,24,.45); --glass-dark-strong:rgba(24,24,24,.62);
+  --glass-tint-green:rgba(128,177,34,.16); --glass-tint-blue:rgba(45,156,219,.18);
+  --glass-border-soft:rgba(255,255,255,.30); --glass-border-dark:rgba(255,255,255,.14);
+  --blur-sm:8px; --blur-md:16px; --blur-lg:28px; --blur-xl:44px;
+  --glass-sheen-soft:linear-gradient(180deg, rgba(255,255,255,.35) 0%, rgba(255,255,255,0) 55%);
+  --glass-shadow:0 8px 32px rgba(24,24,24,.18), inset 0 1px 0 rgba(255,255,255,.5);
+  --glass-shadow-dark:0 12px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.12);
+
+  /* --- liquid gradients (glass.css) --- the signature DUO mesh, used as a
+     direct panel fill (hero/proof surfaces), not a page-wide wash */
+  --liquid-duo:
+    radial-gradient(90% 130% at 12% 8%, rgba(128,177,34,.55) 0%, rgba(128,177,34,0) 45%),
+    radial-gradient(90% 120% at 92% 20%, rgba(45,156,219,.55) 0%, rgba(45,156,219,0) 48%),
+    linear-gradient(160deg, #181818 0%, #0d0d0d 100%);
+
+  /* --- Light Duo — the same green/blue pairing tuned for the light theme.
+     Green pools one side, light blue the other, on a near-white base so
+     white frosted-glass tiles float clearly on top. */
   --liquid-duo-light:
-    radial-gradient(90% 130% at 12% 8%, rgba(128,177,34,.20) 0%, rgba(128,177,34,0) 45%),
-    radial-gradient(90% 120% at 92% 20%, rgba(45,156,219,.18) 0%, rgba(45,156,219,0) 48%),
-    linear-gradient(160deg,#f7faf0 0%,#f2f9fd 55%,#ffffff 100%);
-
-  /* --- Light Glass surfaces (light-glass-v2.md §2) --- */
-  --glass-card:rgba(255,255,255,.58);
-  --glass-card2:rgba(255,255,255,.40);
-  --glass-card3:rgba(255,255,255,.74);
-  --glass-nav:rgba(255,255,255,.68);
-  --glass-strip:rgba(255,255,255,.50);
-
-  /* --- glass borders / shadows --- */
-  --glass-border:rgba(24,24,24,.10);
-  --glass-border-2:rgba(24,24,24,.16);
-  --glass-shadow:0 12px 40px rgba(24,24,24,.10), 0 2px 8px rgba(24,24,24,.05);
-  --glass-shadow-lg:0 20px 60px rgba(24,24,24,.14), 0 4px 12px rgba(24,24,24,.06);
+    radial-gradient(100% 140% at 6% 20%, rgba(128,177,34,.40) 0%, rgba(128,177,34,0) 60%),
+    radial-gradient(100% 140% at 96% 30%, rgba(45,156,219,.38) 0%, rgba(45,156,219,0) 62%),
+    linear-gradient(120deg, #eef6df 0%, #f6faf1 35%, #eef8fd 70%, #e3f3fc 100%);
 }
 
 *{box-sizing:border-box;margin:0;padding:0;}
-html{background:var(--liquid-duo-light);}
+html,body{background:var(--surface-page);}
 body{
-  background:var(--liquid-duo-light);
-  background-attachment:fixed;
   font-family:'Montserrat',system-ui,sans-serif;
-  color:var(--charcoal);
-  font-variant-numeric:tabular-nums;   /* stat/table figures align (tokens.md) */
+  color:var(--text-strong);
+  font-variant-numeric:tabular-nums;
   -webkit-font-smoothing:antialiased;
   min-height:100vh;
 }
 button,input,select{font-family:inherit;font-variant-numeric:inherit;}
 
-/* ═══ AURORA BLOOMS (light-glass-v2.md §3) ═══════════════════════════════
-   Large soft off-canvas colour fields. Fixed so the field breathes on scroll.
-   House pairing = one green + one blue. Never body text on the densest part. */
-.aurora-field{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;}
-.aurora{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;}
-.aurora.green{background:rgba(128,177,34,.18);width:660px;height:660px;top:-200px;left:-180px;}
-.aurora.blue {background:rgba(45,156,219,.16);width:760px;height:760px;top:-160px;right:-260px;}
-.aurora.green-2{background:rgba(128,177,34,.12);width:560px;height:560px;bottom:-240px;right:6%;}
-.aurora.blue-2{background:rgba(45,156,219,.10);width:600px;height:600px;bottom:-260px;left:4%;}
-
 /* ═══ GLASS ACTIVATION ═══════════════════════════════════════════════════
-   Inline styles carry var() references literally in the style attribute, so we
-   can attach backdrop-filter by matching the token name. Blur per surface tier
-   (light-glass-v2.md §2: 8px chips -> 18px panels). Never stack >2 deep. */
-[style*="--glass-card"]{-webkit-backdrop-filter:blur(20px) saturate(1.5);backdrop-filter:blur(20px) saturate(1.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.75),0 12px 40px rgba(24,24,24,.10),0 2px 8px rgba(24,24,24,.04);}
-[style*="--glass-card2"]{-webkit-backdrop-filter:blur(10px) saturate(1.2);backdrop-filter:blur(10px) saturate(1.2);}
-[style*="--glass-card3"]{-webkit-backdrop-filter:blur(8px) saturate(1.15);backdrop-filter:blur(8px) saturate(1.15);}
-[style*="--glass-nav"]{-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);}
-[style*="--glass-strip"]{-webkit-backdrop-filter:blur(12px) saturate(1.25);backdrop-filter:blur(12px) saturate(1.25);}
+   Matches components/surfaces/GlassCard.jsx: backdrop blur+saturate, a lit
+   sheen overlay, floating shadow. Applied wherever a panel sits on the
+   liquid-duo mesh or on charcoal. */
+[style*="--glass-dark-strong"]{-webkit-backdrop-filter:blur(28px) saturate(1.4);backdrop-filter:blur(28px) saturate(1.4);}
+[style*="--glass-light-strong"]{-webkit-backdrop-filter:blur(24px) saturate(1.4);backdrop-filter:blur(24px) saturate(1.4);}
+[style*="--glass-tint-green"],[style*="--glass-tint-blue"]{-webkit-backdrop-filter:blur(24px) saturate(1.4);backdrop-filter:blur(24px) saturate(1.4);}
 
 /* ═══ CHROME ═════════════════════════════════════════════════════════════ */
 ::-webkit-scrollbar{width:9px;height:9px;}
@@ -86,11 +84,9 @@ button,input,select{font-family:inherit;font-variant-numeric:inherit;}
 ::selection{background:rgba(128,177,34,.28);color:#181818;}
 
 button,a{transition:color .18s,background .18s,border-color .18s,opacity .18s,box-shadow .18s,transform .18s;}
+:focus-visible{outline:2px solid #2d9cdb;outline-offset:2px;border-radius:4px;}
 
-/* Focus ring: Blue 500, 2px + offset (tokens.md) — visible on every control */
-:focus-visible{outline:2px solid #2D9CDB;outline-offset:2px;border-radius:4px;}
-
-/* Primary CTA sheen (light-glass-v2.md §4) — values locked */
+/* Primary CTA — accent button spec */
 .martal-cta{
   background:linear-gradient(180deg,#93C43A 0%,#80B122 45%,#74A21E 100%)!important;
   color:#FFFFFF!important;font-weight:700;
@@ -101,20 +97,10 @@ button,a{transition:color .18s,background .18s,border-color .18s,opacity .18s,bo
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}
 }
-@media print{
-  .aurora-field{display:none;}
-  html,body{background:#fff;}
-}
 </style>
 </head>
 <body>
-<div class="aurora-field" aria-hidden="true">
-  <div class="aurora green"></div>
-  <div class="aurora blue"></div>
-  <div class="aurora green-2"></div>
-  <div class="aurora blue-2"></div>
-</div>
-<div id="root" style="position:relative;z-index:1"></div>
+<div id="root"></div>
 <script type="text/babel">
 const { useState, useMemo, useEffect, useRef } = React;
 
@@ -161,38 +147,39 @@ const ALL_M = CD.map(d=>d.m);
 // ─── CHURN SCORING ────────────────────────────────────────────────────────────
 const PEN={"Rep Issue":8,"Sales Ops Issue":8,"Lack of Results":6,"No Closed Deals":6,"Single Rep Account":5,"No Show Issue":5,"Poor List Quality":3,"Slow Start":3,"Budget Issue":1,"Didnt Pay":1,"Accepted Landbase":1,"Leadership Intervention":2};
 
-// ─── MARTAL BRAND TOKENS ─────────────────────────────────────────────────────
-const G="#80B122";            /* Vibrant Green 500 — fills only, white text on top */
-const G_TEXT="#557519";        /* Green 700 — the AA-safe green for TEXT on light */
-const G_DARK="#557519";
-const G_LIGHT="#F2F7E6";       /* Green 50 */
-const ANNOUNCE="var(--glass-strip)";
-const BG="transparent";        /* the light field lives on <body> */
-const CARD="var(--glass-card)";
-const CARD2="var(--glass-card2)";
-const CARD3="var(--glass-card3)";
-const BORDER="rgba(24,24,24,.10)";
-const BORDER2="rgba(24,24,24,.16)";
-const TEXT="#181818";          /* N900 charcoal ink */
-const MUTED="#4D4D51";         /* N600 — 8.4:1 on glass */
-const MUTED2="#6B6B70";        /* N500 — 5.7:1 on glass */
-const SHADOW="0 12px 40px rgba(24,24,24,0.10), 0 2px 8px rgba(24,24,24,0.05)";
-const SHADOW_MD="0 20px 60px rgba(24,24,24,0.14), 0 4px 12px rgba(24,24,24,0.06)";
+// ─── MARTAL BRAND TOKENS ─── pulled from the canonical Design System project ──
+const G="#80B122";            /* --mg-green-500 — fills only, white text on top */
+const G_TEXT="#66901B";        /* --mg-green-600 — AA-safe green for text on light */
+const G_DARK="#4F6E13";        /* --mg-green-700 */
+const G_LIGHT="#F3F8E6";       /* --mg-green-50 */
+const ANNOUNCE="var(--glass-dark-strong)";
+const BG="var(--surface-page)";
+const CARD="var(--surface-card)";      /* plain white — matches Card.jsx, not glass */
+const CARD2="var(--surface-muted)";
+const CARD3="var(--surface-sunken)";
+const BORDER="var(--border-subtle)";
+const BORDER2="var(--border-default)";
+const TEXT="var(--text-strong)";       /* #181818 */
+const MUTED="var(--text-body)";        /* #303030 */
+const MUTED2="var(--text-muted)";      /* #7a7a7a */
+const SHADOW="0 1px 3px rgba(24,24,24,.06), 0 4px 10px rgba(24,24,24,.04)";  /* shadow-sm, per Card elevation="sm" */
+const SHADOW_MD="0 4px 16px rgba(24,24,24,.08), 0 12px 32px rgba(24,24,24,.06)";
 const FONT_DISPLAY = "'Montserrat',sans-serif";
 const FONT_BODY = "'Montserrat',sans-serif";
 const FONT_MONO = "'Montserrat',sans-serif";
 
-/* ── Dark console band (DS v2.2 governed dark slot) ──────────────────────
-   Charcoal glass over the aurora field. Ink follows the dark-theme roles. */
-const C_BG="rgba(20,20,20,.86)";
-const C_BORDER="rgba(255,255,255,.12)";
-const C_RAISED="rgba(255,255,255,.07)";
-const C_TEXT="#F4F4F5";        /* N50 — never pure white on dark */
-const C_MUTED="#B8B8BC";       /* N300 */
-const C_GREEN="#98C246";       /* Green 400 — the on-dark green */
-const C_PANEL={background:C_BG,border:"1px solid "+C_BORDER,borderRadius:20,padding:"28px 32px",marginBottom:16,
-  boxShadow:"inset 0 1px 0 rgba(255,255,255,.12), 0 24px 60px rgba(24,24,24,.30)",
-  WebkitBackdropFilter:"blur(28px) saturate(1.35)",backdropFilter:"blur(28px) saturate(1.35)"};
+/* ── The DUO liquid-glass hero panel ──────────────────────────────────────
+   Matches ui_kits/ai-sdr-platform/Dashboard.jsx's "Pipeline progression"
+   treatment: --liquid-duo as a direct panel fill, white text on top, no
+   separate glass wrapper — the mesh IS the surface. */
+const C_BG="var(--liquid-duo-light)";
+const C_BORDER="rgba(24,24,24,.10)";
+const C_RAISED="rgba(255,255,255,.55)";
+const C_TEXT="var(--text-strong)";     /* charcoal ink on the light duo field */
+const C_MUTED="var(--text-body)";
+const C_GREEN="#557519";               /* green 700 — AA-safe on the light field */
+const C_PANEL={background:C_BG,borderRadius:"var(--radius-lg, 16px)",padding:"28px 32px",marginBottom:16,
+  border:"1px solid rgba(255,255,255,.6)",boxShadow:"var(--glass-shadow)",position:"relative",overflow:"hidden"};
 
 // Green-only churn scale: dark green (good/low) → light yellow-green (bad/high)
 const crCol=v=>v==null?MUTED:v<10?"#6B961C":v<15?"#E5A000":v<20?"#B7791F":"#B43232";
@@ -1111,10 +1098,12 @@ function CompanyPaceCard(){
     {label:"SQLs",     pct:8.4,  absNow:APR_MTD_CO.sql, absMarch:MARCH_CO.sql, desc:"incl. booked meetings · +95% since March"},
     {label:"Meetings", pct:1.6,  absNow:APR_MTD_CO.mtg, absMarch:MARCH_CO.mtg, desc:"vs prior period · +65% since March"},
   ];
-  const pctCol = (p) => p>=10?C_GREEN : p>=0?C_GREEN : p>=-10?"#F0C24A" : "#F08A8A";
+  const pctCol = (p) => p>=10?C_GREEN : p>=0?C_GREEN : p>=-10?"#B7791F" : "#B43232";
+  const glassTile = {background:"rgba(255,255,255,.62)",border:"1px solid rgba(255,255,255,.75)",WebkitBackdropFilter:"blur(16px) saturate(1.4)",backdropFilter:"blur(16px) saturate(1.4)",boxShadow:"inset 0 1px 0 rgba(255,255,255,.8), 0 4px 16px rgba(24,24,24,.06)"};
   return(
     <div style={C_PANEL}>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:12,marginBottom:22}}>
+      <span aria-hidden="true" style={{position:"absolute",inset:0,background:"var(--glass-sheen-soft)",pointerEvents:"none"}}/>
+      <div style={{position:"relative",display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:12,marginBottom:22}}>
         <div>
           <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
             <div style={{width:16,height:2,background:C_GREEN}}/>
@@ -1123,9 +1112,9 @@ function CompanyPaceCard(){
           <div style={{fontSize:28,fontWeight:900,color:C_TEXT,fontFamily:FONT_DISPLAY,letterSpacing:"-0.5px",lineHeight:1.15}}>Booked meetings up 65% since March — <span style={{color:C_GREEN}}>four straight rises, current period still ahead</span></div>
           <div style={{fontSize:15,color:C_MUTED,fontFamily:FONT_BODY,marginTop:8,lineHeight:1.55}}>Live campaign-sheet count (7/16–8/15, in progress): <span style={{color:C_TEXT}}>382 booked meetings vs 376 last period, up 1.6% with a day still to run</span>, and 594 SQLs (548 to 594, Perf-verified). MQLs held roughly flat at 1,223. Since the Landbase migration completed 1 April, booked meetings have risen every closed period: <span style={{color:C_GREEN}}>232 to 260 to 278 to 376</span>, and the current in-progress period (382) is already ahead of that. MQLs grew 44% over that span while meetings grew 65% — conversion improved from 27% to 31%.</div>
         </div>
-        <div style={{background:"rgba(255,255,255,.07)",border:"1px solid rgba(255,255,255,.14)",color:C_TEXT,borderRadius:8,padding:"10px 18px",textAlign:"center",minWidth:120}}>
+        <div style={{...glassTile,color:C_TEXT,borderRadius:8,padding:"10px 18px",textAlign:"center",minWidth:120}}>
           <div style={{fontSize:9,color:C_MUTED,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",fontFamily:FONT_BODY}}>Status</div>
-          <div style={{fontSize:16,fontWeight:800,color:"#F0C24A",fontFamily:FONT_DISPLAY,marginTop:4,whiteSpace:"nowrap"}}>◐ In Progress</div>
+          <div style={{fontSize:16,fontWeight:800,color:"#B7791F",fontFamily:FONT_DISPLAY,marginTop:4,whiteSpace:"nowrap"}}>◐ In Progress</div>
           <div style={{fontSize:9,color:C_MUTED,fontFamily:FONT_BODY,marginTop:2}}>Closes 8/15/2026</div>
         </div>
       </div>
@@ -1144,7 +1133,7 @@ function CompanyPaceCard(){
       {/* Reference totals row */}
       <div style={{display:"grid",gridTemplateColumns:"repeat(3, 1fr)",gap:16}}>
         {GROWTH.map(m=>{const c=pctCol(m.pct);return(
-          <div key={m.label} style={{background:"rgba(255,255,255,.06)",border:"1px solid "+C_BORDER,borderRadius:8,padding:"14px 16px"}}>
+          <div key={m.label} style={{...glassTile,borderRadius:8,padding:"14px 16px"}}>
             <div style={{fontSize:9,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:C_MUTED,fontFamily:FONT_BODY,marginBottom:8}}>{m.label} — Totals</div>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",gap:12}}>
               <div>
@@ -1240,23 +1229,23 @@ function CompanyTab({cms}){
 
   return(<div>
     {w.paceCard!==false&&<CompanyPaceCard/>}
-<div style={C_PANEL}>
+<div style={{background:CARD,border:"1px solid "+BORDER,borderRadius:16,padding:"24px 28px",marginBottom:16,boxShadow:SHADOW}}>
         <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
-          <div style={{width:16,height:2,background:C_GREEN}}/>
-          <div style={{fontSize:13,fontWeight:800,letterSpacing:"2px",textTransform:"uppercase",color:C_MUTED,fontFamily:FONT_BODY}}>Verified History — Five Periods</div>
+          <div style={{width:16,height:2,background:G}}/>
+          <div style={{fontSize:13,fontWeight:800,letterSpacing:"2px",textTransform:"uppercase",color:MUTED2,fontFamily:FONT_BODY}}>Verified History — Five Periods</div>
         </div>
-        <div style={{fontSize:22,fontWeight:900,color:C_TEXT,fontFamily:FONT_DISPLAY,letterSpacing:"-0.4px",marginBottom:6}}>March to August 2026</div>
-        <div style={{fontSize:13,color:C_MUTED,fontFamily:FONT_BODY,marginBottom:18,lineHeight:1.5}}>
+        <div style={{fontSize:22,fontWeight:900,color:TEXT,fontFamily:FONT_DISPLAY,letterSpacing:"-0.4px",marginBottom:6}}>March to August 2026</div>
+        <div style={{fontSize:13,color:MUTED2,fontFamily:FONT_BODY,marginBottom:18,lineHeight:1.5}}>
           Every window re-scanned 14 Aug 2026 with one identical method across all campaign sheets, Matrix V1 lead sheets and Matrix V2 Account Trackers. Landbase migration completed 1 April 2026.
         </div>
         <div style={{overflowX:"auto"}}>
         <table style={{width:"100%",borderCollapse:"collapse",fontFamily:FONT_BODY,fontSize:13,minWidth:560}}>
-          <thead><tr style={{borderBottom:"1px solid "+C_BORDER}}>
-            <th style={{textAlign:"left",padding:"8px 10px",color:C_MUTED,fontWeight:700}}>Period</th>
-            <th style={{textAlign:"right",padding:"8px 10px",color:C_MUTED,fontWeight:700}}>Booked Meetings</th>
-            <th style={{textAlign:"right",padding:"8px 10px",color:C_MUTED,fontWeight:700}}>SQLs</th>
-            <th style={{textAlign:"right",padding:"8px 10px",color:C_MUTED,fontWeight:700}}>MQLs</th>
-            <th style={{textAlign:"right",padding:"8px 10px",color:C_MUTED,fontWeight:700}}>Mtg chg</th>
+          <thead><tr style={{borderBottom:"1px solid "+BORDER}}>
+            <th style={{textAlign:"left",padding:"8px 10px",color:MUTED2,fontWeight:700}}>Period</th>
+            <th style={{textAlign:"right",padding:"8px 10px",color:MUTED2,fontWeight:700}}>Booked Meetings</th>
+            <th style={{textAlign:"right",padding:"8px 10px",color:MUTED2,fontWeight:700}}>SQLs</th>
+            <th style={{textAlign:"right",padding:"8px 10px",color:MUTED2,fontWeight:700}}>MQLs</th>
+            <th style={{textAlign:"right",padding:"8px 10px",color:MUTED2,fontWeight:700}}>Mtg chg</th>
           </tr></thead>
           <tbody>
             {HISTORY.map((r,i)=>{
@@ -1264,12 +1253,12 @@ function CompanyTab({cms}){
               const chg = prev ? ((r.mtg/prev-1)*100) : null;
               const last = i===HISTORY.length-1;
               return (
-                <tr key={r.label} style={{borderBottom:"1px solid rgba(255,255,255,.08)",background:last?"rgba(128,177,34,.16)":"transparent"}}>
-                  <td style={{padding:"9px 10px",color:last?C_TEXT:C_MUTED,fontWeight:last?800:500}}>{r.label}</td>
-                  <td style={{padding:"9px 10px",textAlign:"right",color:last?C_GREEN:C_TEXT,fontWeight:800,fontSize:15}}>{r.mtg}</td>
-                  <td style={{padding:"9px 10px",textAlign:"right",color:C_MUTED}}>{r.sql}</td>
-                  <td style={{padding:"9px 10px",textAlign:"right",color:C_MUTED}}>{r.mql.toLocaleString()}</td>
-                  <td style={{padding:"9px 10px",textAlign:"right",color:chg===null?C_MUTED:(chg>=0?C_GREEN:"#F08A8A"),fontWeight:700}}>
+                <tr key={r.label} style={{borderBottom:"1px solid "+BORDER,background:last?"var(--glass-tint-green)":"transparent"}}>
+                  <td style={{padding:"9px 10px",color:last?TEXT:MUTED2,fontWeight:last?800:500}}>{r.label}</td>
+                  <td style={{padding:"9px 10px",textAlign:"right",color:last?G_TEXT:TEXT,fontWeight:800,fontSize:15}}>{r.mtg}</td>
+                  <td style={{padding:"9px 10px",textAlign:"right",color:MUTED2}}>{r.sql}</td>
+                  <td style={{padding:"9px 10px",textAlign:"right",color:MUTED2}}>{r.mql.toLocaleString()}</td>
+                  <td style={{padding:"9px 10px",textAlign:"right",color:chg===null?MUTED2:(chg>=0?G_TEXT:"#B43232"),fontWeight:700}}>
                     {chg===null?"—":(chg>0?"+":"")+chg.toFixed(0)+"%"}
                   </td>
                 </tr>
@@ -1278,7 +1267,7 @@ function CompanyTab({cms}){
           </tbody>
         </table>
         </div>
-        <div style={{fontSize:12,color:C_MUTED,fontFamily:FONT_BODY,marginTop:14,lineHeight:1.6}}>
+        <div style={{fontSize:12,color:MUTED2,fontFamily:FONT_BODY,marginTop:14,lineHeight:1.6}}>
           Meetings = any flip variant. SQLs include flips. MQLs = qualifying / objection handling. De-duplicated on category + prospect company; not-interested and disqualified excluded.
           Account Trackers only became a logging surface from mid-June, and earlier sheets carry more blank-company rows, so the two earliest windows understate slightly more than the later ones.
         </div>
@@ -2682,11 +2671,11 @@ function RepLeaderboard({onSelect}){
     <div style={{background:"linear-gradient(135deg, #F2F7E6 0%, rgba(255,255,255,.62) 65%)",border:"1px solid #FBF3DD",borderLeft:"3px solid #E5A000",borderRadius:10,padding:"14px 18px",marginBottom:20}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8,marginBottom:10}}>
         <div style={{fontSize:12,fontWeight:800,color:"#E5A000",fontFamily:FONT_BODY,letterSpacing:"1.5px",textTransform:"uppercase"}}>🚀 Outstanding Increases — Booked Meetings vs Prior Period (6/16–7/15)</div>
-        <div style={{fontSize:11,color:MUTED,fontFamily:FONT_BODY}}>Ranked reps: <span style={{color:G,fontWeight:800}}>{totCurMtg}</span> vs {totPrevMtg} in the prior period{teamMtgPct!=null && <span style={{color:G,fontWeight:800}}> · +{teamMtgDelta} ({teamMtgPct>0?"+":""}{teamMtgPct}%)</span>} · Team total incl. non-ranked: 384 (verified)</div>
+        <div style={{fontSize:11,color:MUTED,fontFamily:FONT_BODY}}>Ranked reps: <span style={{color:G,fontWeight:800}}>{totCurMtg}</span> vs {totPrevMtg} in the prior period{teamMtgPct!=null && <span style={{color:G,fontWeight:800}}> · +{teamMtgDelta} ({teamMtgPct>0?"+":""}{teamMtgPct}%)</span>} · Team total incl. non-ranked: 382 (live, in progress)</div>
       </div>
       <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
         {gainers.map(g=>(
-          <div key={g.name} onClick={()=>onSelect(g.name)} style={{background:"var(--glass-card3)",border:"1px solid rgba(24,24,24,.10)",borderRadius:8,padding:"8px 12px",cursor:"pointer",display:"flex",alignItems:"center",gap:10}}>
+          <div key={g.name} onClick={()=>onSelect(g.name)} style={{background:CARD2,border:"1px solid "+BORDER,borderRadius:8,padding:"8px 12px",cursor:"pointer",display:"flex",alignItems:"center",gap:10}}>
             <div>
               <div style={{fontSize:12,fontWeight:800,color:TEXT,fontFamily:FONT_DISPLAY}}>{g.name}</div>
               <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY,marginTop:1}}>{g.isNew?"first ranked period":`${g.prevMtg} → ${g.curMtg} meetings`}</div>
@@ -2867,7 +2856,7 @@ function RepsTab(){
 
 
 // ─── SDR PERFORMANCE DASHBOARD TAB ───────────────────────────────────────────
-const SDR_DARK="transparent",SDR_CARD="var(--glass-card)",SDR_CARD2="var(--glass-card3)",SDR_BORDER="rgba(24,24,24,.10)";
+const SDR_DARK="transparent",SDR_CARD=CARD,SDR_CARD2=CARD3,SDR_BORDER=BORDER;
 const SDR_TEXT="#181818",SDR_MUTED="#4D4D51",SDR_GREEN="#6B961C",SDR_YELLOW="#B7791F";
 const SDR_RED="#B43232",SDR_BLUE="#1A6A98",SDR_PURPLE="#185773";
 const MTG_TARGET=8.5;
@@ -3443,32 +3432,32 @@ function App(){
   return(
     <div style={{background:BG,minHeight:"100vh",fontFamily:FONT_BODY,color:TEXT}}>
 
-      {/* Announcement Bar — dark, minimal */}
-      <div style={{background:ANNOUNCE,borderBottom:`1px solid ${BORDER}`}}>
+      {/* Announcement Bar — dark glass, matches SiteHeader's scrolled treatment */}
+      <div style={{background:ANNOUNCE,borderBottom:`1px solid var(--glass-border-dark)`}}>
         <div style={{maxWidth:1020,margin:"0 auto",padding:"7px 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-          <div style={{fontSize:9,fontWeight:600,letterSpacing:"2px",color:G_TEXT,fontFamily:FONT_BODY,textTransform:"uppercase",display:"flex",alignItems:"center",gap:10}}>
-            <div style={{width:7,height:7,borderRadius:"50%",background:G,boxShadow:"0 0 0 3px rgba(128,177,34,.20)"}}/>
+          <div style={{fontSize:9,fontWeight:600,letterSpacing:"2px",color:C_GREEN,fontFamily:FONT_BODY,textTransform:"uppercase",display:"flex",alignItems:"center",gap:10}}>
+            <div style={{width:7,height:7,borderRadius:"50%",background:G,boxShadow:"0 0 0 3px rgba(128,177,34,.30)"}}/>
             Live — {cms.meta.period}
           </div>
-          <div style={{fontSize:9,color:MUTED2,fontFamily:FONT_BODY,letterSpacing:"1px",textTransform:"uppercase"}}>Internal Use Only · Updated {cms.meta.lastUpdated}</div>
+          <div style={{fontSize:9,color:"var(--mg-ink-300)",fontFamily:FONT_BODY,letterSpacing:"1px",textTransform:"uppercase"}}>Internal Use Only · Updated {cms.meta.lastUpdated}</div>
         </div>
       </div>
 
-      {/* Nav Bar */}
-      <div style={{background:"var(--glass-nav)",borderBottom:`1px solid ${BORDER}`,height:60,position:"sticky",top:0,zIndex:100,boxShadow:"0 1px 0 rgba(255,255,255,.6) inset, 0 6px 24px rgba(24,24,24,.06)"}}>
+      {/* Nav Bar — dark glass over content, per ui_kits/website/Header.jsx */}
+      <div style={{background:"var(--glass-dark-strong)",borderBottom:`1px solid var(--glass-border-dark)`,height:64,position:"sticky",top:0,zIndex:100,WebkitBackdropFilter:"blur(28px) saturate(1.4)",backdropFilter:"blur(28px) saturate(1.4)"}}>
         <div style={{maxWidth:1020,margin:"0 auto",padding:"0 24px",display:"flex",alignItems:"center",justifyContent:"space-between",height:"100%"}}>
           <div style={{display:"flex",alignItems:"center",gap:12}}>
-            <div style={{color:TEXT,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-              <svg viewBox="0 0 2000 2000" width="30" height="30" aria-hidden="true" style={{display:"block",flexShrink:0}}><path fill="currentColor" d="M44 1936 L833 150 Q973 63 1113 150 L1958 1936 L1673 1936 L983 410 L305 1936 Z"/></svg>
+            <div style={{color:"#fff",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+              <svg viewBox="0 0 2000 2000" width="28" height="28" aria-hidden="true" style={{display:"block",flexShrink:0}}><path fill="currentColor" d="M44 1936 L833 150 Q973 63 1113 150 L1958 1936 L1673 1936 L983 410 L305 1936 Z"/></svg>
             </div>
             <div>
-              <div style={{fontSize:14,fontWeight:800,color:TEXT,letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FONT_DISPLAY,lineHeight:1}}>Martal Group</div>
-              <div style={{fontSize:8.5,color:MUTED,letterSpacing:"1px",textTransform:"uppercase",fontFamily:FONT_BODY,marginTop:2}}>Performance Intelligence</div>
+              <div style={{fontSize:14,fontWeight:800,color:"#fff",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FONT_DISPLAY,lineHeight:1}}>Martal Group</div>
+              <div style={{fontSize:8.5,color:"var(--mg-ink-300)",letterSpacing:"1px",textTransform:"uppercase",fontFamily:FONT_BODY,marginTop:2}}>Performance Intelligence</div>
             </div>
           </div>
           <div style={{display:"flex",gap:0,alignItems:"center"}}>
             {tabs.map(t=>(
-              <button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"0 18px",height:58,border:"none",borderBottom:tab===t.id?`2px solid ${G}`:"2px solid transparent",cursor:"pointer",fontSize:10.5,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",background:"transparent",color:tab===t.id?G_TEXT:MUTED,fontFamily:FONT_BODY,transition:"color 0.15s"}}>{t.label}</button>
+              <button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"0 18px",height:62,border:"none",borderBottom:tab===t.id?`2px solid ${G}`:"2px solid transparent",cursor:"pointer",fontSize:10.5,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",background:"transparent",color:tab===t.id?"#fff":"var(--mg-ink-300)",fontFamily:FONT_BODY,transition:"color 0.15s"}}>{t.label}</button>
             ))}
           </div>
         </div>
