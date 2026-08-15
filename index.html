@@ -262,10 +262,10 @@ function SvgGroupedBarChart({data,series,xKey='m',height=120}){
   );
 }
 
-// Multi-line chart
+// Multi-line chart. When the last data point has `projected:true`, that final
+// segment renders dashed/faded with a hollow marker instead of a solid line.
 function SvgLineChart({data,lines=[],xKey='m',height=100}){
   const ref=useRef(null); const w=useContainerWidth(ref);
-  const [tip,setTip]=useState(null);
   const pad={l:30,r:8,t:8,b:22};
   const cW=w-pad.l-pad.r, cH=height-pad.t-pad.b;
   const allVals=lines.flatMap(l=>data.map(d=>d[l.key]).filter(v=>v!=null&&!isNaN(v)));
@@ -273,17 +273,27 @@ function SvgLineChart({data,lines=[],xKey='m',height=100}){
   const xS=i=>pad.l+(i/(Math.max(data.length-1,1)))*cW;
   const yS=v=>pad.t+cH-((v-minV)/(maxV-minV||1))*cH;
   const yTicks=[0,Math.round(maxV*0.5),Math.round(maxV)];
+  const lastProjected=data.length>0&&!!data[data.length-1].projected;
   return(
     <div ref={ref} style={{width:'100%',height}}>
       <svg width={w} height={height}>
         {yTicks.map((t,i)=>{const y=yS(t);return(<g key={i}><line x1={pad.l} y1={y} x2={pad.l+cW} y2={y} stroke={BORDER} strokeDasharray="3 3"/><text x={pad.l-3} y={y+3} textAnchor="end" fontSize={8} fill={MUTED} fontFamily={FONT_BODY}>{t}</text></g>);})}
         {lines.map((l,li)=>{
-          const pts=data.map((d,i)=>{const v=d[l.key];return v!=null?`${xS(i)},${yS(v)}`:null;}).filter(Boolean).join(' ');
-          return(<polyline key={li} points={pts} fill="none" stroke={l.stroke||'#6B961C'} strokeWidth={l.width||2}/>);
+          const idxs=data.map((d,i)=>i).filter(i=>data[i][l.key]!=null&&!isNaN(data[i][l.key]));
+          const solidIdxs=lastProjected?idxs.filter(i=>i<data.length-1):idxs;
+          const solidPts=solidIdxs.map(i=>`${xS(i)},${yS(data[i][l.key])}`).join(' ');
+          const tailIdxs=lastProjected&&idxs.length>=2?idxs.slice(-2):null;
+          const tailPts=tailIdxs?tailIdxs.map(i=>`${xS(i)},${yS(data[i][l.key])}`).join(' '):null;
+          const lastIdx=idxs.length?idxs[idxs.length-1]:null;
+          return(<g key={li}>
+            <polyline points={solidPts} fill="none" stroke={l.stroke||'#6B961C'} strokeWidth={l.width||2}/>
+            {tailPts&&<polyline points={tailPts} fill="none" stroke={l.stroke||'#6B961C'} strokeWidth={l.width||2} strokeDasharray="4 3" opacity={0.6}/>}
+            {lastProjected&&lastIdx!=null&&<circle cx={xS(lastIdx)} cy={yS(data[lastIdx][l.key])} r={3.5} fill="#fff" stroke={l.stroke} strokeWidth={2}/>}
+          </g>);
         })}
         {data.map((d,i)=>{if(i%(Math.ceil(data.length/7))!==0&&i!==data.length-1)return null;return(<text key={i} x={xS(i)} y={height-4} textAnchor="middle" fontSize={8} fill={MUTED} fontFamily={FONT_BODY}>{d[xKey]}</text>);})}
         <line x1={pad.l} y1={pad.t+cH} x2={pad.l+cW} y2={pad.t+cH} stroke={BORDER2}/>
-        {lines.length>1&&lines.map((l,i)=>(<g key={i}><line x1={pad.l+i*70} y1={height-2} x2={pad.l+i*70+14} y2={height-2} stroke={l.stroke} strokeWidth={2}/><text x={pad.l+i*70+17} y={height-1} fontSize={8} fill={MUTED} fontFamily={FONT_BODY}>{l.name}</text></g>))}
+        {lines.length>1&&lines.map((l,i)=>(<g key={i}><line x1={pad.l+i*100} y1={height-2} x2={pad.l+i*100+14} y2={height-2} stroke={l.stroke} strokeWidth={2}/><text x={pad.l+i*100+17} y={height-1} fontSize={8} fill={MUTED} fontFamily={FONT_BODY}>{l.name}</text></g>))}
       </svg>
     </div>
   );
@@ -3355,12 +3365,13 @@ function CompanyChurnTab(){
   // cancels ÷ 14 elapsed days × 31 days in month = projected total. Refresh this block
   // (and fold Aug into RAW as a real closed month) once September data confirms the
   // actual figure — that real number can't post before Sep 1.
-  const projAugAsOfDay=14, projAugDaysInMonth=31, projAugLoggedSoFar=5;
+  const projAugAsOfDay=14, projAugDaysInMonth=31, projAugLoggedSoFar=5, projAugDcSoFar=9;
   const projAugTotal=Math.round(projAugLoggedSoFar*projAugDaysInMonth/projAugAsOfDay);
+  const projAugDc=Math.round(projAugDcSoFar*projAugDaysInMonth/projAugAsOfDay);
   const projAugActive=86;
   const projAugDenom=(data[data.length-1].ac+data[data.length-2].ac+data[data.length-3].ac)/3;
   const projAugRate=+((projAugTotal/projAugDenom)*100).toFixed(2);
-  const recentWithProj=[...recent,{m:"Aug 26",ac:projAugActive,cl:projAugTotal,cr:projAugRate,projected:true}];
+  const recentWithProj=[...recent,{m:"Aug 26",ac:projAugActive,cl:projAugTotal,dc:projAugDc,cr:projAugRate,projected:true}];
 
   return (<div>
     {/* headline note */}
@@ -3391,6 +3402,17 @@ function CompanyChurnTab(){
       <SectionLabel>Contracts Lost per Month (Aug projected)</SectionLabel>
       <SvgBarChart data={recentWithProj} dataKey="cl" colorFn={()=>"#D64242"} xKey="m" yFmt={v=>v} height={130}/>
       <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:6}}>{projAugLoggedSoFar} cancels logged so far in August, projected to ~{projAugTotal} at the current pace.</div>
+    </div>
+
+    {/* churn vs deals closed trend line */}
+    <div style={CS}>
+      <SectionLabel>Churn Rate vs Deals Closed — Trailing 18 Months (Aug projected)</SectionLabel>
+      <SvgLineChart data={recentWithProj} lines={[{key:'cr',name:'Churn Rate (%)',stroke:'#D64242',width:2.5},{key:'dc',name:'Deals Closed (#)',stroke:'#2D9CDB',width:2.5}]} xKey="m" height={170}/>
+      <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:6,lineHeight:1.5}}>
+        Straight read of the two lines: churn (red) has climbed for four straight closed months — 12.15% (Apr) → 24.55% (May) → 18.35% (Jun) → 20.52% (Jul) — before the August pace-projection (hollow marker) drops it to ~{projAugRate}%.
+        Deals Closed (blue) has fallen over the same stretch — {data[data.length-4].dc} (Apr) → {data[data.length-3].dc} (May) → {data[data.length-2].dc} (Jun) → {last.dc} (Jul) — with August's early pace ({projAugDcSoFar} logged through Aug {projAugAsOfDay}) projecting a rebound to ~{projAugDc}.
+        Both August figures are projections from a partial month, not confirmed closes.
+      </div>
     </div>
 
     {/* churn by reason (May) */}
