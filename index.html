@@ -172,14 +172,14 @@ const FONT_MONO = "'Montserrat',sans-serif";
    Matches ui_kits/ai-sdr-platform/Dashboard.jsx's "Pipeline progression"
    treatment: --liquid-duo as a direct panel fill, white text on top, no
    separate glass wrapper — the mesh IS the surface. */
-const C_BG="var(--liquid-duo-light)";
-const C_BORDER="rgba(24,24,24,.10)";
-const C_RAISED="rgba(255,255,255,.55)";
-const C_TEXT="var(--text-strong)";     /* charcoal ink on the light duo field */
-const C_MUTED="var(--text-body)";
-const C_GREEN="#557519";               /* green 700 — AA-safe on the light field */
+const C_BG="var(--liquid-duo)";
+const C_BORDER="rgba(255,255,255,.14)";  /* --glass-border-dark */
+const C_RAISED="rgba(255,255,255,.10)";
+const C_TEXT="#FFFFFF";
+const C_MUTED="var(--mg-ink-200)";     /* #cfcfcf — Dashboard.jsx secondary-on-duo */
+const C_GREEN="var(--mg-green-400)";   /* #98c548 — Dashboard.jsx accent-on-duo */
 const C_PANEL={background:C_BG,borderRadius:"var(--radius-lg, 16px)",padding:"28px 32px",marginBottom:16,
-  border:"1px solid rgba(255,255,255,.6)",boxShadow:"var(--glass-shadow)",position:"relative",overflow:"hidden"};
+  boxShadow:"var(--glass-shadow-dark)",position:"relative",overflow:"hidden"};
 
 // Green-only churn scale: dark green (good/low) → light yellow-green (bad/high)
 const crCol=v=>v==null?MUTED:v<10?"#6B961C":v<15?"#E5A000":v<20?"#B7791F":"#B43232";
@@ -1098,8 +1098,8 @@ function CompanyPaceCard(){
     {label:"SQLs",     pct:8.4,  absNow:APR_MTD_CO.sql, absMarch:MARCH_CO.sql, desc:"incl. booked meetings · +95% since March"},
     {label:"Meetings", pct:1.6,  absNow:APR_MTD_CO.mtg, absMarch:MARCH_CO.mtg, desc:"vs prior period · +65% since March"},
   ];
-  const pctCol = (p) => p>=10?C_GREEN : p>=0?C_GREEN : p>=-10?"#B7791F" : "#B43232";
-  const glassTile = {background:"rgba(255,255,255,.62)",border:"1px solid rgba(255,255,255,.75)",WebkitBackdropFilter:"blur(16px) saturate(1.4)",backdropFilter:"blur(16px) saturate(1.4)",boxShadow:"inset 0 1px 0 rgba(255,255,255,.8), 0 4px 16px rgba(24,24,24,.06)"};
+  const pctCol = (p) => p>=10?C_GREEN : p>=0?C_GREEN : p>=-10?"#F0C24A" : "#F08A8A";
+  const glassTile = {background:"rgba(255,255,255,.12)",border:"1px solid rgba(255,255,255,.20)",WebkitBackdropFilter:"blur(16px) saturate(1.3)",backdropFilter:"blur(16px) saturate(1.3)"};
   return(
     <div style={C_PANEL}>
       <span aria-hidden="true" style={{position:"absolute",inset:0,background:"var(--glass-sheen-soft)",pointerEvents:"none"}}/>
@@ -1114,7 +1114,7 @@ function CompanyPaceCard(){
         </div>
         <div style={{...glassTile,color:C_TEXT,borderRadius:8,padding:"10px 18px",textAlign:"center",minWidth:120}}>
           <div style={{fontSize:9,color:C_MUTED,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",fontFamily:FONT_BODY}}>Status</div>
-          <div style={{fontSize:16,fontWeight:800,color:"#B7791F",fontFamily:FONT_DISPLAY,marginTop:4,whiteSpace:"nowrap"}}>◐ In Progress</div>
+          <div style={{fontSize:16,fontWeight:800,color:"#F0C24A",fontFamily:FONT_DISPLAY,marginTop:4,whiteSpace:"nowrap"}}>◐ In Progress</div>
           <div style={{fontSize:9,color:C_MUTED,fontFamily:FONT_BODY,marginTop:2}}>Closes 8/15/2026</div>
         </div>
       </div>
