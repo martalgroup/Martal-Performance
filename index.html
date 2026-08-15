@@ -221,7 +221,8 @@ function SvgBarChart({data,dataKey,colorFn,xKey='m',yFmt=v=>v,height=130}){
           const v=d[dataKey]; if(v==null||isNaN(v))return null;
           const bH=(v/maxV)*cH; const x=pad.l+i*gap+(gap-bW)/2; const y=pad.t+cH-bH;
           const fill=colorFn?colorFn(v):'#6B961C';
-          return(<rect key={i} x={x} y={y} width={bW} height={Math.max(bH,0)} fill={fill} rx={2} onMouseEnter={()=>setTip({x:x+bW/2,y,v,label:d[xKey]})} onMouseLeave={()=>setTip(null)}/>);
+          const isProj=!!d.projected;
+          return(<rect key={i} x={x} y={y} width={bW} height={Math.max(bH,0)} fill={fill} fillOpacity={isProj?0.32:1} stroke={isProj?fill:'none'} strokeWidth={isProj?1.5:0} strokeDasharray={isProj?'3 2':'none'} rx={2} onMouseEnter={()=>setTip({x:x+bW/2,y,v,label:d[xKey]+(isProj?' (projected)':'')})} onMouseLeave={()=>setTip(null)}/>);
         })}
         {data.map((d,i)=>{if(i%(Math.ceil(data.length/8))!==0&&i!==data.length-1)return null;return(<text key={i} x={pad.l+i*gap+gap/2} y={height-4} textAnchor="middle" fontSize={8} fill={MUTED} fontFamily={FONT_BODY}>{d[xKey]}</text>);})}
         <line x1={pad.l} y1={pad.t+cH} x2={pad.l+cW} y2={pad.t+cH} stroke={BORDER2}/>
@@ -879,18 +880,18 @@ function PacePanel({repName}){
           <div style={{display:"flex",gap:6,alignItems:"stretch"}}>
             {p.marchRank!=null && (
               <div style={{textAlign:"center",background:"#181818",color:"#fff",border:"1px solid "+BORDER,borderRadius:8,padding:"6px 14px",minWidth:76}}>
-                <div style={{fontSize:9,fontWeight:700,letterSpacing:"1px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY}}>May Rank</div>
-                <div style={{fontSize:22,fontWeight:800,fontFamily:FONT_DISPLAY,lineHeight:1.1,color:"#6B6B70"}}>#{p.marchRank}</div>
+                <div style={{fontSize:9,fontWeight:700,letterSpacing:"1px",textTransform:"uppercase",color:C_MUTED,fontFamily:FONT_BODY}}>May Rank</div>
+                <div style={{fontSize:22,fontWeight:800,fontFamily:FONT_DISPLAY,lineHeight:1.1,color:"#B0B0B4"}}>#{p.marchRank}</div>
               </div>
             )}
             {p.aprRank!=null && (
               <div style={{textAlign:"center",background:"#181818",color:"#fff",border:"1px solid "+G+"55",borderRadius:8,padding:"6px 14px",minWidth:76,position:"relative"}}>
-                <div style={{fontSize:9,fontWeight:700,letterSpacing:"1px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY}}>July Rank</div>
-                <div style={{fontSize:22,fontWeight:800,fontFamily:FONT_DISPLAY,lineHeight:1.1,color:G}}>#{p.aprRank}</div>
+                <div style={{fontSize:9,fontWeight:700,letterSpacing:"1px",textTransform:"uppercase",color:C_MUTED,fontFamily:FONT_BODY}}>July Rank</div>
+                <div style={{fontSize:22,fontWeight:800,fontFamily:FONT_DISPLAY,lineHeight:1.1,color:C_GREEN}}>#{p.aprRank}</div>
                 {rankMove!=null && rankMove!==0 && (
-                  <div style={{fontSize:9,fontWeight:800,color:rankMove>0?G:"#D64242",fontFamily:FONT_BODY,marginTop:2}}>{rankMove>0?"↑ +":"↓ "}{rankMove}</div>
+                  <div style={{fontSize:9,fontWeight:800,color:rankMove>0?C_GREEN:"#F0908C",fontFamily:FONT_BODY,marginTop:2}}>{rankMove>0?"↑ +":"↓ "}{rankMove}</div>
                 )}
-                {rankMove===0 && <div style={{fontSize:9,fontWeight:800,color:MUTED,fontFamily:FONT_BODY,marginTop:2}}>↔ same</div>}
+                {rankMove===0 && <div style={{fontSize:9,fontWeight:800,color:C_MUTED,fontFamily:FONT_BODY,marginTop:2}}>↔ same</div>}
               </div>
             )}
           </div>
@@ -2793,10 +2794,10 @@ function RepLeaderboard({onSelect}){
               .filter(r=>r[2]>0)
               .sort((a,b)=>b[2]-a[2])
               .map(([n,v,tot])=>(
-                <tr key={n} style={{borderBottom:"1px solid #FAFAFA"}}>
-                  <td style={{padding:"8px 10px",color:"#E9E9EB"}}>{n}</td>
+                <tr key={n} style={{borderBottom:"1px solid "+BORDER}}>
+                  <td style={{padding:"8px 10px",color:TEXT,fontWeight:600}}>{n}</td>
                   {v.map((x,i)=>(
-                    <td key={i} style={{padding:"8px 8px",textAlign:"right",color:i===4?G:"#B8B8BC",fontWeight:i===4?800:500}}>{x[0]}</td>
+                    <td key={i} style={{padding:"8px 8px",textAlign:"right",color:i===4?G:MUTED,fontWeight:i===4?800:500}}>{x[0]}</td>
                   ))}
                   <td style={{padding:"8px 10px",textAlign:"right",color:TEXT,fontWeight:800}}>{tot}</td>
                 </tr>
@@ -3349,6 +3350,18 @@ function CompanyChurnTab(){
     .filter(x=>x.may>0).sort((a,b)=>b.may-a.may||b.mayR-a.mayR);
 
   const crColor=crCol(last.cr);
+
+  // August 2026 — in-progress projection, NOT a closed month. As of Aug 14: 5 logged
+  // cancels ÷ 14 elapsed days × 31 days in month = projected total. Refresh this block
+  // (and fold Aug into RAW as a real closed month) once September data confirms the
+  // actual figure — that real number can't post before Sep 1.
+  const projAugAsOfDay=14, projAugDaysInMonth=31, projAugLoggedSoFar=5;
+  const projAugTotal=Math.round(projAugLoggedSoFar*projAugDaysInMonth/projAugAsOfDay);
+  const projAugActive=86;
+  const projAugDenom=(data[data.length-1].ac+data[data.length-2].ac+data[data.length-3].ac)/3;
+  const projAugRate=+((projAugTotal/projAugDenom)*100).toFixed(2);
+  const recentWithProj=[...recent,{m:"Aug 26",ac:projAugActive,cl:projAugTotal,cr:projAugRate,projected:true}];
+
   return (<div>
     {/* headline note */}
     <div style={{fontSize:11,color:MUTED,fontFamily:FONT_BODY,marginBottom:16,lineHeight:1.5}}>
@@ -3362,19 +3375,22 @@ function CompanyChurnTab(){
       <KpiCard label="JULY CANCELS" value={last.cl} sub={"vs "+data[data.length-2].cl+" in June"} valColor="#D64242"/>
       <KpiCard label="3-MO AVG ACTIVE (DENOM)" value={denom.toFixed(1)} sub="Apr / May / Jun active avg" valColor={TEXT}/>
       <KpiCard label="2026 YTD CANCELS" value={ytd} sub="Jan–Jul 2026" valColor="#E5A000"/>
+      <KpiCard label="AUGUST (PROJECTED)" value={projAugRate+"%"} sub={projAugTotal+" est. cancels · "+projAugLoggedSoFar+" logged through Aug "+projAugAsOfDay} valColor="#B7791F"/>
     </div>
+    <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:-12,marginBottom:20}}>August is still open — projected by pacing the {projAugLoggedSoFar} cancels logged through Aug {projAugAsOfDay} out to all {projAugDaysInMonth} days. The real, final August number can't post until September 1 and will replace this estimate.</div>
 
     {/* churn rate trend */}
     <div style={CS}>
-      <SectionLabel>Company Churn Rate — Trailing 18 Months (month-end)</SectionLabel>
-      <SvgBarChart data={recent} dataKey="cr" colorFn={crCol} xKey="m" yFmt={v=>`${v}%`} height={150}/>
-      <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:6}}>Green &lt;10% · yellow 10–15% · orange 15–20% · red ≥20%. July came in at {last.cr}% on {last.cl} cancellations.</div>
+      <SectionLabel>Company Churn Rate — Trailing 18 Months (month-end, Aug projected)</SectionLabel>
+      <SvgBarChart data={recentWithProj} dataKey="cr" colorFn={crCol} xKey="m" yFmt={v=>`${v}%`} height={150}/>
+      <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:6}}>Green &lt;10% · yellow 10–15% · orange 15–20% · red ≥20%. July came in at {last.cr}% on {last.cl} cancellations. August (hatched) is a same-pace projection, not a closed month.</div>
     </div>
 
     {/* monthly cancels */}
     <div style={CS}>
-      <SectionLabel>Contracts Lost per Month</SectionLabel>
-      <SvgBarChart data={recent} dataKey="cl" colorFn={()=>"#D64242"} xKey="m" yFmt={v=>v} height={130}/>
+      <SectionLabel>Contracts Lost per Month (Aug projected)</SectionLabel>
+      <SvgBarChart data={recentWithProj} dataKey="cl" colorFn={()=>"#D64242"} xKey="m" yFmt={v=>v} height={130}/>
+      <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:6}}>{projAugLoggedSoFar} cancels logged so far in August, projected to ~{projAugTotal} at the current pace.</div>
     </div>
 
     {/* churn by reason (May) */}
@@ -3437,7 +3453,6 @@ function App(){
     {id:"company",label:"Company"},
     {id:"churn",label:"Company Churn"},
     {id:"reps",label:"Sales Reps"},
-    {id:"soms",label:"Sales Ops"},
     {id:"method",label:"Methodology"},
   ];
 
