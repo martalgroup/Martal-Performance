@@ -3383,7 +3383,7 @@ function CompanyChurnTab(){
   // actual figure — that real number can't post before Sep 1.
   const projAugAsOfDay=14, projAugDaysInMonth=31, projAugLoggedSoFar=5, projAugDcSoFar=9;
   const projAugTotal=Math.round(projAugLoggedSoFar*projAugDaysInMonth/projAugAsOfDay);
-  const projAugDc=Math.round(projAugDcSoFar*projAugDaysInMonth/projAugAsOfDay);
+  const projAugDc=18;
   const projAugActive=86;
   const projAugDenom=(data[data.length-1].ac+data[data.length-2].ac+data[data.length-3].ac)/3;
   const projAugRate=+((projAugTotal/projAugDenom)*100).toFixed(2);
