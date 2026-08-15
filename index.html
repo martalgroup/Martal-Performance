@@ -133,6 +133,8 @@ const RAW = [
   {m:"Feb 26",ac:106,dc:23,cl:17},{m:"Mar 26",ac:110,dc:14,cl:11},
   {m:"Apr 26",ac:114,dc:19,cl:13},
   {m:"May 26",ac:103,dc:16,cl:27},
+  {m:"Jun 26",ac:90,dc:12,cl:20},
+  {m:"Jul 26",ac:80,dc:16,cl:21},
 ];
 const MO = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const mIdx = m => { const p=m.split(" "); return parseInt(p[1])*12+MO.indexOf(p[0]); };
@@ -3182,9 +3184,9 @@ const DEFAULT_CMS = {
   },
   churn:{
     locked:true,
-    lockedValue:"12.15",
-    lockedMonth:"Apr 26",
-    lockedLabel:"Previous Month Churn (April 2026)",
+    lockedValue:"20.52",
+    lockedMonth:"Jul 26",
+    lockedLabel:"Previous Month Churn (July 2026)",
   },
   meta:{
     lastUpdated:"July 15, 2026",
@@ -3203,6 +3205,14 @@ function loadCMS(){
       cms.churn.lockedMonth="Apr 26";
       cms.churn.lockedLabel="Previous Month Churn (April 2026)";
       if(cms.meta) cms.meta.lastUpdated="May 4, 2026";
+      try{localStorage.setItem("martal_cms",JSON.stringify(cms));}catch{}
+    }
+    // One-time migration: July 2026 close. Force-refresh stale churn lock.
+    if(cms?.churn?.lockedMonth==="Apr 26"||cms?.churn?.lockedValue==="12.15"){
+      cms.churn.lockedValue="20.52";
+      cms.churn.lockedMonth="Jul 26";
+      cms.churn.lockedLabel="Previous Month Churn (July 2026)";
+      if(cms.meta) cms.meta.lastUpdated="August 14, 2026";
       try{localStorage.setItem("martal_cms",JSON.stringify(cms));}catch{}
     }
     // One-time migration: July 2026 ranking close. Refresh stale period meta.
@@ -3342,23 +3352,23 @@ function CompanyChurnTab(){
   return (<div>
     {/* headline note */}
     <div style={{fontSize:11,color:MUTED,fontFamily:FONT_BODY,marginBottom:16,lineHeight:1.5}}>
-      Company-wide churn for <span style={{color:TEXT,fontWeight:700}}>May 2026</span>, measured at month-end (calendar month, through May 31).
+      Company-wide churn for <span style={{color:TEXT,fontWeight:700}}>July 2026</span>, measured at month-end (calendar month, through July 31).
       Churn rate = contracts lost ÷ trailing 3-month average of active clients. <span style={{color:MUTED2}}>Performance metrics elsewhere are mid-month (15th) — different cadence.</span>
     </div>
 
     {/* stat cards */}
     <div style={{display:"flex",gap:12,flexWrap:"wrap",marginBottom:20}}>
-      <KpiCard label="MAY CHURN RATE" value={last.cr!=null?last.cr+"%":"—"} sub={crDelta!=null?(crDelta>0?"▲ +":"▼ ")+crDelta+" pts vs April":"—"} valColor={crColor}/>
-      <KpiCard label="MAY CANCELS" value={last.cl} sub={"vs "+data[data.length-2].cl+" in April"} valColor="#D64242"/>
-      <KpiCard label="3-MO AVG ACTIVE (DENOM)" value={denom.toFixed(1)} sub="Feb / Mar / Apr active avg" valColor={TEXT}/>
-      <KpiCard label="2026 YTD CANCELS" value={ytd} sub="Jan–May 2026" valColor="#E5A000"/>
+      <KpiCard label="JULY CHURN RATE" value={last.cr!=null?last.cr+"%":"—"} sub={crDelta!=null?(crDelta>0?"▲ +":"▼ ")+crDelta+" pts vs June":"—"} valColor={crColor}/>
+      <KpiCard label="JULY CANCELS" value={last.cl} sub={"vs "+data[data.length-2].cl+" in June"} valColor="#D64242"/>
+      <KpiCard label="3-MO AVG ACTIVE (DENOM)" value={denom.toFixed(1)} sub="Apr / May / Jun active avg" valColor={TEXT}/>
+      <KpiCard label="2026 YTD CANCELS" value={ytd} sub="Jan–Jul 2026" valColor="#E5A000"/>
     </div>
 
     {/* churn rate trend */}
     <div style={CS}>
       <SectionLabel>Company Churn Rate — Trailing 18 Months (month-end)</SectionLabel>
       <SvgBarChart data={recent} dataKey="cr" colorFn={crCol} xKey="m" yFmt={v=>`${v}%`} height={150}/>
-      <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:6}}>Green &lt;10% · yellow 10–15% · orange 15–20% · red ≥20%. May spiked to {last.cr}% on {last.cl} cancellations.</div>
+      <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:6}}>Green &lt;10% · yellow 10–15% · orange 15–20% · red ≥20%. July came in at {last.cr}% on {last.cl} cancellations.</div>
     </div>
 
     {/* monthly cancels */}
@@ -3370,6 +3380,7 @@ function CompanyChurnTab(){
     {/* churn by reason (May) */}
     <div style={CS}>
       <SectionLabel>May Churn by Reason — Count &amp; Weighted Impact</SectionLabel>
+      <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:-2,marginBottom:8}}>Latest month with a verified reason code per account. June/July cancellations are reflected in the company-wide totals above but not yet reason-coded.</div>
       <div style={{display:"flex",flexDirection:"column",gap:8,marginTop:4}}>
         {reasons.map((x,i)=>(
           <div key={i} style={{display:"flex",alignItems:"center",gap:10}}>
@@ -3389,6 +3400,7 @@ function CompanyChurnTab(){
     {/* per-SOM May churn */}
     <div style={CS}>
       <SectionLabel>May Churn by Sales Ops Manager (month-end)</SectionLabel>
+      <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:-2,marginBottom:8}}>Latest month with a verified account→SOM assignment for every cancellation. A handful of June/July churned accounts couldn't yet be matched to a SOM with confidence — see Methodology.</div>
       <table style={{width:"100%",borderCollapse:"collapse",fontFamily:FONT_BODY}}>
         <thead><tr style={{borderBottom:"1px solid "+BORDER2}}>
           {["SOM","May Churns","May Rate","Apr Rate","Accounts Lost"].map((h,i)=>(
@@ -3489,8 +3501,8 @@ function App(){
             {[
               {t:"SOMs (11 listed)",i:["David Harris, David Rosenthal, Grant Paris, James Bellew, Jason Andrews, Matt Guthrie, Merv Charles, Paige Givinsky (Landbase), Venus Powers — confirmed from org chart","Haset Aklilu (VP of Product) — included because GEA and JPM Chase are assigned to her in the accounts matrix","No SOM Account — accounts without an assigned SOM"]},
               {t:"Reps (45)",i:["Anand Pandey, Angela Hamilton, Alex Prodromou, Ariel Wolfe, Bill O'Leary, Blake Peremel, Cesar Garcia, Chinedu Okafor, Clara Galetti, Daniel Davies, Derek Sindelman, Dominic Libertoski, Edgar Medina, Elisha Johnson, Eric Tuttle, Francois Dore, Harjit Sawhney, Javion Jones, Jesse Shorr, Johan Vrey, Joshua Bylsma, Joshua Crawford, Kellee Madonia, Korbin Kirk, Logan Kennedy, Luis Rodriguez, Mark Kreidler, Michele Harris, Paige Givinsky, Rebecca Barnes, Savannah Peck, Stephanie Hackert, Tim Lan, Alli Fowler, Alyssa Perez, Anthony Allen, Manuel Linero, Enzo Bizuti, Kirk Skilling, Solana Victoria, Franco Genovese, Abraham Abouzeid, Cameron Horton, Russell Holt, Nina Bastos"]},
-              {t:"Churn Formula",i:["Company: Lost ÷ Avg(Active Clients prior 3 months) × 100","Person-level: same formula applied to their account counts by month","Apr 2026 example: 13 ÷ avg(110,106,105) = 12.15%"]},
-              {t:"Data Sources",i:["Cash Flow & Billings — active clients, closed, lost (Feb 2022–Apr 2026)","Accounts Matrix — account→SOM→rep assignments with start/end dates","Cancellations List (Jan–May 2026) — provided directly, all end dates updated","SOM Performance PDF — MQL/SQL/meetings per SOM (Jul 2024–Apr 2026)","Termination Analysis — churn reasons per account","Org Chart — definitive role assignments (SOMs vs Reps)"]},
+              {t:"Churn Formula",i:["Company: Lost ÷ Avg(Active Clients prior 3 months) × 100","Person-level: same formula applied to their account counts by month","Jul 2026 example: 21 ÷ avg(90,103,114) = 20.52%"]},
+              {t:"Data Sources",i:["Cash Flow & Billings — active clients, closed, lost (Feb 2022–Jul 2026)","Accounts Matrix — account→SOM→rep assignments with start/end dates","Cancellations List (Jan–May 2026) — provided directly, all end dates updated","Cash Flow & Billings row-level cancellation notes (Jun–Jul 2026) — company totals verified, per-account SOM/reason coding not yet complete","SOM Performance PDF — MQL/SQL/meetings per SOM (Jul 2024–Apr 2026)","Termination Analysis — churn reasons per account","Org Chart — definitive role assignments (SOMs vs Reps)"]},
               {t:"Churn Score (per person, lower = better)",i:["Rep Issue / Sales Ops Issue: +8 | Lack of Results / No Closed Deals: +6 | Single Rep / No Show: +5 | Poor List / Slow Start: +3 | Budget / Landbase / Didnt Pay: +1","Green 0–14 · Yellow 15–34 · Red 35+"]},
             ].map(s=>(
               <div key={s.t} style={{...CS,marginBottom:10}}>
