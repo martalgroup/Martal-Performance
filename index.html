@@ -266,7 +266,8 @@ function SvgGroupedBarChart({data,series,xKey='m',height=120}){
 // segment renders dashed/faded with a hollow marker instead of a solid line.
 function SvgLineChart({data,lines=[],xKey='m',height=100}){
   const ref=useRef(null); const w=useContainerWidth(ref);
-  const pad={l:30,r:8,t:8,b:22};
+  const hasLegend=lines.length>1&&lines.some(l=>l.name);
+  const pad={l:30,r:8,t:hasLegend?20:8,b:22};
   const cW=w-pad.l-pad.r, cH=height-pad.t-pad.b;
   const allVals=lines.flatMap(l=>data.map(d=>d[l.key]).filter(v=>v!=null&&!isNaN(v)));
   const maxV=Math.max(...allVals,0.01); const minV=0;
@@ -274,9 +275,19 @@ function SvgLineChart({data,lines=[],xKey='m',height=100}){
   const yS=v=>pad.t+cH-((v-minV)/(maxV-minV||1))*cH;
   const yTicks=[0,Math.round(maxV*0.5),Math.round(maxV)];
   const lastProjected=data.length>0&&!!data[data.length-1].projected;
+  // Legend items are spaced by estimated text width (not a fixed pixel offset) so
+  // labels never overlap regardless of chart width or label length, and it sits in
+  // its own top row so it never collides with the x-axis month labels at the bottom.
+  let legendX=pad.l;
+  const legendItems=hasLegend?lines.map(l=>{
+    const x=legendX;
+    legendX+=14+4+(l.name||'').length*5.3+16;
+    return {...l,x};
+  }):[];
   return(
     <div ref={ref} style={{width:'100%',height}}>
       <svg width={w} height={height}>
+        {hasLegend&&legendItems.map((l,i)=>(<g key={i}><line x1={l.x} y1={9} x2={l.x+14} y2={9} stroke={l.stroke} strokeWidth={2}/><text x={l.x+18} y={12} fontSize={8} fill={MUTED} fontFamily={FONT_BODY}>{l.name}</text></g>))}
         {yTicks.map((t,i)=>{const y=yS(t);return(<g key={i}><line x1={pad.l} y1={y} x2={pad.l+cW} y2={y} stroke={BORDER} strokeDasharray="3 3"/><text x={pad.l-3} y={y+3} textAnchor="end" fontSize={8} fill={MUTED} fontFamily={FONT_BODY}>{t}</text></g>);})}
         {lines.map((l,li)=>{
           const idxs=data.map((d,i)=>i).filter(i=>data[i][l.key]!=null&&!isNaN(data[i][l.key]));
@@ -293,7 +304,6 @@ function SvgLineChart({data,lines=[],xKey='m',height=100}){
         })}
         {data.map((d,i)=>{if(i%(Math.ceil(data.length/7))!==0&&i!==data.length-1)return null;return(<text key={i} x={xS(i)} y={height-4} textAnchor="middle" fontSize={8} fill={MUTED} fontFamily={FONT_BODY}>{d[xKey]}</text>);})}
         <line x1={pad.l} y1={pad.t+cH} x2={pad.l+cW} y2={pad.t+cH} stroke={BORDER2}/>
-        {lines.length>1&&lines.map((l,i)=>(<g key={i}><line x1={pad.l+i*100} y1={height-2} x2={pad.l+i*100+14} y2={height-2} stroke={l.stroke} strokeWidth={2}/><text x={pad.l+i*100+17} y={height-1} fontSize={8} fill={MUTED} fontFamily={FONT_BODY}>{l.name}</text></g>))}
       </svg>
     </div>
   );
@@ -809,13 +819,13 @@ const REP_HISTORY={
 };
 
 function sqlPaceStatus(cur, marchSQL){
-  if(marchSQL===null||marchSQL===undefined) return {label:"No May baseline",color:MUTED};
+  if(marchSQL===null||marchSQL===undefined) return {label:"No prior-period baseline",color:MUTED};
   const pct=marchSQL>0?cur/marchSQL:null;
-  if(pct===null) return {label:"No May data",color:MUTED};
-  if(pct>=1.1)   return {label:"Exceeding May",color:G};
-  if(pct>=0.95)  return {label:"Matching May",color:"#E5A000"};
-  if(pct>=0.5)   return {label:"Below May",color:"#B7791F"};
-  return           {label:"Well below May",color:"#D64242"};
+  if(pct===null) return {label:"No prior-period data",color:MUTED};
+  if(pct>=1.1)   return {label:"Exceeding Jul 15",color:G};
+  if(pct>=0.95)  return {label:"Matching Jul 15",color:"#E5A000"};
+  if(pct>=0.5)   return {label:"Below Jul 15",color:"#B7791F"};
+  return           {label:"Well below Jul 15",color:"#D64242"};
 }
 
 function paceCol(val,key){
@@ -849,19 +859,19 @@ function PacePanel({repName}){
           <div style={{display:"flex",gap:6,alignItems:"center"}}>
             {pct!=null && (
               <span style={{fontSize:11,fontWeight:800,color:pctCol,fontFamily:FONT_DISPLAY,background:pctCol===G?"#F2F7E6":pctCol==="#E5A000"?"#FBF3DD":"#FBEAEA",borderRadius:4,padding:"2px 8px",border:`1px solid ${pctCol}33`}}>
-                {pct}% of May
+                {pct}% of Jul 15
               </span>
             )}
             {delta!=null && (
               <span style={{fontSize:11,fontWeight:800,color:deltaCol,fontFamily:FONT_DISPLAY,whiteSpace:"nowrap"}}>
-                {delta>0?"+":""}{delta} vs May
+                {delta>0?"+":""}{delta} vs Jul 15
               </span>
             )}
           </div>
         </div>
         {/* Prior period bar */}
         <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}>
-          <span style={subLabel}>May 15 Final</span>
+          <span style={subLabel}>Jul 15 Final</span>
           <span style={numStyle(MUTED)}>{marchVal??'—'}</span>
           <div style={barTrack}>
             <div style={{width:`${Math.min(100,marchVal!=null?marchVal/barMax*100:0)}%`,height:"100%",background:"#6B6B70",borderRadius:3}}/>
@@ -869,7 +879,7 @@ function PacePanel({repName}){
         </div>
         {/* Current period bar */}
         <div style={{display:"flex",alignItems:"center",gap:6}}>
-          <span style={{...subLabel,color:paceCol(curVal,key),fontWeight:700}}>July 15 Final</span>
+          <span style={{...subLabel,color:paceCol(curVal,key),fontWeight:700}}>Aug 15 Final</span>
           <span style={numStyle(paceCol(curVal,key))}>{curVal}</span>
           <div style={barTrack}>
             <div style={{width:`${Math.min(100,curVal/barMax*100)}%`,height:"100%",background:paceCol(curVal,key),borderRadius:3}}/>
@@ -883,20 +893,20 @@ function PacePanel({repName}){
     <div style={{...CS,border:`2px solid ${borderCol}`,background:"#F2F7E6",marginBottom:12}}>
       <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",marginBottom:10,flexWrap:"wrap",gap:8}}>
         <div>
-          <div style={{fontSize:11,fontWeight:800,letterSpacing:"2px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY}}>Performance — July 15 Period Complete (6/16 – 7/15)</div>
+          <div style={{fontSize:11,fontWeight:800,letterSpacing:"2px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY}}>Performance — Aug 15 Period Complete (7/16 – 8/15)</div>
           {sqlStatus && <div style={{fontSize:13,fontWeight:800,color:sqlStatus.color,marginTop:4,fontFamily:FONT_BODY}}>{sqlStatus.label}</div>}
         </div>
         {(p.marchRank!=null || p.aprRank!=null) && (
           <div style={{display:"flex",gap:6,alignItems:"stretch"}}>
             {p.marchRank!=null && (
               <div style={{textAlign:"center",background:"#181818",color:"#fff",border:"1px solid "+BORDER,borderRadius:8,padding:"6px 14px",minWidth:76}}>
-                <div style={{fontSize:9,fontWeight:700,letterSpacing:"1px",textTransform:"uppercase",color:C_MUTED,fontFamily:FONT_BODY}}>May Rank</div>
+                <div style={{fontSize:9,fontWeight:700,letterSpacing:"1px",textTransform:"uppercase",color:C_MUTED,fontFamily:FONT_BODY}}>Jul 15 Rank</div>
                 <div style={{fontSize:22,fontWeight:800,fontFamily:FONT_DISPLAY,lineHeight:1.1,color:"#B0B0B4"}}>#{p.marchRank}</div>
               </div>
             )}
             {p.aprRank!=null && (
               <div style={{textAlign:"center",background:"#181818",color:"#fff",border:"1px solid "+G+"55",borderRadius:8,padding:"6px 14px",minWidth:76,position:"relative"}}>
-                <div style={{fontSize:9,fontWeight:700,letterSpacing:"1px",textTransform:"uppercase",color:C_MUTED,fontFamily:FONT_BODY}}>July Rank</div>
+                <div style={{fontSize:9,fontWeight:700,letterSpacing:"1px",textTransform:"uppercase",color:C_MUTED,fontFamily:FONT_BODY}}>Aug 15 Rank</div>
                 <div style={{fontSize:22,fontWeight:800,fontFamily:FONT_DISPLAY,lineHeight:1.1,color:C_GREEN}}>#{p.aprRank}</div>
                 {rankMove!=null && rankMove!==0 && (
                   <div style={{fontSize:9,fontWeight:800,color:rankMove>0?C_GREEN:"#F0908C",fontFamily:FONT_BODY,marginTop:2}}>{rankMove>0?"↑ +":"↓ "}{rankMove}</div>
@@ -911,7 +921,7 @@ function PacePanel({repName}){
       <MetricRow label="Meetings" marchVal={p.marchFlips} curVal={p.curMtg}  marchMax={35}  key="mtg"/>
       <MetricRow label="MQLs"     marchVal={p.marchMQL}   curVal={p.curMQL}  marchMax={160} key="mql"/>
       <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY,marginTop:8,fontStyle:"italic"}}>
-        Ranking period complete. Totals reflect 30-day window 6/16–7/15/2026. Next ranking period ends August 15.
+        Ranking period complete. Totals reflect 30-day window 7/16–8/15/2026. Next ranking period ends September 15.
       </div>
     </div>
   );
@@ -1120,18 +1130,18 @@ function CompanyPaceCard(){
         <div>
           <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
             <div style={{width:16,height:2,background:C_GREEN}}/>
-            <div style={{fontSize:13,fontWeight:800,letterSpacing:"2px",textTransform:"uppercase",color:C_MUTED,fontFamily:FONT_BODY}}>Aug 2026 — Period In Progress (7/16–8/15, closes tomorrow)</div>
+            <div style={{fontSize:13,fontWeight:800,letterSpacing:"2px",textTransform:"uppercase",color:C_MUTED,fontFamily:FONT_BODY}}>Jul 16–Aug 15, 2026 — Period Complete</div>
           </div>
-          <div style={{fontSize:28,fontWeight:900,color:C_TEXT,fontFamily:FONT_DISPLAY,letterSpacing:"-0.5px",lineHeight:1.15}}>Booked meetings up 65% since March — <span style={{color:C_GREEN}}>four straight rises, current period still ahead</span></div>
-          <div style={{fontSize:15,color:C_MUTED,fontFamily:FONT_BODY,marginTop:8,lineHeight:1.55}}>Live campaign-sheet count (7/16–8/15, in progress): <span style={{color:C_TEXT}}>382 booked meetings vs 376 last period, up 1.6% with a day still to run</span>, and 594 SQLs (548 to 594, Perf-verified). MQLs held roughly flat at 1,223. Since the Landbase migration completed 1 April, booked meetings have risen every closed period: <span style={{color:C_GREEN}}>232 to 260 to 278 to 376</span>, and the current in-progress period (382) is already ahead of that. MQLs grew 44% over that span while meetings grew 65% — conversion improved from 27% to 31%.</div>
+          <div style={{fontSize:28,fontWeight:900,color:C_TEXT,fontFamily:FONT_DISPLAY,letterSpacing:"-0.5px",lineHeight:1.15}}>Booked meetings up 65% since March — <span style={{color:C_GREEN}}>five straight rises</span></div>
+          <div style={{fontSize:15,color:C_MUTED,fontFamily:FONT_BODY,marginTop:8,lineHeight:1.55}}>Campaign-sheet count for the 7/16–8/15 period: <span style={{color:C_TEXT}}>382 booked meetings vs 376 the period before, up 1.6%</span>, and 594 SQLs (548 to 594, Perf-verified). MQLs held roughly flat at 1,223. Since the Landbase migration completed 1 April, booked meetings have risen every closed period: <span style={{color:C_GREEN}}>232 to 260 to 278 to 376 to 382</span>. MQLs grew 44% over that span while meetings grew 65% — conversion improved from 27% to 31%.</div>
         </div>
         <div style={{...glassTile,color:C_TEXT,borderRadius:8,padding:"10px 18px",textAlign:"center",minWidth:120}}>
           <div style={{fontSize:9,color:C_MUTED,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",fontFamily:FONT_BODY}}>Status</div>
-          <div style={{fontSize:16,fontWeight:800,color:"#F0C24A",fontFamily:FONT_DISPLAY,marginTop:4,whiteSpace:"nowrap"}}>◐ In Progress</div>
-          <div style={{fontSize:9,color:C_MUTED,fontFamily:FONT_BODY,marginTop:2}}>Closes 8/15/2026</div>
+          <div style={{fontSize:16,fontWeight:800,color:C_GREEN,fontFamily:FONT_DISPLAY,marginTop:4,whiteSpace:"nowrap"}}>✓ Complete</div>
+          <div style={{fontSize:9,color:C_MUTED,fontFamily:FONT_BODY,marginTop:2}}>Closed 8/15/2026</div>
         </div>
       </div>
-      
+
       {/* Hero growth stats — Sales Library aesthetic */}
       <div style={{display:"grid",gridTemplateColumns:"repeat(3, 1fr)",gap:20,padding:"24px 0",borderTop:"1px solid "+C_BORDER,borderBottom:"1px solid "+C_BORDER,marginBottom:20}}>
         {GROWTH.map(m=>{const c=pctCol(m.pct);return(
@@ -1142,7 +1152,7 @@ function CompanyPaceCard(){
           </div>
         );})}
       </div>
-      
+
       {/* Reference totals row */}
       <div style={{display:"grid",gridTemplateColumns:"repeat(3, 1fr)",gap:16}}>
         {GROWTH.map(m=>{const c=pctCol(m.pct);return(
@@ -1150,21 +1160,21 @@ function CompanyPaceCard(){
             <div style={{fontSize:9,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:C_MUTED,fontFamily:FONT_BODY,marginBottom:8}}>{m.label} — Totals</div>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",gap:12}}>
               <div>
-                <div style={{fontSize:9,color:C_MUTED,fontFamily:FONT_BODY}}>June 2026</div>
+                <div style={{fontSize:9,color:C_MUTED,fontFamily:FONT_BODY}}>Jun 16–Jul 15</div>
                 <div style={{fontSize:18,fontWeight:800,color:C_MUTED,fontFamily:FONT_DISPLAY,letterSpacing:"-0.5px"}}>{m.absMarch.toLocaleString()}</div>
               </div>
               <div style={{color:C_MUTED,fontFamily:FONT_BODY,fontSize:16}}>→</div>
               <div style={{textAlign:"right"}}>
-                <div style={{fontSize:9,color:C_MUTED,fontFamily:FONT_BODY}}>July 2026</div>
+                <div style={{fontSize:9,color:C_MUTED,fontFamily:FONT_BODY}}>Jul 16–Aug 15</div>
                 <div style={{fontSize:22,fontWeight:900,color:c,fontFamily:FONT_DISPLAY,letterSpacing:"-0.5px"}}>{m.absNow.toLocaleString()}</div>
               </div>
             </div>
           </div>
         );})}
       </div>
-      
+
       <div style={{fontSize:10,color:C_MUTED,fontFamily:FONT_BODY,textAlign:"right",marginTop:14,fontStyle:"italic"}}>
-        Team totals from the 6/16–7/15 rep performance report (all reps incl. unattributed) · SQLs include booked meetings · July measurement complete
+        Team totals from the 7/16–8/15 rep performance report (all reps incl. unattributed) · SQLs include booked meetings · period measurement complete
       </div>
     </div>
   );
@@ -1402,7 +1412,7 @@ function CompanyTab({cms}){
     {section==="overview"&&<div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:10,marginBottom:12}}>
         <div>
-          <div style={{fontSize:9,fontWeight:700,color:MUTED,letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FONT_BODY,marginBottom:6}}>SDR Score Overview — May 2026 · 3-Month Rolling Average</div>
+          <div style={{fontSize:9,fontWeight:700,color:MUTED,letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FONT_BODY,marginBottom:6}}>SDR Score Overview — Jul 2026 · 3-Month Rolling Average</div>
           <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY,marginBottom:8}}>
             <span style={{color:G,fontWeight:700}}>Pass ≥3.5</span> &nbsp;·&nbsp;
             <span style={{color:"#E5A000",fontWeight:700}}>Observe 3.0–3.49</span> &nbsp;·&nbsp;
@@ -1417,7 +1427,7 @@ function CompanyTab({cms}){
         </div>
         <div style={{display:"flex",gap:5,alignItems:"center",flexWrap:"wrap"}}>
           <span style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY}}>Sort:</span>
-          {[["avg","3-Mo Avg"],["mar","May Score"],["gap","Gap vs 3.5"]].map(([id,label])=>(
+          {[["avg","3-Mo Avg"],["mar","Jul 15 Score"],["gap","Gap vs 3.5"]].map(([id,label])=>(
             <button key={id} onClick={()=>setSortBy(id)} style={{padding:"4px 10px",fontSize:10,fontWeight:700,border:`1px solid ${sortBy===id?G:BORDER}`,background:sortBy===id?G:"transparent",color:sortBy===id?"#fff":MUTED,borderRadius:4,cursor:"pointer",fontFamily:FONT_BODY}}>{label}</button>
           ))}
           <button onClick={()=>setShowNotes(n=>!n)} style={{padding:"4px 10px",fontSize:10,fontWeight:700,border:`1px solid ${showNotes?G:BORDER}`,background:showNotes?G+"15":"transparent",color:showNotes?G:MUTED,borderRadius:4,cursor:"pointer",fontFamily:FONT_BODY}}>Notes {showNotes?"▲":"▼"}</button>
@@ -1459,7 +1469,7 @@ function CompanyTab({cms}){
           <div style={{overflowX:"auto"}}>
             <table style={{width:"100%",borderCollapse:"collapse",fontSize:11,fontFamily:FONT_BODY}}>
               <thead><tr style={{borderBottom:`2px solid ${BORDER2}`}}>
-                {["SDR","Mar","Apr","May","3-Mo Avg","Gap vs 3.5","Activity","Tier",...(showNotes?["Notes"]:[])].map(h=>(
+                {["SDR","Apr 15","May 15","Jul 15","3-Mo Avg","Gap vs 3.5","Activity","Tier",...(showNotes?["Notes"]:[])].map(h=>(
                   <th key={h} style={{padding:"5px 10px",textAlign:h==="SDR"||h==="Notes"?"left":"center",color:MUTED,fontWeight:700,fontSize:9,textTransform:"uppercase",letterSpacing:"1px",whiteSpace:"nowrap"}}>{h}</th>
                 ))}
               </tr></thead>
@@ -1564,11 +1574,11 @@ function CompanyTab({cms}){
 
     {/* ─── SCORE TRENDS ─── */}
     {section==="trends"&&<div>
-      <div style={{fontSize:9,fontWeight:700,color:MUTED,letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FONT_BODY,marginBottom:12}}>Score Trends — Apr → May → Jun 2026 (Monthly Results Score)</div>
+      <div style={{fontSize:9,fontWeight:700,color:MUTED,letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FONT_BODY,marginBottom:12}}>Score Trends — Apr 15 → May 15 → Jul 15 2026 (Results Score per ranking, no June report)</div>
       <div style={{overflowX:"auto"}}>
         <table style={{width:"100%",borderCollapse:"collapse",fontSize:11,fontFamily:FONT_BODY}}>
           <thead><tr style={{borderBottom:`2px solid ${BORDER2}`}}>
-            {["SDR","Mar 2026","Apr 2026","May 2026","3-Mo Avg","Trend","Tier"].map(h=>(
+            {["SDR","Apr 15","May 15","Jul 15","3-Mo Avg","Trend","Tier"].map(h=>(
               <th key={h} style={{padding:"5px 12px",textAlign:h==="SDR"?"left":"center",color:MUTED,fontWeight:700,fontSize:9,textTransform:"uppercase",letterSpacing:"1px"}}>{h}</th>
             ))}
           </tr></thead>
@@ -1602,7 +1612,7 @@ function CompanyTab({cms}){
 
     {/* ─── HEATMAP ─── */}
     {section==="heatmap"&&<div>
-      <div style={{fontSize:9,fontWeight:700,color:MUTED,letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FONT_BODY,marginBottom:6}}>Score Heatmap — Results Score by Rep × Month</div>
+      <div style={{fontSize:9,fontWeight:700,color:MUTED,letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FONT_BODY,marginBottom:6}}>Score Heatmap — Results Score by Rep × Ranking (no June report)</div>
       <div style={{display:"flex",gap:12,marginBottom:12,flexWrap:"wrap",alignItems:"center"}}>
         {[[">5.0","#557519"],["≥3.5",G],["3.0–3.49","#E5A000"],["2.0–2.99","#B7791F"],["<2.0","#D64242"],["No data",BORDER2]].map(([l,c])=>(
           <div key={l} style={{display:"flex",alignItems:"center",gap:5}}>
@@ -1615,7 +1625,7 @@ function CompanyTab({cms}){
         <table style={{borderCollapse:"collapse",fontSize:11,fontFamily:FONT_BODY,width:"100%"}}>
           <thead><tr>
             <th style={{padding:"5px 12px",textAlign:"left",color:MUTED,fontWeight:700,fontSize:9,textTransform:"uppercase",letterSpacing:"1px",minWidth:160}}>SDR</th>
-            {["Mar 2026","Apr 2026","May 2026","3-Mo Avg","Tier"].map(h=>(
+            {["Apr 15","May 15","Jul 15","3-Mo Avg","Tier"].map(h=>(
               <th key={h} style={{padding:"5px 16px",textAlign:"center",color:MUTED,fontWeight:700,fontSize:9,textTransform:"uppercase",letterSpacing:"1px",whiteSpace:"nowrap"}}>{h}</th>
             ))}
           </tr></thead>
@@ -1797,16 +1807,16 @@ async function buildRepPDF(repName, accs){
   pdfText(doc,repName,M,y); y+=6;
   doc.setFontSize(8); doc.setFont('helvetica','normal');
   doc.setTextColor(...MUTED_RGB);
-  pdfText(doc,`Sales Rep  ·  Period 6/16–7/15  ·  ${active.length} active  ·  ${churned.length} churned`,M,y); y+=5;
+  pdfText(doc,`Sales Rep  ·  Period 7/16–8/15  ·  ${active.length} active  ·  ${churned.length} churned`,M,y); y+=5;
   doc.setDrawColor(...BORDER_RGB); doc.line(M,y,W-M,y); y+=7;
 
-  // ── Performance — July 15 Period Complete ──
+  // ── Performance — Aug 15 Period Complete ──
   if(p){
-    // Section label + rank badges (May + July)
+    // Section label + rank badges (Jul 15 + Aug 15)
     doc.setFontSize(7); doc.setFont('helvetica','bold');
     doc.setTextColor(...MUTED_RGB);
-    pdfText(doc,'PERFORMANCE — JULY 15 PERIOD COMPLETE (6/16–7/15)',M,y);
-    // Two stacked rank badges on right: May Rank + July Rank
+    pdfText(doc,'PERFORMANCE — AUG 15 PERIOD COMPLETE (7/16–8/15)',M,y);
+    // Two stacked rank badges on right: Jul 15 Rank + Aug 15 Rank
     const rankW=26, rankH=10, rankGap=2;
     let rx = W - M - (rankW*2 + rankGap);
     if(p.marchRank!=null){
@@ -1814,7 +1824,7 @@ async function buildRepPDF(repName, accs){
       doc.roundedRect(rx,y-6,rankW,rankH,1.5,1.5,'F');
       doc.setTextColor(255,255,255);
       doc.setFontSize(5.5);
-      pdfText(doc,'MAY RANK (PREV)',rx+rankW/2,y-2,{align:'center'});
+      pdfText(doc,'JUL 15 RANK (PREV)',rx+rankW/2,y-2,{align:'center'});
       doc.setFontSize(9); doc.setFont('helvetica','bold');
       pdfText(doc,`#${p.marchRank}`,rx+rankW/2,y+3,{align:'center'});
       rx += rankW + rankGap;
@@ -1824,16 +1834,16 @@ async function buildRepPDF(repName, accs){
       doc.roundedRect(rx,y-6,rankW,rankH,1.5,1.5,'F');
       doc.setTextColor(...G_RGB);
       doc.setFontSize(5.5); doc.setFont('helvetica','bold');
-      pdfText(doc,'JULY RANK',rx+rankW/2,y-2,{align:'center'});
+      pdfText(doc,'AUG 15 RANK',rx+rankW/2,y-2,{align:'center'});
       doc.setFontSize(9);
       pdfText(doc,`#${p.aprRank}`,rx+rankW/2,y+3,{align:'center'});
     }
     y+=8;
 
-    // Overall status line (Exceeding / Matching / Below May)
+    // Overall status line (Exceeding / Matching / Below Jul 15)
     if(p.marchSQL && p.curSQL!=null){
       const sqlPct = p.curSQL / p.marchSQL;
-      const statusLabel = sqlPct>=1.1 ? 'Exceeding May' : sqlPct>=0.95 ? 'Matching May' : sqlPct>=0.5 ? 'Below May' : 'Well below May';
+      const statusLabel = sqlPct>=1.1 ? 'Exceeding Jul 15' : sqlPct>=0.95 ? 'Matching Jul 15' : sqlPct>=0.5 ? 'Below Jul 15' : 'Well below Jul 15';
       const statusCol = sqlPct>=1.1 ? G_RGB : sqlPct>=0.95 ? [245,197,24] : sqlPct>=0.5 ? [249,115,22] : RED_RGB;
       doc.setFontSize(8); doc.setFont('helvetica','bold');
       doc.setTextColor(...statusCol);
@@ -1854,35 +1864,35 @@ async function buildRepPDF(repName, accs){
       const pct = m.march>0 ? Math.round((m.cur/m.march)*100) : null;
       const bMax = Math.max(m.march||1, m.cur, 1);
 
-      // Metric header with % of May + delta vs May on right
+      // Metric header with % of Jul 15 + delta vs Jul 15 on right
       doc.setFontSize(7); doc.setFont('helvetica','bold');
       doc.setTextColor(...MUTED_RGB);
       pdfText(doc,m.label.toUpperCase(),M,y);
       if(pct!=null){
         doc.setTextColor(...pctCol(pct));
-        pdfText(doc,`${pct}% of May`,barR+2,y);
+        pdfText(doc,`${pct}% of Jul 15`,barR+2,y);
       }
       if(delta!=null){
         const dc = delta>0 ? G_RGB : delta<0 ? RED_RGB : [245,197,24];
         doc.setTextColor(...dc);
-        pdfText(doc,`${delta>0?'+':''}${delta} vs May`,W-M,y,{align:'right'});
+        pdfText(doc,`${delta>0?'+':''}${delta} vs Jul 15`,W-M,y,{align:'right'});
       }
       y+=4.5;
 
-      // May 15 Final row
+      // Jul 15 Final row
       doc.setFontSize(7.5); doc.setFont('helvetica','normal');
       doc.setTextColor(...MUTED_RGB);
-      pdfText(doc,'May 15 Final',M,y);
+      pdfText(doc,'Jul 15 Final',M,y);
       pdfText(doc,String(m.march??'—'),barL-2,y,{align:'right'});
       doc.setFillColor(190,190,190);
       const mW = m.march!=null ? (m.march/bMax)*barW : 0;
       doc.rect(barL, y-2.8, mW, 2, 'F');
       y+=4;
 
-      // July 15 Final row
+      // Aug 15 Final row
       doc.setFont('helvetica','bold');
       doc.setTextColor(...G_RGB);
-      pdfText(doc,'July 15 Final',M,y);
+      pdfText(doc,'Aug 15 Final',M,y);
       pdfText(doc,String(m.cur),barL-2,y,{align:'right'});
       doc.setFillColor(...G_RGB);
       doc.rect(barL, y-2.8, (m.cur/bMax)*barW, 2, 'F');
@@ -1894,7 +1904,7 @@ async function buildRepPDF(repName, accs){
     // Footer note
     doc.setFontSize(6.5); doc.setFont('helvetica','italic');
     doc.setTextColor(...MUTED_RGB);
-    pdfText(doc,'Ranking period complete. Totals reflect 30-day window 6/16–7/15/2026. Next ranking period ends August 15.',M,y);
+    pdfText(doc,'Ranking period complete. Totals reflect 30-day window 7/16–8/15/2026. Next ranking period ends September 15.',M,y);
     y+=5;
   }
 
@@ -2005,7 +2015,7 @@ async function buildSomPDF(som){
   pdfText(doc,som.name,M,y); y+=6;
   doc.setFontSize(8); doc.setFont('helvetica','normal');
   doc.setTextColor(...MUTED_RGB);
-  pdfText(doc,`Sales Operations Manager  ·  Period 6/16–7/15  ·  ${active.length} active  ·  ${churned.length} churned`,M,y); y+=5;
+  pdfText(doc,`Sales Operations Manager  ·  Period 7/16–8/15  ·  ${active.length} active  ·  ${churned.length} churned`,M,y); y+=5;
   doc.setDrawColor(...BORDER_RGB); doc.line(M,y,W-M,y); y+=7;
 
   // Team PACE table
@@ -2112,7 +2122,7 @@ function RepPrintModal({repName,accs,onClose}){
   const avgCR=avg12.length?(avg12.reduce((s,d)=>s+d.cr,0)/avg12.length).toFixed(1):"-";
   const cs=churnScore(accs);
   const today=new Date().toLocaleDateString('en-CA');
-  const fname=`${repName.replace(/\s+/g,'_')}_Report_Jul2026.pdf`;
+  const fname=`${repName.replace(/\s+/g,'_')}_Report_Aug2026.pdf`;
   return(
     <div style={{position:'fixed',top:0,left:0,right:0,bottom:0,background:'rgba(24,24,24,0.65)',zIndex:9999,display:'flex',flexDirection:'column'}}>
       <div style={{background:'#FAFAFA',padding:'10px 20px',display:'flex',gap:12,alignItems:'center',flexShrink:0}}>
@@ -2132,7 +2142,7 @@ function RepPrintModal({repName,accs,onClose}){
           <div style={{marginBottom:12,paddingBottom:10,borderBottom:`1px solid ${BORDER}`}}>
             <div style={{color:TEXT,fontSize:20,fontWeight:800,letterSpacing:"-0.5px",fontFamily:FONT_DISPLAY}}>{repName}</div>
             <div style={{color:MUTED,fontSize:11,marginTop:4,fontFamily:FONT_BODY}}>
-              Sales Rep &nbsp;·&nbsp; Period 3/16–4/15 &nbsp;·&nbsp;
+              Sales Rep &nbsp;·&nbsp; Period 7/16–8/15 &nbsp;·&nbsp;
               <span style={{color:G,fontWeight:700}}>{active.length}</span> active &nbsp;·&nbsp;
               <span style={{color:"#D64242",fontWeight:700}}>{churned.length}</span> churned
             </div>
@@ -2162,7 +2172,7 @@ function RepPrintModal({repName,accs,onClose}){
             </table>
           </div>
           <div style={{marginTop:16,paddingTop:10,borderTop:`1px solid ${BORDER}`,display:'flex',justifyContent:'space-between',fontSize:9,color:MUTED,fontFamily:FONT_BODY}}>
-            <span>Martal Group — Internal Use Only</span><span>{repName} · Period 3/16–4/15/2026</span>
+            <span>Martal Group — Internal Use Only</span><span>{repName} · Period 7/16–8/15/2026</span>
           </div>
         </div>
       </div>
@@ -3200,8 +3210,8 @@ const DEFAULT_CMS = {
     lockedLabel:"Previous Month Churn (July 2026)",
   },
   meta:{
-    lastUpdated:"July 15, 2026",
-    period:"Period 6/16–7/15/2026",
+    lastUpdated:"August 15, 2026",
+    period:"Period 7/16–8/15/2026",
   },
 };
 
@@ -3230,6 +3240,12 @@ function loadCMS(){
     if(cms?.meta?.period==="Period 5/16–6/15/2026"){
       cms.meta.period="Period 6/16–7/15/2026";
       cms.meta.lastUpdated="July 15, 2026";
+      try{localStorage.setItem("martal_cms",JSON.stringify(cms));}catch{}
+    }
+    // One-time migration: August 2026 ranking close. Refresh stale period meta.
+    if(cms?.meta?.period==="Period 6/16–7/15/2026"){
+      cms.meta.period="Period 7/16–8/15/2026";
+      cms.meta.lastUpdated="August 15, 2026";
       try{localStorage.setItem("martal_cms",JSON.stringify(cms));}catch{}
     }
     return cms;
@@ -3380,15 +3396,28 @@ function CompanyChurnTab(){
       Churn rate = contracts lost ÷ trailing 3-month average of active clients. <span style={{color:MUTED2}}>Performance metrics elsewhere are mid-month (15th) — different cadence.</span>
     </div>
 
-    {/* stat cards */}
-    <div style={{display:"flex",gap:12,flexWrap:"wrap",marginBottom:20}}>
+    {/* stat cards — the 4 real, closed-month numbers */}
+    <div style={{display:"flex",gap:12,flexWrap:"wrap",marginBottom:12}}>
       <KpiCard label="JULY CHURN RATE" value={last.cr!=null?last.cr+"%":"—"} sub={crDelta!=null?(crDelta>0?"▲ +":"▼ ")+crDelta+" pts vs June":"—"} valColor={crColor}/>
       <KpiCard label="JULY CANCELS" value={last.cl} sub={"vs "+data[data.length-2].cl+" in June"} valColor="#D64242"/>
       <KpiCard label="3-MO AVG ACTIVE (DENOM)" value={denom.toFixed(1)} sub="Apr / May / Jun active avg" valColor={TEXT}/>
       <KpiCard label="2026 YTD CANCELS" value={ytd} sub="Jan–Jul 2026" valColor="#E5A000"/>
-      <KpiCard label="AUGUST (PROJECTED)" value={projAugRate+"%"} sub={projAugTotal+" est. cancels · "+projAugLoggedSoFar+" logged through Aug "+projAugAsOfDay} valColor="#B7791F"/>
     </div>
-    <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:-12,marginBottom:20}}>August is still open — projected by pacing the {projAugLoggedSoFar} cancels logged through Aug {projAugAsOfDay} out to all {projAugDaysInMonth} days. The real, final August number can't post until September 1 and will replace this estimate.</div>
+
+    {/* August projection — its own dashed callout, kept visually separate from the confirmed numbers above */}
+    <div style={{border:"1px dashed #B7791F80",background:"#FBF3DD40",borderRadius:8,padding:"14px 18px",marginBottom:20,display:"flex",gap:24,flexWrap:"wrap",alignItems:"center"}}>
+      <div style={{minWidth:160}}>
+        <div style={{fontSize:9,letterSpacing:"1.5px",textTransform:"uppercase",color:"#B7791F",fontFamily:FONT_BODY,fontWeight:700,marginBottom:4}}>August — Projected</div>
+        <div style={{fontSize:28,fontWeight:900,color:"#B7791F",fontFamily:FONT_DISPLAY,letterSpacing:"-0.5px",lineHeight:1}}>{projAugRate}%</div>
+        <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY,marginTop:4}}>{projAugTotal} est. cancels · {projAugLoggedSoFar} logged through Aug {projAugAsOfDay}</div>
+      </div>
+      <div style={{minWidth:160}}>
+        <div style={{fontSize:9,letterSpacing:"1.5px",textTransform:"uppercase",color:"#1A6A98",fontFamily:FONT_BODY,fontWeight:700,marginBottom:4}}>Deals Closed — Projected</div>
+        <div style={{fontSize:28,fontWeight:900,color:"#1A6A98",fontFamily:FONT_DISPLAY,letterSpacing:"-0.5px",lineHeight:1}}>~{projAugDc}</div>
+        <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY,marginTop:4}}>{projAugDcSoFar} logged through Aug {projAugAsOfDay}</div>
+      </div>
+      <div style={{flex:1,minWidth:220,fontSize:10,color:MUTED2,fontFamily:FONT_BODY,lineHeight:1.5}}>August is still open — both figures are paced from what's logged through Aug {projAugAsOfDay} out to the full {projAugDaysInMonth}-day month. Neither is a confirmed close; the real numbers can't post until September 1.</div>
+    </div>
 
     {/* churn rate trend */}
     <div style={CS}>
