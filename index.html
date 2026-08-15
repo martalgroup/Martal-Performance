@@ -3444,29 +3444,33 @@ function App(){
     <div style={{background:BG,minHeight:"100vh",fontFamily:FONT_BODY,color:TEXT}}>
 
       {/* Announcement Bar — dark, minimal */}
-      <div style={{background:ANNOUNCE,padding:"7px 28px",display:"flex",alignItems:"center",justifyContent:"space-between",borderBottom:`1px solid ${BORDER}`}}>
-        <div style={{fontSize:9,fontWeight:600,letterSpacing:"2px",color:G_TEXT,fontFamily:FONT_BODY,textTransform:"uppercase",display:"flex",alignItems:"center",gap:10}}>
-          <div style={{width:7,height:7,borderRadius:"50%",background:G,boxShadow:"0 0 0 3px rgba(128,177,34,.20)"}}/>
-          Live — {cms.meta.period}
+      <div style={{background:ANNOUNCE,borderBottom:`1px solid ${BORDER}`}}>
+        <div style={{maxWidth:1020,margin:"0 auto",padding:"7px 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+          <div style={{fontSize:9,fontWeight:600,letterSpacing:"2px",color:G_TEXT,fontFamily:FONT_BODY,textTransform:"uppercase",display:"flex",alignItems:"center",gap:10}}>
+            <div style={{width:7,height:7,borderRadius:"50%",background:G,boxShadow:"0 0 0 3px rgba(128,177,34,.20)"}}/>
+            Live — {cms.meta.period}
+          </div>
+          <div style={{fontSize:9,color:MUTED2,fontFamily:FONT_BODY,letterSpacing:"1px",textTransform:"uppercase"}}>Internal Use Only · Updated {cms.meta.lastUpdated}</div>
         </div>
-        <div style={{fontSize:9,color:MUTED2,fontFamily:FONT_BODY,letterSpacing:"1px",textTransform:"uppercase"}}>Internal Use Only · Updated {cms.meta.lastUpdated}</div>
       </div>
 
       {/* Nav Bar */}
-      <div style={{background:"var(--glass-nav)",borderBottom:`1px solid ${BORDER}`,padding:"0 28px",display:"flex",alignItems:"center",justifyContent:"space-between",height:60,position:"sticky",top:0,zIndex:100,boxShadow:"0 1px 0 rgba(255,255,255,.6) inset, 0 6px 24px rgba(24,24,24,.06)"}}>
-        <div style={{display:"flex",alignItems:"center",gap:12}}>
-          <div style={{color:TEXT,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-            <svg viewBox="0 0 2000 2000" width="30" height="30" aria-hidden="true" style={{display:"block",flexShrink:0}}><path fill="currentColor" d="M44 1936 L833 150 Q973 63 1113 150 L1958 1936 L1673 1936 L983 410 L305 1936 Z"/></svg>
+      <div style={{background:"var(--glass-nav)",borderBottom:`1px solid ${BORDER}`,height:60,position:"sticky",top:0,zIndex:100,boxShadow:"0 1px 0 rgba(255,255,255,.6) inset, 0 6px 24px rgba(24,24,24,.06)"}}>
+        <div style={{maxWidth:1020,margin:"0 auto",padding:"0 24px",display:"flex",alignItems:"center",justifyContent:"space-between",height:"100%"}}>
+          <div style={{display:"flex",alignItems:"center",gap:12}}>
+            <div style={{color:TEXT,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+              <svg viewBox="0 0 2000 2000" width="30" height="30" aria-hidden="true" style={{display:"block",flexShrink:0}}><path fill="currentColor" d="M44 1936 L833 150 Q973 63 1113 150 L1958 1936 L1673 1936 L983 410 L305 1936 Z"/></svg>
+            </div>
+            <div>
+              <div style={{fontSize:14,fontWeight:800,color:TEXT,letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FONT_DISPLAY,lineHeight:1}}>Martal Group</div>
+              <div style={{fontSize:8.5,color:MUTED,letterSpacing:"1px",textTransform:"uppercase",fontFamily:FONT_BODY,marginTop:2}}>Performance Intelligence</div>
+            </div>
           </div>
-          <div>
-            <div style={{fontSize:14,fontWeight:800,color:TEXT,letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FONT_DISPLAY,lineHeight:1}}>Martal Group</div>
-            <div style={{fontSize:8.5,color:MUTED,letterSpacing:"1px",textTransform:"uppercase",fontFamily:FONT_BODY,marginTop:2}}>Performance Intelligence</div>
+          <div style={{display:"flex",gap:0,alignItems:"center"}}>
+            {tabs.map(t=>(
+              <button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"0 18px",height:58,border:"none",borderBottom:tab===t.id?`2px solid ${G}`:"2px solid transparent",cursor:"pointer",fontSize:10.5,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",background:"transparent",color:tab===t.id?G_TEXT:MUTED,fontFamily:FONT_BODY,transition:"color 0.15s"}}>{t.label}</button>
+            ))}
           </div>
-        </div>
-        <div style={{display:"flex",gap:0,alignItems:"center"}}>
-          {tabs.map(t=>(
-            <button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"0 18px",height:58,border:"none",borderBottom:tab===t.id?`2px solid ${G}`:"2px solid transparent",cursor:"pointer",fontSize:10.5,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",background:"transparent",color:tab===t.id?G_TEXT:MUTED,fontFamily:FONT_BODY,transition:"color 0.15s"}}>{t.label}</button>
-          ))}
         </div>
       </div>
 
