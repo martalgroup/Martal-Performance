@@ -663,48 +663,53 @@ const ALL_REPS=[
 // Activity score baseline: 3.0 for all reps
 // Slots: jan = Apr 15 report, feb = May 15 report, mar = Jul 15 report (score = mtg/8.5*2.4 + sql/12; SQLs incl. meetings)
 const SDR_SCORES = {
-  "Dominic Libertoski": {jan:10.02,feb:9.15,mar:21.4,avg:13.52,gap:10.02,act:3.0,tier:"PASS"},
-  "Manuel Linero": {jan:null,feb:null,mar:11.1,avg:11.1,gap:7.6,act:3.0,tier:"PASS"},
-  "Kellee Madonia": {jan:7.73,feb:9.39,mar:15.9,avg:11.01,gap:7.51,act:3.0,tier:"PASS"},
-  "Eric Tuttle": {jan:6.13,feb:8.82,mar:5.3,avg:6.75,gap:3.25,act:3.0,tier:"PASS"},
-  "Jesse Shorr": {jan:6.36,feb:5.21,mar:5.4,avg:5.66,gap:2.16,act:3.0,tier:"PASS"},
-  "Blake Peremel": {jan:4.8,feb:5.28,mar:6.9,avg:5.66,gap:2.16,act:3.0,tier:"PASS"},
-  "Tim Lan": {jan:4.48,feb:4.5,mar:7.7,avg:5.56,gap:2.06,act:3.0,tier:"PASS"},
-  "Anand Pandey": {jan:4.87,feb:5.34,mar:14.4,avg:8.2,gap:4.7,act:3.0,tier:"PASS"},
-  "Joshua Bylsma": {jan:6.07,feb:2.96,mar:4.8,avg:4.61,gap:1.11,act:3.0,tier:"PASS"},
-  "Francois Dore": {jan:3.17,feb:4.88,mar:5.3,avg:4.45,gap:0.95,act:3.0,tier:"PASS"},
-  "Savannah Peck": {jan:2.31,feb:4.09,mar:6.9,avg:4.43,gap:0.93,act:3.0,tier:"PASS"},
-  "Enzo Bizuti": {jan:null,feb:null,mar:4,avg:4,gap:0.5,act:3.0,tier:"PASS"},
-  "Alyssa Perez": {jan:6.12,feb:3.92,mar:1.9,avg:3.98,gap:0.48,act:3.0,tier:"PASS"},
-  "Rebecca Barnes": {jan:3.59,feb:5.44,mar:2.7,avg:3.91,gap:0.41,act:3.0,tier:"PASS"},
-  "Harjit Sawhney": {jan:5.86,feb:4.1,mar:6,avg:5.32,gap:1.82,act:3.0,tier:"PASS"},
-  "Cesar Garcia": {jan:3.98,feb:4.1,mar:3,avg:3.69,gap:0.19,act:3.0,tier:"PASS"},
-  "Korbin Kirk": {jan:2.98,feb:2.39,mar:4.6,avg:3.32,gap:-0.18,act:3.0,tier:"DEVELOP"},
-  "Kirk Skilling": {jan:null,feb:null,mar:3.3,avg:3.3,gap:-0.2,act:3.0,tier:"DEVELOP"},
-  "Johan Vrey": {jan:2.4,feb:3.76,mar:2.9,avg:3.02,gap:-0.48,act:3.0,tier:"DEVELOP"},
-  "Stephanie Hackert": {jan:3.36,feb:3.31,mar:3,avg:3.22,gap:-0.28,act:3.0,tier:"DEVELOP"},
-  "Daniel Davies": {jan:2.91,feb:2.75,mar:2.5,avg:2.72,gap:-0.78,act:3.0,tier:"DEVELOP"},
-  "Bill O'Leary": {jan:3.08,feb:2.87,mar:1.8,avg:2.58,gap:-0.92,act:3.0,tier:"DEVELOP"},
-  "Ariel Wolfe": {jan:4.03,feb:2.34,mar:1.3,avg:2.56,gap:-0.94,act:3.0,tier:"DEVELOP"},
-  "Derek Sindelman": {jan:3.45,feb:1.82,mar:1.8,avg:2.36,gap:-1.14,act:3.0,tier:"DEVELOP"},
-  "Paige Givinsky": {jan:3.48,feb:2.9,mar:0.7,avg:2.36,gap:-1.14,act:3.0,tier:"DEVELOP"},
-  "Alli Fowler": {jan:2.59,feb:2.73,mar:1.4,avg:2.24,gap:-1.26,act:3.0,tier:"DEVELOP"},
-  "Solana Victoria": {jan:null,feb:null,mar:1.8,avg:1.8,gap:-1.7,act:3.0,tier:"DEVELOP"},
-  "Michele Harris": {jan:3.34,feb:1.18,mar:0.8,avg:1.77,gap:-1.73,act:3.0,tier:"DEVELOP"},
-  "Logan Kennedy": {jan:3.02,feb:2.14,mar:0,avg:1.72,gap:-1.78,act:3.0,tier:"DEVELOP"},
-  "Joshua Crawford": {jan:2.78,feb:2.36,mar:0,avg:1.71,gap:-1.79,act:3.0,tier:"DEVELOP"},
-  "Javion Jones": {jan:1.75,feb:1.29,mar:0.4,avg:1.15,gap:-2.35,act:3.0,tier:"DEVELOP"},
-  "Anthony Allen": {jan:1.48,feb:1.09,mar:0.3,avg:0.96,gap:-2.54,act:3.0,tier:"DEVELOP"},
-  "Mark Kreidler": {jan:1.33,feb:1.26,mar:0.1,avg:0.9,gap:-2.6,act:3.0,tier:"DEVELOP"},
-  "Franco Genovese": {jan:null,feb:null,mar:0.8,avg:0.8,gap:-2.7,act:3.0,tier:"DEVELOP"},
-  "Elisha Johnson": {jan:1.1,feb:1.13,mar:0,avg:0.74,gap:-2.76,act:3.0,tier:"DEVELOP"},
-  "Abraham Abouzeid": {jan:null,feb:null,mar:0.4,avg:0.4,gap:-3.1,act:3.0,tier:"DEVELOP"},
-  "Cameron Horton": {jan:null,feb:null,mar:0.4,avg:0.4,gap:-3.1,act:3.0,tier:"DEVELOP"},
-  "Russell Holt": {jan:null,feb:null,mar:0.4,avg:0.4,gap:-3.1,act:3.0,tier:"DEVELOP"},
-  "Nina Bastos": {jan:null,feb:null,mar:0,avg:0,gap:-3.5,act:3.0,tier:"DEVELOP"},
+  "Alli Fowler": {jan:3,feb:3,mar:null,avg:3.0,gap:-7.0,act:0,tier:"BELOW"},
+  "Alyssa Perez": {jan:6,feb:4,mar:6,avg:5.33,gap:-4.67,act:8,tier:"OBSERVE"},
+  "Anand Pandey": {jan:17,feb:27,mar:23,avg:22.33,gap:12.33,act:7,tier:"PASS"},
+  "Angela Hamilton": {jan:11,feb:7,mar:12,avg:10.0,gap:0.0,act:5,tier:"PASS"},
+  "Anthony Allen": {jan:1,feb:0,mar:null,avg:0.5,gap:-9.5,act:0,tier:"BELOW"},
+  "Ariel Wolfe": {jan:3,feb:0,mar:0,avg:1.0,gap:-9.0,act:3,tier:"BELOW"},
+  "Bill O Leary": {jan:1,feb:0,mar:null,avg:0.5,gap:-9.5,act:0,tier:"BELOW"},
+  "Bill O'leary": {jan:1,feb:3,mar:5,avg:3.0,gap:-7.0,act:2,tier:"BELOW"},
+  "Bill Oleary": {jan:3,feb:1,mar:0,avg:1.33,gap:-8.67,act:3,tier:"BELOW"},
+  "Blake Peremel": {jan:16,feb:18,mar:26,avg:20.0,gap:10.0,act:6,tier:"PASS"},
+  "Cameron Horton": {jan:4,feb:1,mar:4,avg:3.0,gap:-7.0,act:4,tier:"BELOW"},
+  "Cesar G": {jan:null,feb:null,mar:1,avg:1.0,gap:-9.0,act:1,tier:"BELOW"},
+  "Cesar Garcia": {jan:11,feb:13,mar:16,avg:13.33,gap:3.33,act:3,tier:"PASS"},
+  "Daniel Davies": {jan:5,feb:4,mar:13,avg:7.33,gap:-2.67,act:4,tier:"OBSERVE"},
+  "Derek Sindelman": {jan:4,feb:4,mar:3,avg:3.67,gap:-6.33,act:3,tier:"BELOW"},
+  "Dominic Libertoski": {jan:31,feb:60,mar:56,avg:49.0,gap:39.0,act:10,tier:"PASS"},
+  "Enzo Bizuti": {jan:3,feb:12,mar:7,avg:7.33,gap:-2.67,act:2,tier:"OBSERVE"},
+  "Eric Tuttle": {jan:23,feb:13,mar:21,avg:19.0,gap:9.0,act:5,tier:"PASS"},
+  "Franco Genovese": {jan:null,feb:2,mar:3,avg:2.5,gap:-7.5,act:2,tier:"BELOW"},
+  "Francois Dore": {jan:4,feb:1,mar:5,avg:3.33,gap:-6.67,act:4,tier:"BELOW"},
+  "Giovanni Gonzalez": {jan:null,feb:null,mar:4,avg:4.0,gap:-6.0,act:1,tier:"BELOW"},
+  "Harjit Sawhney": {jan:8,feb:13,mar:12,avg:11.0,gap:1.0,act:7,tier:"PASS"},
+  "Javion Jones": {jan:1,feb:null,mar:null,avg:1.0,gap:-9.0,act:0,tier:"BELOW"},
+  "Jesse Shorr": {jan:12,feb:14,mar:12,avg:12.67,gap:2.67,act:7,tier:"PASS"},
+  "Johan Vrey": {jan:10,feb:8,mar:8,avg:8.67,gap:-1.33,act:3,tier:"OBSERVE"},
+  "Josh B": {jan:4,feb:4,mar:0,avg:2.67,gap:-7.33,act:2,tier:"BELOW"},
+  "Joshua Bylsma": {jan:3,feb:7,mar:null,avg:5.0,gap:-5.0,act:0,tier:"OBSERVE"},
+  "Joshua Crawford": {jan:2,feb:0,mar:null,avg:1.0,gap:-9.0,act:0,tier:"BELOW"},
+  "Kellee Madonia": {jan:31,feb:44,mar:46,avg:40.33,gap:30.33,act:12,tier:"PASS"},
+  "Kirk Skilling": {jan:4,feb:8,mar:4,avg:5.33,gap:-4.67,act:4,tier:"OBSERVE"},
+  "Kirk.s@martalgroup.com": {jan:1,feb:null,mar:null,avg:1.0,gap:-9.0,act:0,tier:"BELOW"},
+  "Korbin Kirk": {jan:6,feb:12,mar:2,avg:6.67,gap:-3.33,act:5,tier:"OBSERVE"},
+  "Logan Kennedy": {jan:4,feb:null,mar:null,avg:4.0,gap:-6.0,act:0,tier:"BELOW"},
+  "Luisa Perez": {jan:null,feb:null,mar:2,avg:2.0,gap:-8.0,act:1,tier:"BELOW"},
+  "Manuel Linero": {jan:5,feb:38,mar:32,avg:25.0,gap:15.0,act:6,tier:"PASS"},
+  "Mark Kreidler": {jan:1,feb:0,mar:null,avg:0.5,gap:-9.5,act:0,tier:"BELOW"},
+  "Michele Harris": {jan:null,feb:2,mar:4,avg:3.0,gap:-7.0,act:1,tier:"BELOW"},
+  "Paige Givinsky": {jan:5,feb:1,mar:2,avg:2.67,gap:-7.33,act:3,tier:"BELOW"},
+  "Rebecca Barnes": {jan:15,feb:8,mar:15,avg:12.67,gap:2.67,act:5,tier:"PASS"},
+  "Savannah Peck": {jan:6,feb:19,mar:9,avg:11.33,gap:1.33,act:6,tier:"PASS"},
+  "Solana Victoria": {jan:0,feb:5,mar:3,avg:2.67,gap:-7.33,act:2,tier:"BELOW"},
+  "Stephanie Hackert": {jan:6,feb:6,mar:11,avg:7.67,gap:-2.33,act:8,tier:"OBSERVE"},
+  "Tim L": {jan:null,feb:null,mar:1,avg:1.0,gap:-9.0,act:1,tier:"BELOW"},
+  "Tim Lan": {jan:7,feb:15,mar:15,avg:12.33,gap:2.33,act:9,tier:"PASS"},
 };
-const SDR_PASS_THRESHOLD = 3.5;
-const SDR_OBS_THRESHOLD  = 3.0;
+const SDR_PASS_THRESHOLD = 10;
+const SDR_OBS_THRESHOLD  = 5;
 
 const APR_ELAPSED = 1.0; // July 15: period closed (30-day ranking 6/16 → 7/15)
 
@@ -726,148 +731,132 @@ const HISTORY = [
 ];
 
 const REP_PACE={
-  "Dominic Libertoski": {marchRank:1, aprRank:1, marchSQL:136, marchFlips:53, marchMQL:145, curMQL:126, curSQL:111, curMtg:51},
+  "Dominic Libertoski": {marchRank:1, aprRank:1, marchSQL:150, marchFlips:60, marchMQL:159, curMQL:140, curSQL:124, curMtg:56},
   "Kellee Madonia": {marchRank:2, aprRank:2, marchSQL:67, marchFlips:44, marchMQL:69, curMQL:89, curSQL:83, curMtg:46},
-  "Manuel Linero": {marchRank:3, aprRank:3, marchSQL:38, marchFlips:30, marchMQL:38, curMQL:41, curSQL:39, curMtg:29},
+  "Manuel Linero": {marchRank:3, aprRank:3, marchSQL:48, marchFlips:38, marchMQL:48, curMQL:47, curSQL:45, curMtg:32},
   "Blake Peremel": {marchRank:6, aprRank:4, marchSQL:93, marchFlips:18, marchMQL:97, curMQL:86, curSQL:82, curMtg:26},
   "Anand Pandey": {marchRank:4, aprRank:5, marchSQL:147, marchFlips:27, marchMQL:157, curMQL:193, curSQL:171, curMtg:23},
   "Eric Tuttle": {marchRank:11, aprRank:6, marchSQL:14, marchFlips:13, marchMQL:16, curMQL:44, curSQL:36, curMtg:21},
   "Cesar Garcia": {marchRank:10, aprRank:7, marchSQL:47, marchFlips:13, marchMQL:58, curMQL:50, curSQL:46, curMtg:16},
   "Tim Lan": {marchRank:7, aprRank:8, marchSQL:83, marchFlips:15, marchMQL:98, curMQL:72, curSQL:64, curMtg:15},
   "Rebecca Barnes": {marchRank:15, aprRank:9, marchSQL:29, marchFlips:8, marchMQL:32, curMQL:47, curSQL:44, curMtg:15},
-  "Daniel Davies": {marchRank:25, aprRank:10, marchSQL:37, marchFlips:4, marchMQL:42, curMQL:61, curSQL:53, curMtg:13},
+  "Daniel Davies": {marchRank:23, aprRank:10, marchSQL:37, marchFlips:4, marchMQL:42, curMQL:61, curSQL:53, curMtg:13},
   "Harjit Sawhney": {marchRank:9, aprRank:11, marchSQL:85, marchFlips:13, marchMQL:90, curMQL:73, curSQL:67, curMtg:12},
   "Jesse Shorr": {marchRank:8, aprRank:12, marchSQL:63, marchFlips:14, marchMQL:71, curMQL:48, curSQL:45, curMtg:12},
-  "Angela Hamilton": {marchRank:19, aprRank:13, marchSQL:29, marchFlips:7, marchMQL:31, curMQL:43, curSQL:40, curMtg:12},
-  "Stephanie Hackert": {marchRank:21, aprRank:14, marchSQL:97, marchFlips:6, marchMQL:114, curMQL:102, curSQL:96, curMtg:11},
+  "Angela Hamilton": {marchRank:18, aprRank:13, marchSQL:29, marchFlips:7, marchMQL:31, curMQL:43, curSQL:40, curMtg:12},
+  "Stephanie Hackert": {marchRank:19, aprRank:14, marchSQL:97, marchFlips:6, marchMQL:114, curMQL:102, curSQL:96, curMtg:11},
   "Savannah Peck": {marchRank:5, aprRank:15, marchSQL:60, marchFlips:19, marchMQL:62, curMQL:73, curSQL:67, curMtg:9},
   "Johan Vrey": {marchRank:14, aprRank:16, marchSQL:37, marchFlips:8, marchMQL:37, curMQL:19, curSQL:19, curMtg:8},
   "Enzo Bizuti": {marchRank:13, aprRank:17, marchSQL:21, marchFlips:12, marchMQL:21, curMQL:12, curSQL:12, curMtg:7},
-  "Alyssa Perez": {marchRank:23, aprRank:18, marchSQL:118, marchFlips:4, marchMQL:120, curMQL:134, curSQL:124, curMtg:6},
-  "Bill O'leary": {marchRank:27, aprRank:19, marchSQL:27, marchFlips:3, marchMQL:27, curMQL:25, curSQL:24, curMtg:5},
-  "Dominic": {marchRank:20, aprRank:20, marchSQL:14, marchFlips:7, marchMQL:14, curMQL:14, curSQL:13, curMtg:5},
-  "Michele Harris": {marchRank:29, aprRank:21, marchSQL:18, marchFlips:2, marchMQL:19, curMQL:34, curSQL:30, curMtg:4},
+  "Alyssa Perez": {marchRank:21, aprRank:18, marchSQL:118, marchFlips:4, marchMQL:120, curMQL:134, curSQL:124, curMtg:6},
+  "Francois Dore": {marchRank:30, aprRank:19, marchSQL:17, marchFlips:1, marchMQL:22, curMQL:57, curSQL:56, curMtg:5},
+  "Bill O'leary": {marchRank:25, aprRank:20, marchSQL:27, marchFlips:3, marchMQL:27, curMQL:25, curSQL:24, curMtg:5},
+  "Michele Harris": {marchRank:27, aprRank:21, marchSQL:18, marchFlips:2, marchMQL:19, curMQL:34, curSQL:30, curMtg:4},
   "Kirk Skilling": {marchRank:16, aprRank:22, marchSQL:22, marchFlips:8, marchMQL:22, curMQL:27, curSQL:24, curMtg:4},
-  "Cameron Horton": {marchRank:32, aprRank:23, marchSQL:15, marchFlips:1, marchMQL:15, curMQL:15, curSQL:15, curMtg:4},
-  "Giovanni Gonzalez": {marchRank:39, aprRank:24, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:5, curSQL:5, curMtg:4},
-  "Derek Sindelman": {marchRank:24, aprRank:25, marchSQL:55, marchFlips:4, marchMQL:55, curMQL:40, curSQL:36, curMtg:3},
-  "Francois Dore": {marchRank:34, aprRank:26, marchSQL:12, marchFlips:1, marchMQL:13, curMQL:25, curSQL:24, curMtg:3},
-  "Solana Victoria": {marchRank:22, aprRank:27, marchSQL:40, marchFlips:5, marchMQL:40, curMQL:21, curSQL:21, curMtg:3},
-  "Manuel": {marchRank:17, aprRank:28, marchSQL:10, marchFlips:8, marchMQL:10, curMQL:6, curSQL:6, curMtg:3},
-  "Franco Genovese": {marchRank:30, aprRank:29, marchSQL:4, marchFlips:2, marchMQL:5, curMQL:3, curSQL:3, curMtg:3},
-  "Francois": {marchRank:37, aprRank:30, marchSQL:5, marchFlips:0, marchMQL:9, curMQL:32, curSQL:32, curMtg:2},
-  "Paige Givinsky": {marchRank:33, aprRank:31, marchSQL:13, marchFlips:1, marchMQL:16, curMQL:20, curSQL:17, curMtg:2},
-  "Korbin Kirk": {marchRank:12, aprRank:32, marchSQL:31, marchFlips:12, marchMQL:37, curMQL:23, curSQL:16, curMtg:2},
-  "Luisa Perez": {marchRank:40, aprRank:33, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:11, curSQL:9, curMtg:2},
-  "Tim L": {marchRank:41, aprRank:34, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:8, curSQL:6, curMtg:1},
-  "Cesar G": {marchRank:42, aprRank:35, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:5, curSQL:4, curMtg:1},
-  "Ariel Wolfe": {marchRank:35, aprRank:36, marchSQL:34, marchFlips:0, marchMQL:35, curMQL:25, curSQL:24, curMtg:0},
-  "Bill Oleary": {marchRank:31, aprRank:37, marchSQL:44, marchFlips:1, marchMQL:49, curMQL:27, curSQL:23, curMtg:0},
-  "Josh": {marchRank:36, aprRank:38, marchSQL:9, marchFlips:0, marchMQL:9, curMQL:5, curSQL:4, curMtg:0},
-  "Alejandro Cervantes": {marchRank:43, aprRank:39, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:5, curSQL:4, curMtg:0},
-  "Luca Ugalde": {marchRank:44, aprRank:40, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:2, curSQL:2, curMtg:0},
-  "Haset Aklilu": {marchRank:38, aprRank:41, marchSQL:1, marchFlips:0, marchMQL:1, curMQL:1, curSQL:1, curMtg:0},
-  "Cesar Duarte": {marchRank:45, aprRank:42, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:1, curSQL:1, curMtg:0},
-  "Alli Fowler": {marchRank:28, aprRank:43, marchSQL:18, marchFlips:3, marchMQL:22, curMQL:0, curSQL:0, curMtg:0},
-  "Joshua Bylsma": {marchRank:18, aprRank:44, marchSQL:32, marchFlips:7, marchMQL:37, curMQL:0, curSQL:0, curMtg:0},
-  "Josh B": {marchRank:26, aprRank:45, marchSQL:12, marchFlips:4, marchMQL:17, curMQL:0, curSQL:0, curMtg:0},
+  "Cameron Horton": {marchRank:31, aprRank:23, marchSQL:15, marchFlips:1, marchMQL:15, curMQL:15, curSQL:15, curMtg:4},
+  "Giovanni Gonzalez": {marchRank:38, aprRank:24, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:5, curSQL:5, curMtg:4},
+  "Derek Sindelman": {marchRank:22, aprRank:25, marchSQL:55, marchFlips:4, marchMQL:55, curMQL:40, curSQL:36, curMtg:3},
+  "Solana Victoria": {marchRank:20, aprRank:26, marchSQL:40, marchFlips:5, marchMQL:40, curMQL:21, curSQL:21, curMtg:3},
+  "Franco Genovese": {marchRank:28, aprRank:27, marchSQL:4, marchFlips:2, marchMQL:5, curMQL:3, curSQL:3, curMtg:3},
+  "Paige Givinsky": {marchRank:32, aprRank:28, marchSQL:13, marchFlips:1, marchMQL:16, curMQL:20, curSQL:17, curMtg:2},
+  "Korbin Kirk": {marchRank:12, aprRank:29, marchSQL:31, marchFlips:12, marchMQL:37, curMQL:23, curSQL:16, curMtg:2},
+  "Luisa Perez": {marchRank:40, aprRank:30, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:11, curSQL:9, curMtg:2},
+  "Tim L": {marchRank:41, aprRank:31, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:8, curSQL:6, curMtg:1},
+  "Cesar G": {marchRank:37, aprRank:32, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:5, curSQL:4, curMtg:1},
+  "Ariel Wolfe": {marchRank:33, aprRank:33, marchSQL:34, marchFlips:0, marchMQL:35, curMQL:25, curSQL:24, curMtg:0},
+  "Bill Oleary": {marchRank:29, aprRank:34, marchSQL:44, marchFlips:1, marchMQL:49, curMQL:27, curSQL:23, curMtg:0},
+  "Alejandro Cervantes": {marchRank:35, aprRank:35, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:5, curSQL:4, curMtg:0},
+  "Josh B": {marchRank:24, aprRank:36, marchSQL:21, marchFlips:4, marchMQL:26, curMQL:5, curSQL:4, curMtg:0},
+  "Luca Ugalde": {marchRank:39, aprRank:37, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:2, curSQL:2, curMtg:0},
+  "Cesar Duarte": {marchRank:36, aprRank:38, marchSQL:0, marchFlips:0, marchMQL:0, curMQL:1, curSQL:1, curMtg:0},
+  "Haset Aklilu": {marchRank:34, aprRank:39, marchSQL:5, marchFlips:0, marchMQL:5, curMQL:1, curSQL:1, curMtg:0},
+  "Alli Fowler": {marchRank:26, aprRank:40, marchSQL:18, marchFlips:3, marchMQL:22, curMQL:0, curSQL:0, curMtg:0},
+  "Joshua Bylsma": {marchRank:17, aprRank:41, marchSQL:32, marchFlips:7, marchMQL:37, curMQL:0, curSQL:0, curMtg:0},
 };
 
 // Verified per-rep history, five periods Mar-Aug 2026: [meetings, SQLs(interest-only), MQLs]
 const REP_HISTORY={
-  "Dominic Libertoski": [[20,79,93],[23,90,108],[22,89,99],[53,136,145],[51,111,126]],
+  "Dominic Libertoski": [[26,101,119],[28,108,128],[31,119,132],[60,150,159],[56,124,140]],
   "Kellee Madonia": [[14,23,29],[25,45,51],[31,56,58],[44,67,69],[46,83,89]],
   "Anand Pandey": [[24,118,133],[14,105,116],[17,82,93],[27,147,157],[23,171,193]],
   "Blake Peremel": [[6,56,60],[9,79,80],[16,71,75],[18,93,97],[26,82,86]],
+  "Manuel Linero": [[0,0,0],[0,0,0],[5,11,12],[38,48,48],[32,45,47]],
+  "Eric Tuttle": [[2,15,17],[7,19,20],[23,27,30],[13,14,16],[21,36,44]],
   "Jesse Shorr": [[12,76,88],[15,88,92],[12,73,79],[14,63,71],[12,45,48]],
-  "Manuel Linero": [[0,0,0],[0,0,0],[5,11,12],[30,38,38],[29,39,41]],
   "Tim Lan": [[14,64,72],[12,71,77],[7,53,63],[15,83,98],[15,64,72]],
-  "Eric Tuttle": [[2,15,17],[6,14,14],[21,25,28],[13,14,16],[21,36,44]],
   "Cesar Garcia": [[10,57,69],[11,60,73],[11,54,66],[13,47,58],[16,46,50]],
+  "Harjit Sawhney": [[8,38,45],[13,72,75],[8,64,72],[13,85,90],[12,67,73]],
   "Angela Hamilton": [[8,34,40],[13,49,57],[11,33,36],[7,29,31],[12,40,43]],
-  "Savannah Peck": [[11,57,63],[3,72,83],[6,76,96],[19,60,62],[9,67,73]],
-  "Harjit Sawhney": [[3,24,30],[12,61,64],[8,62,69],[13,85,90],[12,67,73]],
   "Rebecca Barnes": [[0,8,12],[10,27,31],[15,48,53],[8,29,32],[15,44,47]],
-  "Johan Vrey": [[8,14,16],[8,16,16],[10,38,38],[8,37,37],[8,19,19]],
+  "Savannah Peck": [[11,57,63],[3,72,83],[6,76,96],[19,60,62],[9,67,73]],
+  "Johan Vrey": [[8,16,18],[8,26,27],[10,40,40],[8,37,37],[8,19,19]],
   "Joshua Bylsma": [[10,32,44],[15,42,47],[3,30,35],[7,32,37],[0,0,0]],
-  "Stephanie Hackert": [[8,90,96],[4,111,117],[6,127,140],[6,97,114],[11,96,102]],
   "Korbin Kirk": [[8,17,24],[7,40,44],[6,39,43],[12,31,37],[2,16,23]],
-  "Alyssa Perez": [[7,117,120],[11,175,178],[5,114,120],[4,118,120],[6,124,134]],
-  "Dominic": [[6,22,26],[5,18,20],[9,30,33],[7,14,14],[5,13,14]],
+  "Stephanie Hackert": [[8,90,96],[4,111,117],[6,127,140],[6,97,114],[11,96,102]],
+  "Alyssa Perez": [[7,117,120],[11,188,191],[6,119,125],[4,118,120],[6,124,134]],
   "Daniel Davies": [[2,25,26],[3,21,26],[5,28,31],[4,37,42],[13,53,61]],
-  "Alli Fowler": [[12,29,35],[4,35,38],[3,27,32],[3,18,22],[0,0,0]],
+  "Alli Fowler": [[15,37,48],[4,40,44],[3,28,33],[3,18,22],[0,0,0]],
+  "Francois Dore": [[7,36,38],[6,19,26],[4,21,22],[1,17,22],[5,56,57]],
   "Enzo Bizuti": [[0,0,0],[0,0,0],[3,5,5],[12,21,21],[7,12,12]],
   "Ariel Wolfe": [[7,35,39],[11,49,54],[3,34,35],[0,34,35],[0,24,25]],
   "Paige Givinsky": [[4,57,61],[8,51,55],[5,20,21],[1,13,16],[2,17,20]],
   "Derek Sindelman": [[3,98,102],[5,97,103],[4,65,67],[4,55,55],[3,36,40]],
-  "Francois Dore": [[5,33,33],[5,12,18],[4,14,15],[1,12,13],[3,24,25]],
   "Kirk Skilling": [[0,0,0],[0,0,0],[4,18,20],[8,22,22],[4,24,27]],
+  "Josh B": [[1,2,7],[4,9,12],[4,7,15],[4,21,26],[0,4,5]],
   "Bill Oleary": [[5,30,37],[2,32,36],[3,39,40],[1,44,49],[0,23,27]],
-  "Josh B": [[1,2,7],[3,4,7],[3,4,11],[4,12,17],[0,0,0]],
-  "Manuel": [[0,0,0],[0,0,0],[0,0,0],[8,10,10],[3,6,6]],
-  "Cameron Horton": [[0,0,0],[0,0,0],[4,13,14],[1,15,15],[4,15,15]],
+  "Logan Kennedy": [[2,26,31],[5,18,22],[4,15,15],[0,0,0],[0,0,0]],
   "Bill O'leary": [[0,0,0],[0,0,0],[1,16,17],[3,27,27],[5,24,25]],
-  "Logan Kennedy": [[2,17,21],[3,8,11],[3,6,6],[0,0,0],[0,0,0]],
+  "Cameron Horton": [[0,0,0],[0,0,0],[4,13,14],[1,15,15],[4,15,15]],
   "Solana Victoria": [[0,0,0],[0,0,0],[0,5,5],[5,40,40],[3,21,21]],
   "Joshua Crawford": [[0,64,74],[5,68,75],[2,40,49],[0,19,19],[0,0,0]],
-  "Harjit": [[5,14,15],[1,11,11],[0,2,3],[0,0,0],[0,0,0]],
   "Michele Harris": [[0,0,0],[0,0,0],[0,0,0],[2,18,19],[4,30,34]],
-  "Anthony Allen": [[3,12,18],[1,15,16],[1,15,16],[0,14,15],[0,0,0]],
-  "Francois": [[2,3,5],[1,7,8],[0,7,7],[0,5,9],[2,32,32]],
+  "Anthony Allen": [[3,12,18],[1,15,16],[1,15,16],[0,19,21],[0,0,0]],
   "Franco Genovese": [[0,0,0],[0,0,0],[0,0,0],[2,4,5],[3,3,3]],
   "Giovanni Gonzalez": [[0,0,0],[0,0,0],[0,0,0],[0,0,0],[4,5,5]],
-  "Alli": [[3,8,13],[0,5,6],[0,1,1],[0,0,0],[0,0,0]],
-  "Mark Kreidler": [[2,14,14],[0,24,25],[1,22,23],[0,7,8],[0,0,0]],
   "Bill O Leary": [[2,11,11],[0,8,11],[1,15,16],[0,4,4],[0,0,0]],
-  "Logan": [[0,9,10],[2,10,11],[1,9,9],[0,0,0],[0,0,0]],
-  "Eric": [[0,0,0],[1,5,6],[2,2,2],[0,0,0],[0,0,0]],
-  "Josh": [[0,0,0],[1,5,5],[1,3,4],[0,9,9],[0,4,5]],
+  "Mark Kreidler": [[2,14,14],[0,24,25],[1,22,23],[0,7,8],[0,0,0]],
   "Luisa Perez": [[0,0,0],[0,0,0],[0,0,0],[0,0,0],[2,9,11]],
-  "Jay Jones": [[1,16,18],[0,10,12],[0,2,2],[0,1,2],[0,0,0]],
-  "Merv Charles": [[1,8,11],[0,6,7],[0,2,2],[0,1,1],[0,0,0]],
-  "David Harris": [[1,2,2],[0,0,0],[0,0,0],[0,0,0],[0,0,0]],
-  "Javion Jones": [[0,52,58],[0,15,15],[1,10,12],[0,0,0],[0,0,0]],
-  "Grant Paris": [[0,2,2],[1,1,2],[0,0,0],[0,3,3],[0,0,0]],
-  "Alyssa": [[0,0,0],[0,13,13],[1,5,5],[0,0,0],[0,0,0]],
-  "Kirk.s@martalgroup.com": [[0,0,0],[0,0,0],[1,1,2],[0,0,0],[0,0,0]],
-  "Tim L": [[0,0,0],[0,0,0],[0,0,0],[0,0,0],[1,6,8]],
   "Cesar G": [[0,0,0],[0,0,0],[0,0,0],[0,0,0],[1,4,5]],
-  "Bill": [[0,10,10],[0,0,0],[0,0,0],[0,0,0],[0,0,0]],
-  "Matt Guthrie": [[0,4,5],[0,1,1],[0,0,0],[0,0,1],[0,0,0]],
-  "Johan": [[0,2,2],[0,10,11],[0,2,2],[0,0,0],[0,0,0]],
-  "Steph": [[0,1,1],[0,0,0],[0,0,0],[0,0,0],[0,0,0]],
-  "Elisha Johnson": [[0,0,0],[0,4,8],[0,12,14],[0,0,0],[0,0,0]],
-  "Eli Johnson": [[0,0,0],[0,4,4],[0,1,1],[0,0,0],[0,0,0]],
-  "Ali": [[0,0,0],[0,1,1],[0,0,0],[0,0,0],[0,0,0]],
-  "Nina Bastos": [[0,0,0],[0,0,0],[0,11,11],[0,8,8],[0,0,0]],
-  "Zach.f@martalgroup.com": [[0,0,0],[0,0,0],[0,0,3],[0,0,0],[0,0,0]],
-  "Cesar": [[0,0,0],[0,0,0],[0,3,3],[0,0,0],[0,0,0]],
-  "Send More Info": [[0,0,0],[0,0,0],[0,1,2],[0,0,0],[0,0,0]],
-  "Venus Powers": [[0,0,0],[0,0,0],[0,2,2],[0,1,1],[0,0,0]],
-  "Not The Right Person": [[0,0,0],[0,0,0],[0,1,1],[0,0,0],[0,0,0]],
-  "Timing": [[0,0,0],[0,0,0],[0,1,1],[0,0,0],[0,0,0]],
-  "Jason Andrews": [[0,0,0],[0,0,0],[0,1,1],[0,0,0],[0,0,0]],
-  "Francios Dore": [[0,0,0],[0,0,0],[0,0,0],[0,8,8],[0,0,0]],
-  "Anthony": [[0,0,0],[0,0,0],[0,0,0],[0,5,6],[0,0,0]],
-  "Stephanie H": [[0,0,0],[0,0,0],[0,0,0],[0,5,5],[0,0,0]],
-  "Haset": [[0,0,0],[0,0,0],[0,0,0],[0,4,4],[0,0,0]],
-  "Daniel D": [[0,0,0],[0,0,0],[0,0,0],[0,2,2],[0,0,0]],
-  "Manuel.l@martalgroup.com": [[0,0,0],[0,0,0],[0,0,0],[0,0,1],[0,0,0]],
-  "Haset Aklilu": [[0,0,0],[0,0,0],[0,0,0],[0,1,1],[0,1,1]],
-  "Send Sharp ICP 2 Email Today - Acknowledge Research Moment Briefly + Lead With Meta-from-ugc Angle (zero Retainer, Commission Only). NO Audit Push. Linkedin DM Same Angle. Future-pipeline Check-in 60-90 Days Out. Never Call Her Personal Cell Again.": [[0,0,0],[0,0,0],[0,0,0],[0,1,1],[0,0,0]],
+  "David Harris": [[1,2,2],[0,0,0],[0,0,0],[0,0,0],[0,0,0]],
+  "Grant Paris": [[0,2,2],[1,1,2],[0,0,0],[0,3,3],[0,0,0]],
+  "Javion Jones": [[0,52,58],[0,15,15],[1,10,12],[0,0,0],[0,0,0]],
+  "Jay Jones": [[1,16,18],[0,10,12],[0,2,2],[0,1,2],[0,0,0]],
+  "Kirk.s@martalgroup.com": [[0,0,0],[0,0,0],[1,1,2],[0,0,0],[0,0,0]],
+  "Merv Charles": [[1,8,11],[0,6,7],[0,2,2],[0,1,1],[0,0,0]],
+  "Tim L": [[0,0,0],[0,0,0],[0,0,0],[0,0,0],[1,6,8]],
   "Alejandro Cervantes": [[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,4,5]],
-  "Luca Ugalde": [[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,2,2]],
+  "Ali": [[0,0,0],[0,1,1],[0,0,0],[0,0,0],[0,0,0]],
+  "Bill": [[0,10,10],[0,0,0],[0,0,0],[0,0,0],[0,0,0]],
+  "Cesar": [[0,0,0],[0,0,0],[0,3,3],[0,0,0],[0,0,0]],
   "Cesar Duarte": [[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,1,1]],
+  "Daniel D": [[0,0,0],[0,0,0],[0,0,0],[0,2,2],[0,0,0]],
+  "Eli Johnson": [[0,0,0],[0,4,4],[0,1,1],[0,0,0],[0,0,0]],
+  "Elisha Johnson": [[0,0,0],[0,4,8],[0,12,14],[0,0,0],[0,0,0]],
+  "Francios Dore": [[0,0,0],[0,0,0],[0,0,0],[0,8,8],[0,0,0]],
+  "Haset Aklilu": [[0,0,0],[0,0,0],[0,0,0],[0,5,5],[0,1,1]],
+  "Jason Andrews": [[0,0,0],[0,0,0],[0,1,1],[0,0,0],[0,0,0]],
+  "Luca Ugalde": [[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,2,2]],
+  "Manuel.l@martalgroup.com": [[0,0,0],[0,0,0],[0,0,0],[0,0,1],[0,0,0]],
+  "Matt Guthrie": [[0,4,5],[0,1,1],[0,0,0],[0,0,1],[0,0,0]],
+  "Nina Bastos": [[0,0,0],[0,0,0],[0,11,11],[0,8,8],[0,0,0]],
+  "Not The Right Person": [[0,0,0],[0,0,0],[0,1,1],[0,0,0],[0,0,0]],
+  "Send More Info": [[0,0,0],[0,0,0],[0,1,2],[0,0,0],[0,0,0]],
+  "Send Sharp ICP 2 Email Today - Acknowledge Research Moment Briefly + Lead With Meta-from-ugc Angle (zero Retainer, Commission Only). NO Audit Push. Linkedin DM Same Angle. Future-pipeline Check-in 60-90 Days Out. Never Call Her Personal Cell Again.": [[0,0,0],[0,0,0],[0,0,0],[0,1,1],[0,0,0]],
+  "Steph": [[0,1,1],[0,0,0],[0,0,0],[0,0,0],[0,0,0]],
+  "Stephanie H": [[0,0,0],[0,0,0],[0,0,0],[0,5,5],[0,0,0]],
+  "Timing": [[0,0,0],[0,0,0],[0,1,1],[0,0,0],[0,0,0]],
+  "Venus Powers": [[0,0,0],[0,0,0],[0,2,2],[0,1,1],[0,0,0]],
+  "Zach.f@martalgroup.com": [[0,0,0],[0,0,0],[0,0,3],[0,0,0],[0,0,0]],
 };
 
 function sqlPaceStatus(cur, marchSQL){
   if(marchSQL===null||marchSQL===undefined) return {label:"No prior-period baseline",color:MUTED};
   const pct=marchSQL>0?cur/marchSQL:null;
   if(pct===null) return {label:"No prior-period data",color:MUTED};
-  if(pct>=1.1)   return {label:"Exceeding Jul 15",color:G};
-  if(pct>=0.95)  return {label:"Matching Jul 15",color:"#E5A000"};
-  if(pct>=0.5)   return {label:"Below Jul 15",color:"#B7791F"};
-  return           {label:"Well below Jul 15",color:"#D64242"};
+  if(pct>=1.1)   return {label:"Exceeding last period",color:G};
+  if(pct>=0.95)  return {label:"Matching last period",color:"#E5A000"};
+  if(pct>=0.5)   return {label:"Below last period",color:"#B7791F"};
+  return           {label:"Well below last period",color:"#D64242"};
 }
 
 function paceCol(val,key){
@@ -901,19 +890,19 @@ function PacePanel({repName}){
           <div style={{display:"flex",gap:6,alignItems:"center"}}>
             {pct!=null && (
               <span style={{fontSize:11,fontWeight:800,color:pctCol,fontFamily:FONT_DISPLAY,background:pctCol===G?"#F2F7E6":pctCol==="#E5A000"?"#FBF3DD":"#FBEAEA",borderRadius:4,padding:"2px 8px",border:`1px solid ${pctCol}33`}}>
-                {pct}% of Jul 15
+                {pct}% of last period
               </span>
             )}
             {delta!=null && (
               <span style={{fontSize:11,fontWeight:800,color:deltaCol,fontFamily:FONT_DISPLAY,whiteSpace:"nowrap"}}>
-                {delta>0?"+":""}{delta} vs Jul 15
+                {delta>0?"+":""}{delta} vs last period
               </span>
             )}
           </div>
         </div>
         {/* Prior period bar */}
         <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}>
-          <span style={subLabel}>Jul 15 Final</span>
+          <span style={subLabel}>Jun 16 – Jul 15</span>
           <span style={numStyle(MUTED)}>{marchVal??'—'}</span>
           <div style={barTrack}>
             <div style={{width:`${Math.min(100,marchVal!=null?marchVal/barMax*100:0)}%`,height:"100%",background:"#6B6B70",borderRadius:3}}/>
@@ -921,7 +910,7 @@ function PacePanel({repName}){
         </div>
         {/* Current period bar */}
         <div style={{display:"flex",alignItems:"center",gap:6}}>
-          <span style={{...subLabel,color:paceCol(curVal,key),fontWeight:700}}>Aug 15 Final</span>
+          <span style={{...subLabel,color:paceCol(curVal,key),fontWeight:700}}>Jul 16 – Aug 15</span>
           <span style={numStyle(paceCol(curVal,key))}>{curVal}</span>
           <div style={barTrack}>
             <div style={{width:`${Math.min(100,curVal/barMax*100)}%`,height:"100%",background:paceCol(curVal,key),borderRadius:3}}/>
@@ -942,13 +931,13 @@ function PacePanel({repName}){
           <div style={{display:"flex",gap:6,alignItems:"stretch"}}>
             {p.marchRank!=null && (
               <div style={{textAlign:"center",background:"#181818",color:"#fff",border:"1px solid "+BORDER,borderRadius:8,padding:"6px 14px",minWidth:76}}>
-                <div style={{fontSize:9,fontWeight:700,letterSpacing:"1px",textTransform:"uppercase",color:C_MUTED,fontFamily:FONT_BODY}}>Jul 15 Rank</div>
+                <div style={{fontSize:9,fontWeight:700,letterSpacing:"1px",textTransform:"uppercase",color:C_MUTED,fontFamily:FONT_BODY}}>Last Period Rank</div>
                 <div style={{fontSize:22,fontWeight:800,fontFamily:FONT_DISPLAY,lineHeight:1.1,color:"#B0B0B4"}}>#{p.marchRank}</div>
               </div>
             )}
             {p.aprRank!=null && (
               <div style={{textAlign:"center",background:"#181818",color:"#fff",border:"1px solid "+G+"55",borderRadius:8,padding:"6px 14px",minWidth:76,position:"relative"}}>
-                <div style={{fontSize:9,fontWeight:700,letterSpacing:"1px",textTransform:"uppercase",color:C_MUTED,fontFamily:FONT_BODY}}>Aug 15 Rank</div>
+                <div style={{fontSize:9,fontWeight:700,letterSpacing:"1px",textTransform:"uppercase",color:C_MUTED,fontFamily:FONT_BODY}}>This Period Rank</div>
                 <div style={{fontSize:22,fontWeight:800,fontFamily:FONT_DISPLAY,lineHeight:1.1,color:C_GREEN}}>#{p.aprRank}</div>
                 {rankMove!=null && rankMove!==0 && (
                   <div style={{fontSize:9,fontWeight:800,color:rankMove>0?C_GREEN:"#F0908C",fontFamily:FONT_BODY,marginTop:2}}>{rankMove>0?"↑ +":"↓ "}{rankMove}</div>
@@ -1246,23 +1235,25 @@ function CompanyTab({cms}){
   const selectStyle={width:"100%",background:CARD2,color:TEXT,border:`1px solid ${BORDER2}`,borderRadius:4,padding:"8px 12px",fontSize:13,fontFamily:FONT_BODY,outline:"none",cursor:"pointer"};
 
   // Band helpers
-  const sdrBand=avg=>avg>=SDR_PASS_THRESHOLD?"pass":avg>=SDR_OBS_THRESHOLD?"observe":"below";
+  // Band = booked meetings in the CURRENT period (7/16-8/15). PASS >=10 · OBSERVE 5-9 · BELOW <5.
+  const sdrBand=v=>v>=SDR_PASS_THRESHOLD?"pass":v>=SDR_OBS_THRESHOLD?"observe":"below";
   const bandCol=b=>b==="pass"?G:b==="observe"?"#E5A000":"#D64242";
   const bandLabel=b=>b==="pass"?"PASS":b==="observe"?"OBSERVE":"BELOW";
-  const scoreCol=v=>{if(v==null)return BORDER2;if(v>=5)return"#557519";if(v>=3.5)return G;if(v>=3)return"#E5A000";if(v>=2)return"#B7791F";return"#D64242";};
+  const scoreCol=v=>{if(v==null)return BORDER2;if(v>=20)return"#557519";if(v>=10)return G;if(v>=5)return"#E5A000";if(v>=1)return"#B7791F";return"#D64242";};
 
   // Roster filtering
   const roster=useMemo(()=>loadRoster(),[]);
 
   // SDR rows — filtered by showRanking
-  // Hot streak = score improved across the last 3 rankings (Apr 15 < May 15 < Jul 15)
-  // Field names jan/feb/mar are positional slots holding Apr 15 / May 15 / Jul 15 scores
+  // Mover = booked more meetings this period than last (feb < mar).
+  // Field names jan/feb/mar are positional slots holding booked meetings for
+  // 5/16-6/15, 6/16-7/15 and 7/16-8/15 respectively.
   const sdrRows=Object.entries(SDR_SCORES)
     .filter(([name])=>repShowsInRanking(name,roster))
     .map(([name,s])=>({
-      name,...s,band:sdrBand(s.avg),
-      hotStreak: (s.jan!=null && s.feb!=null && s.mar!=null && s.mar > s.feb && s.feb > s.jan),
-      streakGain: (s.jan!=null && s.feb!=null && s.mar!=null && s.mar > s.feb && s.feb > s.jan) ? (s.mar - s.jan) : 0,
+      name,...s,band:sdrBand(s.mar??0),
+      hotStreak: (s.feb!=null && s.mar!=null && s.mar > s.feb),
+      streakGain: (s.feb!=null && s.mar!=null && s.mar > s.feb) ? (s.mar - s.feb) : 0,
     }));
   const passCount=sdrRows.filter(r=>r.band==="pass").length;
   const obsCount=sdrRows.filter(r=>r.band==="observe").length;
@@ -1281,7 +1272,7 @@ function CompanyTab({cms}){
   const curRows=Object.entries(visiblePace).map(([name,p])=>({
     name,mql:p.curMQL,sql:p.curSQL,mtg:p.curMtg,
     prevMtg:p.marchFlips,prevSQL:p.marchSQL,prevMQL:p.marchMQL,
-    band:sdrBand(SDR_SCORES[name]?.avg??0),
+    band:sdrBand(SDR_SCORES[name]?.mar??0),
   }));
   const curFiltered=curFilter==="all"?curRows:curRows.filter(r=>r.band===curFilter);
   const curSorted=[...curFiltered].sort((a,b)=>(b[curSort]||0)-(a[curSort]||0));
@@ -1336,13 +1327,13 @@ function CompanyTab({cms}){
           Booked meetings = the campaign dashboard's FLIP count. MQLs and SQLs are its own MQL and SQL counts. All three read from martal-campaign-dashboard.vercel.app on 15 Aug 2026 via its custom date-range control, one window at a time, so every period is measured identically. The dashboard reports 15 sheets skipped and 1 lead with a bad date across all time.</div>
       </div>
 
-    {/* Team Score KPI Band — July 2026 rolling avg of last 3 rankings */}
+    {/* Booked-meeting band — current period (7/16-8/15) vs prior period (6/16-7/15) */}
     {(() => {
-      const teamAvg = sdrRows.length>0 ? (sdrRows.reduce((s,r)=>s+(r.avg||0),0)/sdrRows.length) : 0;
-      const teamAvgCol = teamAvg>=3.5?G:teamAvg>=3.0?"#E5A000":"#D64242";
+      const teamAvg = sdrRows.length>0 ? (sdrRows.reduce((s,r)=>s+(r.mar||0),0)/sdrRows.length) : 0;
+      const teamAvgCol = teamAvg>=10?G:teamAvg>=5?"#E5A000":"#D64242";
       const total = sdrRows.length;
-      // Prior scoring (May 2026 report, 3-mo rolling) baselines for delta display
-      const PRIOR = {avg:3.99, pass:18, obs:2, below:10};
+      // Prior period (6/16-7/15) on the identical basis, from the same campaign data
+      const PRIOR = {avg:8.57, pass:13, obs:7, below:24};
       const dAvg = teamAvg - PRIOR.avg;
       const dPass = passCount - PRIOR.pass;
       const dObs = obsCount - PRIOR.obs;
@@ -1363,7 +1354,7 @@ function CompanyTab({cms}){
         <div style={{background:CARD,border:"1px solid "+BORDER,borderRadius:12,padding:"18px 22px",marginBottom:16,boxShadow:SHADOW}}>
           <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:14}}>
             <div style={{width:14,height:2,background:G}}/>
-            <div style={{fontSize:10,fontWeight:800,letterSpacing:"2px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY}}>Team Score Snapshot — July 2026 · Rolling Avg of Last 3 Rankings (Apr 15 · May 15 · Jul 15)</div>
+            <div style={{fontSize:10,fontWeight:800,letterSpacing:"2px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY}}>Booked Meetings Per Rep — Jul 16–Aug 15 vs Jun 16–Jul 15</div>
           </div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(4, 1fr)",gap:14}}>
             {/* Team avg */}
@@ -1371,35 +1362,35 @@ function CompanyTab({cms}){
               <div style={{fontSize:10,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY}}>Team Average</div>
               <div style={{fontSize:36,fontWeight:900,color:teamAvgCol,fontFamily:FONT_DISPLAY,letterSpacing:"-0.8px",margin:"6px 0",lineHeight:1}}>{teamAvg.toFixed(2)}</div>
               <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY}}>across {total} ranked reps</div>
-              <div style={{fontSize:12,color:MUTED,fontFamily:FONT_BODY,marginTop:6}}>vs May: {PRIOR.avg.toFixed(2)} ({fmtAvgDelta(dAvg)})</div>
+              <div style={{fontSize:12,color:MUTED,fontFamily:FONT_BODY,marginTop:6}}>vs Jun 16–Jul 15: {PRIOR.avg.toFixed(2)} ({fmtAvgDelta(dAvg)})</div>
             </div>
             {/* Pass */}
             <div style={{background:CARD,border:"1px solid "+BORDER,borderLeft:"3px solid "+G,borderRadius:8,padding:"14px 18px"}}>
               <div style={{fontSize:10,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY}}>Pass</div>
               <div style={{fontSize:36,fontWeight:900,color:G,fontFamily:FONT_DISPLAY,letterSpacing:"-0.8px",margin:"6px 0",lineHeight:1}}>{passCount}</div>
-              <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY}}>≥ 3.50  ·  {total>0?Math.round((passCount/total)*100):0}% of team</div>
-              <div style={{fontSize:12,color:MUTED,fontFamily:FONT_BODY,marginTop:6}}>vs May: {PRIOR.pass} ({fmtDelta(dPass,true)})</div>
+              <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY}}>10+ meetings  ·  {total>0?Math.round((passCount/total)*100):0}% of team</div>
+              <div style={{fontSize:12,color:MUTED,fontFamily:FONT_BODY,marginTop:6}}>vs Jun 16–Jul 15: {PRIOR.pass} ({fmtDelta(dPass,true)})</div>
             </div>
             {/* Observe */}
             <div style={{background:CARD,border:"1px solid "+BORDER,borderLeft:"3px solid #E5A000",borderRadius:8,padding:"14px 18px"}}>
               <div style={{fontSize:10,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY}}>Observe</div>
               <div style={{fontSize:36,fontWeight:900,color:"#E5A000",fontFamily:FONT_DISPLAY,letterSpacing:"-0.8px",margin:"6px 0",lineHeight:1}}>{obsCount}</div>
-              <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY}}>3.00 – 3.49  ·  {total>0?Math.round((obsCount/total)*100):0}% of team</div>
-              <div style={{fontSize:12,color:MUTED,fontFamily:FONT_BODY,marginTop:6}}>vs May: {PRIOR.obs} ({fmtDelta(dObs,false)})</div>
+              <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY}}>5 – 9 meetings  ·  {total>0?Math.round((obsCount/total)*100):0}% of team</div>
+              <div style={{fontSize:12,color:MUTED,fontFamily:FONT_BODY,marginTop:6}}>vs Jun 16–Jul 15: {PRIOR.obs} ({fmtDelta(dObs,false)})</div>
             </div>
             {/* Below */}
             <div style={{background:CARD,border:"1px solid "+BORDER,borderLeft:"3px solid #D64242",borderRadius:8,padding:"14px 18px"}}>
               <div style={{fontSize:10,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY}}>Below</div>
               <div style={{fontSize:36,fontWeight:900,color:"#D64242",fontFamily:FONT_DISPLAY,letterSpacing:"-0.8px",margin:"6px 0",lineHeight:1}}>{belowCount}</div>
-              <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY}}>&lt; 3.00  ·  {total>0?Math.round((belowCount/total)*100):0}% of team</div>
-              <div style={{fontSize:12,color:MUTED,fontFamily:FONT_BODY,marginTop:6}}>vs May: {PRIOR.below} ({fmtDelta(dBelow,false)})</div>
+              <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY}}>under 5 meetings  ·  {total>0?Math.round((belowCount/total)*100):0}% of team</div>
+              <div style={{fontSize:12,color:MUTED,fontFamily:FONT_BODY,marginTop:6}}>vs Jun 16–Jul 15: {PRIOR.below} ({fmtDelta(dBelow,false)})</div>
             </div>
           </div>
         </div>
       );
     })()}
 
-    {/* Hot Streak Panel — reps with 3 consecutive months of score improvement */}
+    {/* Movers — reps who booked more meetings this period than last */}
     {(() => {
       const hotReps = [...sdrRows].filter(r=>r.hotStreak).sort((a,b)=>b.streakGain-a.streakGain);
       if (hotReps.length===0) return null;
@@ -1409,8 +1400,8 @@ function CompanyTab({cms}){
             <div style={{display:"flex",alignItems:"center",gap:10}}>
               <div style={{fontSize:18}}>🔥</div>
               <div>
-                <div style={{fontSize:12,fontWeight:800,letterSpacing:"2px",textTransform:"uppercase",color:"#E5A000",fontFamily:FONT_BODY}}>Hot Streak — Improving Across Last 3 Rankings</div>
-                <div style={{fontSize:11,color:MUTED,fontFamily:FONT_BODY,marginTop:3}}>Score improved every month, Apr → May → Jun 2026</div>
+                <div style={{fontSize:12,fontWeight:800,letterSpacing:"2px",textTransform:"uppercase",color:"#E5A000",fontFamily:FONT_BODY}}>Biggest Movers — Jun 16–Jul 15 → Jul 16–Aug 15</div>
+                <div style={{fontSize:11,color:MUTED,fontFamily:FONT_BODY,marginTop:3}}>Booked more meetings this period than last</div>
               </div>
             </div>
             <div style={{fontSize:11,color:MUTED,fontFamily:FONT_BODY,background:"#FFFFFF",border:"1px solid "+BORDER,padding:"5px 12px",borderRadius:20,fontWeight:700}}>{hotReps.length} {hotReps.length===1?"rep":"reps"}</div>
@@ -1423,13 +1414,11 @@ function CompanyTab({cms}){
                   <div style={{fontSize:12,fontWeight:700,color:TEXT,fontFamily:FONT_BODY,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.name}</div>
                 </div>
                 <div style={{fontSize:11,color:MUTED,fontFamily:FONT_BODY,marginBottom:4}}>
-                  <span style={{color:"#4D4D51"}}>{r.jan?.toFixed(2)}</span>
+                  <span style={{color:"#6B6B70"}}>{r.feb ?? 0}</span>
                   <span style={{color:MUTED,margin:"0 4px"}}>→</span>
-                  <span style={{color:"#6B6B70"}}>{r.feb?.toFixed(2)}</span>
-                  <span style={{color:MUTED,margin:"0 4px"}}>→</span>
-                  <span style={{color:G,fontWeight:800}}>{r.mar?.toFixed(2)}</span>
+                  <span style={{color:G,fontWeight:800}}>{r.mar ?? 0}</span>
                 </div>
-                <div style={{fontSize:11,color:G,fontWeight:800,fontFamily:FONT_DISPLAY}}>+{r.streakGain.toFixed(2)} <span style={{fontSize:9,color:MUTED,fontWeight:500,fontFamily:FONT_BODY,textTransform:"uppercase",letterSpacing:"1px"}}>3-mo gain</span></div>
+                <div style={{fontSize:11,color:G,fontWeight:800,fontFamily:FONT_DISPLAY}}>+{r.streakGain} <span style={{fontSize:9,color:MUTED,fontWeight:500,fontFamily:FONT_BODY,textTransform:"uppercase",letterSpacing:"1px"}}>more meetings</span></div>
               </div>
             ))}
           </div>
@@ -1452,7 +1441,7 @@ function CompanyTab({cms}){
     {section==="overview"&&<div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:10,marginBottom:12}}>
         <div>
-          <div style={{fontSize:9,fontWeight:700,color:MUTED,letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FONT_BODY,marginBottom:6}}>SDR Score Overview — Jul 2026 · 3-Month Rolling Average</div>
+          <div style={{fontSize:9,fontWeight:700,color:MUTED,letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FONT_BODY,marginBottom:6}}>Booked Meetings Overview — Jul 16–Aug 15, 2026</div>
           <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY,marginBottom:8}}>
             <span style={{color:G,fontWeight:700}}>Pass ≥3.5</span> &nbsp;·&nbsp;
             <span style={{color:"#E5A000",fontWeight:700}}>Observe 3.0–3.49</span> &nbsp;·&nbsp;
@@ -1467,7 +1456,7 @@ function CompanyTab({cms}){
         </div>
         <div style={{display:"flex",gap:5,alignItems:"center",flexWrap:"wrap"}}>
           <span style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY}}>Sort:</span>
-          {[["avg","3-Mo Avg"],["mar","Jul 15 Score"],["gap","Gap vs 3.5"]].map(([id,label])=>(
+          {[["mar","This Period"],["avg","3-Period Avg"],["gap","Gap vs 10"]].map(([id,label])=>(
             <button key={id} onClick={()=>setSortBy(id)} style={{padding:"4px 10px",fontSize:10,fontWeight:700,border:`1px solid ${sortBy===id?G:BORDER}`,background:sortBy===id?G:"transparent",color:sortBy===id?"#fff":MUTED,borderRadius:4,cursor:"pointer",fontFamily:FONT_BODY}}>{label}</button>
           ))}
           <button onClick={()=>setShowNotes(n=>!n)} style={{padding:"4px 10px",fontSize:10,fontWeight:700,border:`1px solid ${showNotes?G:BORDER}`,background:showNotes?G+"15":"transparent",color:showNotes?G:MUTED,borderRadius:4,cursor:"pointer",fontFamily:FONT_BODY}}>Notes {showNotes?"▲":"▼"}</button>
@@ -1509,16 +1498,16 @@ function CompanyTab({cms}){
           <div style={{overflowX:"auto"}}>
             <table style={{width:"100%",borderCollapse:"collapse",fontSize:11,fontFamily:FONT_BODY}}>
               <thead><tr style={{borderBottom:`2px solid ${BORDER2}`}}>
-                {["SDR","Apr 15","May 15","Jul 15","3-Mo Avg","Gap vs 3.5","Activity","Tier",...(showNotes?["Notes"]:[])].map(h=>(
+                {["SDR","May 16–Jun 15","Jun 16–Jul 15","Jul 16–Aug 15","3-Period Avg","Gap vs 10","Accounts","Tier",...(showNotes?["Notes"]:[])].map(h=>(
                   <th key={h} style={{padding:"5px 10px",textAlign:h==="SDR"||h==="Notes"?"left":"center",color:MUTED,fontWeight:700,fontSize:9,textTransform:"uppercase",letterSpacing:"1px",whiteSpace:"nowrap"}}>{h}</th>
                 ))}
               </tr></thead>
               <tbody>{sorted2.map((r,i)=>(
                 <tr key={r.name} style={{borderBottom:`1px solid ${BORDER}`,background:i%2?CARD3:"transparent",cursor:"pointer"}} onClick={()=>{setSelectedRep(r.name);setSection("repdetail");}}>
                   <td style={{padding:"6px 10px",fontWeight:600,color:G,textDecoration:"underline",whiteSpace:"nowrap"}}>{r.name}{r.hotStreak&&<span title={`Hot streak: +${r.streakGain.toFixed(2)} over 3 mo`} style={{marginLeft:6,fontSize:11}}>🔥</span>}</td>
-                  <td style={{padding:"6px 10px",textAlign:"center",color:scoreCol(r.jan)}}>{r.jan!=null?r.jan.toFixed(2):"—"}</td>
-                  <td style={{padding:"6px 10px",textAlign:"center",color:scoreCol(r.feb)}}>{r.feb!=null?r.feb.toFixed(2):"—"}</td>
-                  <td style={{padding:"6px 10px",textAlign:"center",color:scoreCol(r.mar),fontWeight:600}}>{r.mar!=null?r.mar.toFixed(2):"—"}</td>
+                  <td style={{padding:"6px 10px",textAlign:"center",color:scoreCol(r.jan)}}>{r.jan!=null?r.jan:"—"}</td>
+                  <td style={{padding:"6px 10px",textAlign:"center",color:scoreCol(r.feb)}}>{r.feb!=null?r.feb:"—"}</td>
+                  <td style={{padding:"6px 10px",textAlign:"center",color:scoreCol(r.mar),fontWeight:600}}>{r.mar!=null?r.mar:"—"}</td>
                   <td style={{padding:"6px 10px",textAlign:"center",fontWeight:800,color:bandCol(r.band)}}>{r.avg.toFixed(2)}</td>
                   <td style={{padding:"6px 10px",textAlign:"center",fontWeight:700,color:r.gap>=0?G:"#D64242"}}>{r.gap>=0?"+":""}{r.gap.toFixed(2)}</td>
                   <td style={{padding:"6px 10px",textAlign:"center",color:MUTED}}>{r.act.toFixed(1)}</td>
@@ -1618,7 +1607,7 @@ function CompanyTab({cms}){
       <div style={{overflowX:"auto"}}>
         <table style={{width:"100%",borderCollapse:"collapse",fontSize:11,fontFamily:FONT_BODY}}>
           <thead><tr style={{borderBottom:`2px solid ${BORDER2}`}}>
-            {["SDR","Apr 15","May 15","Jul 15","3-Mo Avg","Trend","Tier"].map(h=>(
+            {["SDR","May 16–Jun 15","Jun 16–Jul 15","Jul 16–Aug 15","3-Period Avg","Trend","Tier"].map(h=>(
               <th key={h} style={{padding:"5px 12px",textAlign:h==="SDR"?"left":"center",color:MUTED,fontWeight:700,fontSize:9,textTransform:"uppercase",letterSpacing:"1px"}}>{h}</th>
             ))}
           </tr></thead>
@@ -1665,7 +1654,7 @@ function CompanyTab({cms}){
         <table style={{borderCollapse:"collapse",fontSize:11,fontFamily:FONT_BODY,width:"100%"}}>
           <thead><tr>
             <th style={{padding:"5px 12px",textAlign:"left",color:MUTED,fontWeight:700,fontSize:9,textTransform:"uppercase",letterSpacing:"1px",minWidth:160}}>SDR</th>
-            {["Apr 15","May 15","Jul 15","3-Mo Avg","Tier"].map(h=>(
+            {["May 16–Jun 15","Jun 16–Jul 15","Jul 16–Aug 15","3-Period Avg","Tier"].map(h=>(
               <th key={h} style={{padding:"5px 16px",textAlign:"center",color:MUTED,fontWeight:700,fontSize:9,textTransform:"uppercase",letterSpacing:"1px",whiteSpace:"nowrap"}}>{h}</th>
             ))}
           </tr></thead>
@@ -1747,13 +1736,13 @@ function CompanyTab({cms}){
               <div style={{fontSize:13,fontWeight:800,color:TEXT,fontFamily:FONT_DISPLAY,marginBottom:4}}>{selectedRep}{isHot&&<span title={`Hot streak: +${streakGain.toFixed(2)} over last 3 rankings`} style={{marginLeft:8,fontSize:14}}>🔥</span>}</div>
               {s&&<>
                 <div style={{fontSize:32,fontWeight:900,color:col,fontFamily:FONT_DISPLAY,lineHeight:1}}>{s.avg.toFixed(2)}</div>
-                <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY,marginTop:2}}>3-Mo Avg · {s.gap>=0?"+":{}.toString()}{s.gap.toFixed(2)} vs 3.5 threshold</div>
+                <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY,marginTop:2}}>3-period avg meetings · {s.gap>=0?"+":{}.toString()}{s.gap.toFixed(2)} vs the 10 threshold</div>
                 <div style={{marginTop:8}}><Pill label={bandLabel(band)} color={col}/></div>
               </>}
             </div>
             {s&&<div style={{flex:2,minWidth:240,...CS}}>
               <div style={{fontSize:9,fontWeight:700,color:MUTED,letterSpacing:"1.2px",textTransform:"uppercase",fontFamily:FONT_BODY,marginBottom:10}}>Monthly Scores</div>
-              {[["Apr 2026",s.jan],["May 2026",s.feb],["Jul 2026",s.mar],["3-Mo Avg",s.avg]].map(([l,v])=>(
+              {[["May 16–Jun 15",s.jan],["Jun 16–Jul 15",s.feb],["Jul 16–Aug 15",s.mar],["3-Period Avg",s.avg]].map(([l,v])=>(
                 <div key={l} style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
                   <span style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY,width:70}}>{l}</span>
                   <span style={{fontWeight:700,color:v!=null?scoreCol(v):MUTED2,width:36,textAlign:"right"}}>{v!=null?v.toFixed(2):"—"}</span>
@@ -1856,7 +1845,7 @@ async function buildRepPDF(repName, accs){
     doc.setFontSize(7); doc.setFont('helvetica','bold');
     doc.setTextColor(...MUTED_RGB);
     pdfText(doc,'PERFORMANCE — AUG 15 PERIOD COMPLETE (7/16–8/15)',M,y);
-    // Two stacked rank badges on right: Jul 15 Rank + Aug 15 Rank
+    // Two stacked rank badges on right: Last Period Rank + This Period Rank
     const rankW=26, rankH=10, rankGap=2;
     let rx = W - M - (rankW*2 + rankGap);
     if(p.marchRank!=null){
@@ -1910,7 +1899,7 @@ async function buildRepPDF(repName, accs){
       pdfText(doc,m.label.toUpperCase(),M,y);
       if(pct!=null){
         doc.setTextColor(...pctCol(pct));
-        pdfText(doc,`${pct}% of Jul 15`,barR+2,y);
+        pdfText(doc,`${pct}% of last period`,barR+2,y);
       }
       if(delta!=null){
         const dc = delta>0 ? G_RGB : delta<0 ? RED_RGB : [245,197,24];
@@ -3416,11 +3405,11 @@ function CompanyChurnTab(){
 
   const crColor=crCol(last.cr);
 
-  // August 2026 — in-progress projection, NOT a closed month. As of Aug 14: 5 logged
-  // cancels ÷ 14 elapsed days × 31 days in month = projected total. Refresh this block
-  // (and fold Aug into RAW as a real closed month) once September data confirms the
-  // actual figure — that real number can't post before Sep 1.
-  const projAugAsOfDay=14, projAugDaysInMonth=31, projAugLoggedSoFar=5, projAugDcSoFar=9;
+  // August 2026 — in-progress projection, NOT a closed month. As of Aug 15: 5 logged
+  // cancels (confirmed against the live cancellations tracker, 15 Aug 2026) ÷ 15 elapsed
+  // days × 31 days = projected total. Fold Aug into RAW as a real closed month once
+  // September confirms it — that real number can't post before Sep 1.
+  const projAugAsOfDay=15, projAugDaysInMonth=31, projAugLoggedSoFar=5, projAugDcSoFar=9;
   const projAugTotal=Math.round(projAugLoggedSoFar*projAugDaysInMonth/projAugAsOfDay);
   const projAugDc=18;
   const projAugActive=86;
@@ -3431,8 +3420,9 @@ function CompanyChurnTab(){
   return (<div>
     {/* headline note */}
     <div style={{fontSize:11,color:MUTED,fontFamily:FONT_BODY,marginBottom:16,lineHeight:1.5}}>
-      Company-wide churn for <span style={{color:TEXT,fontWeight:700}}>July 2026</span>, measured at month-end (calendar month, through July 31).
-      Churn rate = contracts lost ÷ trailing 3-month average of active clients. <span style={{color:MUTED2}}>Performance metrics elsewhere are mid-month (15th) — different cadence.</span>
+      Company-wide churn, measured at month-end. Churn rate = contracts lost ÷ trailing 3-month average of active clients.{' '}
+      <span style={{color:TEXT,fontWeight:700}}>Cancellations are running at half of July's pace.</span> July closed at 21 cancels and a 20.52% rate; August has 5 logged through the 15th — 0.33 a day against July's 0.68, a <span style={{color:G,fontWeight:700}}>51% drop in pace</span>, tracking to ~10 cancels and roughly 11% for the month.{' '}
+      <span style={{color:MUTED2}}>Churn is a calendar-month measure; performance metrics elsewhere run 16th-to-15th — different cadence by design.</span>
     </div>
 
     {/* stat cards — the 4 real, closed-month numbers */}
@@ -3455,7 +3445,7 @@ function CompanyChurnTab(){
         <div style={{fontSize:28,fontWeight:900,color:"#1A6A98",fontFamily:FONT_DISPLAY,letterSpacing:"-0.5px",lineHeight:1}}>~{projAugDc}</div>
         <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY,marginTop:4}}>{projAugDcSoFar} logged through Aug {projAugAsOfDay}</div>
       </div>
-      <div style={{flex:1,minWidth:220,fontSize:10,color:MUTED2,fontFamily:FONT_BODY,lineHeight:1.5}}>August is still open — both figures are paced from what's logged through Aug {projAugAsOfDay} out to the full {projAugDaysInMonth}-day month. Neither is a confirmed close; the real numbers can't post until September 1.</div>
+      <div style={{flex:1,minWidth:220,fontSize:10,color:MUTED2,fontFamily:FONT_BODY,lineHeight:1.5}}>August is still open — both figures are paced from what's logged through Aug {projAugAsOfDay} out to the full {projAugDaysInMonth}-day month. At this pace the churn rate roughly halves, from 20.52% in July to ~{projAugRate}% — a {Math.abs(((projAugRate-20.52)/20.52)*100).toFixed(0)}% drop. Neither figure is a confirmed close; the real numbers can't post until September 1.</div>
     </div>
 
     {/* churn rate trend */}
