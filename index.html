@@ -685,7 +685,7 @@ const SDR_SCORES = {
   "Haset Aklilu": {jan:null,feb:0,mar:0,avg:0.0,gap:-10.0,act:1,tier:"BELOW"},
   "Jesse Shorr": {jan:12,feb:14,mar:12,avg:12.67,gap:2.67,act:7,tier:"PASS"},
   "Johan Vrey": {jan:10,feb:8,mar:8,avg:8.67,gap:-1.33,act:3,tier:"OBSERVE"},
-  "Kellee Madonia": {jan:31,feb:44,mar:46,avg:40.33,gap:30.33,act:12,tier:"PASS"},
+  "Kellee Madonia": {jan:31,feb:44,mar:47,avg:40.67,gap:30.67,act:12,tier:"PASS"},
   "Kirk Skilling": {jan:4,feb:8,mar:4,avg:5.33,gap:-4.67,act:4,tier:"OBSERVE"},
   "Korbin Kirk": {jan:6,feb:12,mar:2,avg:6.67,gap:-3.33,act:5,tier:"OBSERVE"},
   "Luca Ugalde": {jan:null,feb:null,mar:0,avg:0.0,gap:-10.0,act:1,tier:"BELOW"},
@@ -713,18 +713,18 @@ const APR_ELAPSED = 1.0; // July 15: period closed (30-day ranking 6/16 → 7/15
 // read off its custom date-range control for each 16th-to-15th window. One source, one method,
 // every period. MARCH_CO = prior period (6/16-7/15). APR_MTD_CO = current period (7/16-8/15, CLOSED).
 const MARCH_CO = {mql:1856, sql:1705, mtg:378};
-const APR_MTD_CO = {mql:1722, sql:1565, mtg:391};
+const APR_MTD_CO = {mql:1722, sql:1565, mtg:392};
 const HISTORY = [
   {label:'Mar 16 - Apr 15', mtg:233, sql:1466, mql:1667},
   {label:'Apr 16 - May 15', mtg:260, sql:1704, mql:1893},
   {label:'May 16 - Jun 15', mtg:282, sql:1587, mql:1773},
   {label:'Jun 16 - Jul 15', mtg:378, sql:1705, mql:1856},
-  {label:'Jul 16 - Aug 15', mtg:391, sql:1565, mql:1722},
+  {label:'Jul 16 - Aug 15', mtg:392, sql:1565, mql:1722},
 ];
 
 const REP_PACE={
   "Dominic Libertoski": {marchRank:1, aprRank:1, marchSQL:150, marchFlips:60, marchMQL:159, curMQL:140, curSQL:124, curMtg:56},
-  "Kellee Madonia": {marchRank:2, aprRank:2, marchSQL:67, marchFlips:44, marchMQL:69, curMQL:89, curSQL:83, curMtg:46},
+  "Kellee Madonia": {marchRank:2, aprRank:2, marchSQL:67, marchFlips:44, marchMQL:69, curMQL:89, curSQL:83, curMtg:47},
   "Manuel Linero": {marchRank:3, aprRank:3, marchSQL:48, marchFlips:38, marchMQL:48, curMQL:47, curSQL:45, curMtg:32},
   "Blake Peremel": {marchRank:6, aprRank:4, marchSQL:93, marchFlips:18, marchMQL:97, curMQL:86, curSQL:82, curMtg:26},
   "Anand Pandey": {marchRank:4, aprRank:5, marchSQL:147, marchFlips:27, marchMQL:157, curMQL:193, curSQL:171, curMtg:23},
@@ -763,7 +763,7 @@ const REP_PACE={
 // Verified per-rep history, five periods Mar-Aug 2026: [meetings, SQLs(interest-only), MQLs]
 const REP_HISTORY={
   "Dominic Libertoski": [[26,101,119],[28,108,128],[31,119,132],[60,150,159],[56,124,140]],
-  "Kellee Madonia": [[14,23,29],[25,45,51],[31,56,58],[44,67,69],[46,83,89]],
+  "Kellee Madonia": [[14,23,29],[25,45,51],[31,56,58],[44,67,69],[47,83,89]],
   "Anand Pandey": [[24,118,133],[14,105,116],[17,82,93],[27,147,157],[23,171,193]],
   "Blake Peremel": [[6,56,60],[9,79,80],[16,71,75],[18,93,97],[26,82,86]],
   "Manuel Linero": [[0,0,0],[0,0,0],[5,11,12],[38,48,48],[32,45,47]],
@@ -1100,7 +1100,7 @@ function CompanyPaceCard(){
   const GROWTH = [
     {label:"MQLs",     pct:-7.2, absNow:APR_MTD_CO.mql, absMarch:MARCH_CO.mql, desc:"vs prior period · +3.3% since March"},
     {label:"SQLs",     pct:-8.2, absNow:APR_MTD_CO.sql, absMarch:MARCH_CO.sql, desc:"vs prior period · +6.8% since March"},
-    {label:"Meetings", pct:3.4,  absNow:APR_MTD_CO.mtg, absMarch:MARCH_CO.mtg, desc:"5th straight rise · +68% since March"},
+    {label:"Meetings", pct:3.7,  absNow:APR_MTD_CO.mtg, absMarch:MARCH_CO.mtg, desc:"5th straight rise · +68% since March"},
   ];
   const pctCol = (p) => p>=10?C_GREEN : p>=0?C_GREEN : p>=-10?"#F0C24A" : "#F08A8A";
   const glassTile = {background:"rgba(255,255,255,.12)",border:"1px solid rgba(255,255,255,.20)",WebkitBackdropFilter:"blur(16px) saturate(1.3)",backdropFilter:"blur(16px) saturate(1.3)"};
@@ -1114,7 +1114,7 @@ function CompanyPaceCard(){
             <div style={{fontSize:13,fontWeight:800,letterSpacing:"2px",textTransform:"uppercase",color:C_MUTED,fontFamily:FONT_BODY}}>Jul 16–Aug 15, 2026 — Period Complete</div>
           </div>
           <div style={{fontSize:28,fontWeight:900,color:C_TEXT,fontFamily:FONT_DISPLAY,letterSpacing:"-0.5px",lineHeight:1.15}}>Booked meetings up 68% since March — <span style={{color:C_GREEN}}>five straight rises</span></div>
-          <div style={{fontSize:15,color:C_MUTED,fontFamily:FONT_BODY,marginTop:8,lineHeight:1.55}}>Final count for the closed 7/16–8/15 period: <span style={{color:C_TEXT}}>391 booked meetings vs 378 the period before, up 3.4%</span>. Booked meetings have risen every period since the Landbase migration completed 1 April: <span style={{color:C_GREEN}}>233 to 260 to 282 to 378 to 391</span>. Top of funnel did not: MQLs came in at 1,722 (down 7.2% on the period, up 3.3% since March) and SQLs at 1,565 (down 8.2% on the period). The gain is conversion, not volume — meetings per MQL went from 14.0% in March to <span style={{color:C_GREEN}}>22.7%</span> now.</div>
+          <div style={{fontSize:15,color:C_MUTED,fontFamily:FONT_BODY,marginTop:8,lineHeight:1.55}}>Final count for the closed 7/16–8/15 period: <span style={{color:C_TEXT}}>392 booked meetings vs 378 the period before, up 3.7%</span>. Booked meetings have risen every period since the Landbase migration completed 1 April: <span style={{color:C_GREEN}}>233 to 260 to 282 to 378 to 392</span>. Top of funnel did not: MQLs came in at 1,722 (down 7.2% on the period, up 3.3% since March) and SQLs at 1,565 (down 8.2% on the period). The gain is conversion, not volume — meetings per MQL went from 14.0% in March to <span style={{color:C_GREEN}}>22.8%</span> now.</div>
         </div>
         <div style={{...glassTile,color:C_TEXT,borderRadius:8,padding:"10px 18px",textAlign:"center",minWidth:120}}>
           <div style={{fontSize:9,color:C_MUTED,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",fontFamily:FONT_BODY}}>Status</div>
@@ -2672,7 +2672,7 @@ function RepLeaderboard({onSelect}){
     <div style={{background:"linear-gradient(135deg, #F2F7E6 0%, rgba(255,255,255,.62) 65%)",border:"1px solid #FBF3DD",borderLeft:"3px solid #E5A000",borderRadius:10,padding:"14px 18px",marginBottom:20}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8,marginBottom:10}}>
         <div style={{fontSize:12,fontWeight:800,color:"#E5A000",fontFamily:FONT_BODY,letterSpacing:"1.5px",textTransform:"uppercase"}}>🚀 Outstanding Increases — Booked Meetings vs Prior Period (6/16–7/15)</div>
-        <div style={{fontSize:11,color:MUTED,fontFamily:FONT_BODY}}>Ranked reps: <span style={{color:G,fontWeight:800}}>{totCurMtg}</span> vs {totPrevMtg} in the prior period{teamMtgPct!=null && <span style={{color:G,fontWeight:800}}> · +{teamMtgDelta} ({teamMtgPct>0?"+":""}{teamMtgPct}%)</span>} · Team total incl. unattributed: 391 (final)</div>
+        <div style={{fontSize:11,color:MUTED,fontFamily:FONT_BODY}}>Ranked reps: <span style={{color:G,fontWeight:800}}>{totCurMtg}</span> vs {totPrevMtg} in the prior period{teamMtgPct!=null && <span style={{color:G,fontWeight:800}}> · +{teamMtgDelta} ({teamMtgPct>0?"+":""}{teamMtgPct}%)</span>} · Team total incl. unattributed: 392 (final)</div>
       </div>
       <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
         {gainers.map(g=>(
@@ -2764,7 +2764,7 @@ function RepLeaderboard({onSelect}){
         ))}
       </div>
       <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY,marginTop:8}}>
-        Rows with no rep name, plus meetings logged by reps who have since left. Counted in the 391 team total, excluded from rep ranking.
+        Rows with no rep name, plus meetings logged by reps who have since left. Counted in the 392 team total, excluded from rep ranking.
       </div>
     </div>
       <div style={{background:CARD,border:"1px solid "+BORDER,borderRadius:16,padding:"24px 28px",marginBottom:16,boxShadow:SHADOW}}>
@@ -2773,7 +2773,7 @@ function RepLeaderboard({onSelect}){
           <div style={{fontSize:13,fontWeight:800,letterSpacing:"2px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY}}>Booked Meetings By Rep — Five Periods</div>
         </div>
         <div style={{fontSize:13,color:MUTED,fontFamily:FONT_BODY,marginBottom:16,lineHeight:1.5}}>
-          Campaign dashboard FLIP counts, read off its date-range control for each 16th-to-15th window. Shows the 35 reps currently on the board — anyone who has left Martal is excluded, so earlier columns sit below the company totals of that period (364 of 378 last period, 390 of 391 this one). Name variants and typos are merged.
+          Campaign dashboard FLIP counts, read off its date-range control for each 16th-to-15th window. Shows the 35 reps currently on the board — anyone who has left Martal is excluded, so earlier columns sit below the company totals of that period (364 of 378 last period, 391 of 392 this one). Name variants and typos are merged.
         </div>
         <div style={{overflowX:"auto"}}>
         <table style={{width:"100%",borderCollapse:"collapse",fontFamily:FONT_BODY,fontSize:13,minWidth:620}}>
