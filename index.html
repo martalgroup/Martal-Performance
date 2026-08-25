@@ -3516,21 +3516,22 @@ function App(){
         </div>
       </div>
 
-      {/* Nav Bar — dark glass over content, per ui_kits/website/Header.jsx */}
-      <div style={{background:"var(--glass-dark-strong)",borderBottom:`1px solid var(--glass-border-dark)`,height:64,position:"sticky",top:0,zIndex:100,WebkitBackdropFilter:"blur(28px) saturate(1.4)",backdropFilter:"blur(28px) saturate(1.4)"}}>
-        <div style={{maxWidth:1020,margin:"0 auto",padding:"0 24px",display:"flex",alignItems:"center",justifyContent:"space-between",height:"100%"}}>
-          <div style={{display:"flex",alignItems:"center",gap:12}}>
-            <div style={{color:"#fff",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-              <svg viewBox="0 0 2000 2000" width="28" height="28" aria-hidden="true" style={{display:"block",flexShrink:0}}><path fill="currentColor" d="M44 1936 L833 150 Q973 63 1113 150 L1958 1936 L1673 1936 L983 410 L305 1936 Z"/></svg>
-            </div>
-            <div>
-              <div style={{fontSize:14,fontWeight:800,color:"#fff",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FONT_DISPLAY,lineHeight:1}}>Martal Group</div>
-              <div style={{fontSize:8.5,color:"var(--mg-ink-300)",letterSpacing:"1px",textTransform:"uppercase",fontFamily:FONT_BODY,marginTop:2}}>Performance Intelligence</div>
-            </div>
+      {/* Nav Bar — the standard Martal internal-app header: chevron mark,
+          green product label, green/blue glow over charcoal, sticky. */}
+      <div style={{background:
+          "radial-gradient(88% 300% at -4% 118%, rgba(128,177,34,.85) 0%, rgba(128,177,34,.34) 26%, rgba(128,177,34,.06) 52%, rgba(128,177,34,0) 70%),"+
+          "radial-gradient(88% 300% at 104% -18%, rgba(45,156,219,.92) 0%, rgba(45,156,219,.44) 26%, rgba(45,156,219,.09) 52%, rgba(45,156,219,0) 70%),"+
+          "linear-gradient(90deg, #1b2410 0%, #171a13 30%, #16181a 50%, #14202c 76%, #102434 100%)",
+          boxShadow:"0 10px 34px rgba(13,13,13,.24)",position:"sticky",top:0,zIndex:100}}>
+        <div style={{maxWidth:1152,margin:"0 auto",padding:"14px 22px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:16}}>
+          <div style={{display:"flex",alignItems:"center",gap:10,flexShrink:0}}>
+            <svg viewBox="0 0 100 100" width="30" height="30" fill="none" aria-hidden="true" style={{display:"block",flexShrink:0}}><path d="M16 86 L50 15 L84 86" stroke="#fff" strokeWidth="17" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <span style={{color:"rgba(255,255,255,.3)"}}>|</span>
+            <span style={{whiteSpace:"nowrap",fontSize:14,fontWeight:600,textTransform:"uppercase",letterSpacing:"0.1em",color:G,fontFamily:FONT_BODY}}>Performance</span>
           </div>
           <div style={{display:"flex",gap:0,alignItems:"center"}}>
             {tabs.map(t=>(
-              <button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"0 18px",height:62,border:"none",borderBottom:tab===t.id?`2px solid ${G}`:"2px solid transparent",cursor:"pointer",fontSize:10.5,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",background:"transparent",color:tab===t.id?"#fff":"var(--mg-ink-300)",fontFamily:FONT_BODY,transition:"color 0.15s"}}>{t.label}</button>
+              <button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"0 18px",height:44,border:"none",borderBottom:tab===t.id?`2px solid ${G}`:"2px solid transparent",cursor:"pointer",fontSize:13.5,fontWeight:700,letterSpacing:"0.05em",textTransform:"uppercase",background:"transparent",color:tab===t.id?"#fff":"rgba(255,255,255,.8)",fontFamily:FONT_BODY,transition:"color 0.15s"}}>{t.label}</button>
             ))}
           </div>
         </div>
