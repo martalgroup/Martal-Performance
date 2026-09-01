@@ -135,6 +135,7 @@ const RAW = [
   {m:"May 26",ac:103,dc:16,cl:27},
   {m:"Jun 26",ac:90,dc:12,cl:20},
   {m:"Jul 26",ac:80,dc:16,cl:21},
+  {m:"Aug 26",ac:83,dc:null,cl:7},
 ];
 const MO = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const mIdx = m => { const p=m.split(" "); return parseInt(p[1])*12+MO.indexOf(p[0]); };
@@ -3355,17 +3356,14 @@ function CompanyChurnTab(){
 
   const crColor=crCol(last.cr);
 
-  // August 2026 — in-progress projection, NOT a closed month. As of Aug 15: 5 logged
-  // cancels (confirmed against the live cancellations tracker, 15 Aug 2026) ÷ 15 elapsed
-  // days × 31 days = projected total. Fold Aug into RAW as a real closed month once
-  // September confirms it — that real number can't post before Sep 1.
-  const projAugAsOfDay=15, projAugDaysInMonth=31, projAugLoggedSoFar=5, projAugDcSoFar=9;
-  const projAugTotal=Math.round(projAugLoggedSoFar*projAugDaysInMonth/projAugAsOfDay);
-  const projAugDc=18;
-  const projAugActive=86;
-  const projAugDenom=(data[data.length-1].ac+data[data.length-2].ac+data[data.length-3].ac)/3;
-  const projAugRate=+((projAugTotal/projAugDenom)*100).toFixed(2);
-  const recentWithProj=[...recent,{m:"Aug 26",ac:projAugActive,cl:projAugTotal,dc:projAugDc,cr:projAugRate,projected:true}];
+  // August 2026 CLOSED. 7 accounts lost, confirmed by two independent sources: the Churn
+  // ratio table in Kayela's workbook and the per-client end dates on the August 2026 tab of
+  // Martal cashflow and billing. Published churn ratio 7.75% (finance base: BOM actives +
+  // gross adds). The trailing-3-month figure this page computes for every other month is
+  // 8.30%; both are the lowest in the series back to July 2021.
+  const augPublishedRate=7.75, augLost=7, augActive=83;
+  const augPrevPublished=20.66;
+  const recentWithProj=[...recent];
 
   return (<div>
     {/* headline note */}
@@ -3373,32 +3371,24 @@ function CompanyChurnTab(){
       Churn rate = contracts lost ÷ trailing 3-month average of active clients. Calendar-month measure; performance metrics elsewhere run 16th-to-15th — different cadence by design.
     </div>
 
-    {/* HERO — August projection leads. July is the baseline it beats. */}
+    {/* HERO — August closed. Record low. */}
     <div style={{border:`2px solid ${G}`,background:"#F2F7E6",borderRadius:12,padding:"22px 26px",marginBottom:14}}>
       <div style={{display:"flex",gap:28,flexWrap:"wrap",alignItems:"center"}}>
-        <div style={{minWidth:230}}>
-          <div style={{fontSize:10,letterSpacing:"1.8px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY,fontWeight:800,marginBottom:6}}>August — Projected Churn</div>
+        <div style={{minWidth:250}}>
+          <div style={{fontSize:10,letterSpacing:"1.8px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY,fontWeight:800,marginBottom:6}}>August 2026 Churn — Closed</div>
           <div style={{display:"flex",alignItems:"baseline",gap:12,flexWrap:"wrap"}}>
-            <div style={{fontSize:60,fontWeight:900,color:G,fontFamily:FONT_DISPLAY,letterSpacing:"-2px",lineHeight:1}}>{projAugRate}%</div>
-            <div style={{fontSize:22,fontWeight:900,color:G,fontFamily:FONT_DISPLAY,letterSpacing:"-0.5px"}}>▼ {Math.abs(((projAugRate-last.cr)/last.cr)*100).toFixed(0)}%</div>
+            <div style={{fontSize:64,fontWeight:900,color:G,fontFamily:FONT_DISPLAY,letterSpacing:"-2px",lineHeight:1}}>{augPublishedRate}%</div>
+            <div style={{fontSize:22,fontWeight:900,color:G,fontFamily:FONT_DISPLAY,letterSpacing:"-0.5px"}}>▼ {(((augPrevPublished-augPublishedRate)/augPrevPublished)*100).toFixed(0)}%</div>
           </div>
-          <div style={{fontSize:12,color:TEXT,fontFamily:FONT_BODY,marginTop:8,fontWeight:700}}>down from {last.cr}% in July</div>
+          <div style={{fontSize:12,color:TEXT,fontFamily:FONT_BODY,marginTop:8,fontWeight:700}}>down from {augPrevPublished}% in July · {augLost} accounts lost vs 21</div>
         </div>
-        <div style={{minWidth:210,borderLeft:`1px solid ${G}55`,paddingLeft:26}}>
-          <div style={{fontSize:10,letterSpacing:"1.8px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY,fontWeight:800,marginBottom:6}}>August — Projected Deals Closed</div>
-          <div style={{display:"flex",alignItems:"baseline",gap:12,flexWrap:"wrap"}}>
-            <div style={{fontSize:60,fontWeight:900,color:"#1A6A98",fontFamily:FONT_DISPLAY,letterSpacing:"-2px",lineHeight:1}}>~{projAugDc}</div>
-            <div style={{fontSize:22,fontWeight:900,color:G,fontFamily:FONT_DISPLAY,letterSpacing:"-0.5px"}}>▲ {(((projAugDc-last.dc)/last.dc)*100).toFixed(0)}%</div>
-          </div>
-          <div style={{fontSize:12,color:TEXT,fontFamily:FONT_BODY,marginTop:8,fontWeight:700}}>up {projAugDc-last.dc} on July's {last.dc}</div>
-        </div>
-        <div style={{flex:1,minWidth:280}}>
+        <div style={{flex:1,minWidth:290}}>
           <div style={{fontSize:19,fontWeight:900,color:TEXT,fontFamily:FONT_DISPLAY,letterSpacing:"-0.3px",lineHeight:1.3,marginBottom:8}}>
-            Cancellations are running at <span style={{color:G}}>half of July's pace</span>.
+            The <span style={{color:G}}>lowest churn month on record</span>, going back to July 2021.
           </div>
           <div style={{fontSize:13,color:MUTED,fontFamily:FONT_BODY,lineHeight:1.6}}>
-            {projAugLoggedSoFar} cancels logged through Aug {projAugAsOfDay} — <span style={{color:TEXT,fontWeight:700}}>0.33 a day against July's 0.68, a 51% drop in pace</span>. That paces to ~{projAugTotal} for the month against {last.cl} in July, while new business goes the other way — <span style={{color:TEXT,fontWeight:700}}>~{projAugDc} deals closed against July's {last.dc}, up {(((projAugDc-last.dc)/last.dc)*100).toFixed(0)}%</span>. Fewer out, more in.
-            <br/><span style={{color:TEXT,fontWeight:700}}>September 1 is when it becomes real</span> — the confirmed close can't post before then.
+            Previous best was 9.29% in March 2023. Seven losses ties the all-time monthly low. It beats every prior August outright: <span style={{color:TEXT,fontWeight:700}}>14 lost in 2025, 15 in 2024, 16 in 2023, 16 in 2022</span>.
+            <br/>August is also the first month of net account growth since April. The base bottomed at 80 in July and closed at <span style={{color:TEXT,fontWeight:700}}>83</span>.
           </div>
         </div>
       </div>
@@ -3406,12 +3396,44 @@ function CompanyChurnTab(){
 
     {/* supporting numbers */}
     <div style={{display:"flex",gap:12,flexWrap:"wrap",marginBottom:20}}>
-      <KpiCard label="AUG CANCELS SO FAR" value={projAugLoggedSoFar} sub={"through Aug "+projAugAsOfDay+" · ~"+projAugTotal+" projected"} valColor={G}/>
-      <KpiCard label="JULY DEALS CLOSED" value={last.dc} sub={"vs "+data[data.length-2].dc+" in June · "+projAugDcSoFar+" logged so far in Aug"} valColor="#1A6A98"/>
-      <KpiCard label="JULY CHURN RATE" value={last.cr!=null?last.cr+"%":"—"} sub={crDelta!=null?(crDelta>0?"▲ +":"▼ ")+crDelta+" pts vs June":"—"} valColor={crColor}/>
-      <KpiCard label="JULY CANCELS" value={last.cl} sub={"vs "+data[data.length-2].cl+" in June"} valColor="#D64242"/>
-      <KpiCard label="3-MO AVG ACTIVE (DENOM)" value={denom.toFixed(1)} sub="Apr / May / Jun active avg" valColor={TEXT}/>
-      <KpiCard label="2026 YTD CANCELS" value={ytd} sub="Jan–Jul 2026, closed months" valColor="#E5A000"/>
+      <KpiCard label="ACCOUNTS LOST — AUG" value={augLost} sub="vs 21 in July · ties all-time low" valColor={G}/>
+      <KpiCard label="ACTIVE ACCOUNTS EOM" value={augActive} sub="80 in July · first growth since April" valColor={G}/>
+      <KpiCard label="TRAILING 3-MO RATE" value={last.cr!=null?last.cr+"%":"—"} sub="this page's formula · 7.75% published" valColor={G}/>
+      <KpiCard label="RECURRING BILLING LOST" value="~$41.0K" sub="per month · ~$492K annualized" valColor="#D64242"/>
+      <KpiCard label="2026 YTD LOST" value="133" sub="vs 140 Jan–Aug 2025" valColor="#E5A000"/>
+      <KpiCard label="TRAILING 12 MONTHS" value="187" sub="vs 231 prior 12 · 19% better" valColor={G}/>
+    </div>
+
+    {/* the seven */}
+    <div style={{background:CARD,border:"1px solid "+BORDER,borderRadius:10,padding:"18px 20px",marginBottom:20}}>
+      <div style={{fontSize:11,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY,marginBottom:12}}>The 7 accounts lost in August</div>
+      <div style={{overflowX:"auto"}}>
+      <table style={{width:"100%",borderCollapse:"collapse",fontFamily:FONT_BODY,fontSize:12,minWidth:520}}>
+        <thead><tr style={{borderBottom:"1px solid "+BORDER}}>
+          {["Client","End","Monthly","SOM"].map(x=><th key={x} style={{textAlign:(x==="End"||x==="Monthly")?"right":"left",padding:"7px 10px",color:MUTED,fontWeight:700}}>{x}</th>)}
+        </tr></thead>
+        <tbody>
+          {[["Investec Real Estate / Coldwell Banker","Aug 23","CAD $8,250",null],
+            ["Ascend Agency LLC","Aug 17","$6,850",null],
+            ["Quality Engineering Ltda","Aug 28","$6,800","Grant Paris"],
+            ["CCH Australia (Wolters Kluwer)","Aug 17","$6,700",null],
+            ["Stratosphere Studio LLC","Aug 8","$5,500",null],
+            ["Better Things OÜ","Aug 15","$5,500","James Bellew"],
+            ["Waiting Room Solutions (WRS Health)","Aug 31","$3,700","David Rosenthal"]].map(row=>(
+            <tr key={row[0]} style={{borderBottom:"1px solid "+BORDER2}}>
+              <td style={{padding:"7px 10px",color:TEXT,fontWeight:600}}>{row[0]}</td>
+              <td style={{padding:"7px 10px",textAlign:"right",color:MUTED}}>{row[1]}</td>
+              <td style={{padding:"7px 10px",textAlign:"right",color:TEXT,fontWeight:700}}>{row[2]}</td>
+              <td style={{padding:"7px 10px",color:row[3]?TEXT:"#B43232",fontStyle:row[3]?"normal":"italic"}}>{row[3]||"unassigned"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      </div>
+      <div style={{fontSize:11,color:MUTED,fontFamily:FONT_BODY,marginTop:10,lineHeight:1.5}}>
+        All seven are mid-band ($3.7K–$8.25K/month). No Tier 1 loss, so Questco and the other large accounts are intact.
+        <span style={{color:"#B43232",fontWeight:700}}> Four of the seven carry no SOM in the account map</span>, so the SOM table below covers three of these losses only.
+      </div>
     </div>
 
     {/* churn rate trend */}
@@ -3423,19 +3445,18 @@ function CompanyChurnTab(){
 
     {/* monthly cancels */}
     <div style={CS}>
-      <SectionLabel>Contracts Lost per Month (Aug projected)</SectionLabel>
+      <SectionLabel>Contracts Lost per Month</SectionLabel>
       <SvgBarChart data={recentWithProj} dataKey="cl" colorFn={()=>"#D64242"} xKey="m" yFmt={v=>v} height={130}/>
-      <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:6}}>{projAugLoggedSoFar} cancels logged so far in August, projected to ~{projAugTotal} at the current pace.</div>
+      <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:6}}>August closed at {augLost} accounts lost, down from 21 in July and 22 in June. Lowest single month in the series.</div>
     </div>
 
     {/* churn vs deals closed trend line */}
     <div style={CS}>
-      <SectionLabel>Churn Rate vs Deals Closed — Trailing 18 Months (Aug projected)</SectionLabel>
+      <SectionLabel>Churn Rate vs Deals Closed — Trailing 18 Months</SectionLabel>
       <SvgLineChart data={recentWithProj} lines={[{key:'cr',name:'Churn Rate (%)',stroke:'#D64242',width:2.5},{key:'dc',name:'Deals Closed (#)',stroke:'#2D9CDB',width:2.5}]} xKey="m" height={170}/>
       <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:6,lineHeight:1.5}}>
-        Straight read of the two lines: churn (red) has climbed for four straight closed months — 12.15% (Apr) → 24.55% (May) → 18.35% (Jun) → 20.52% (Jul) — before the August pace-projection (hollow marker) drops it to ~{projAugRate}%.
-        Deals Closed (blue) has fallen over the same stretch — {data[data.length-4].dc} (Apr) → {data[data.length-3].dc} (May) → {data[data.length-2].dc} (Jun) → {last.dc} (Jul) — with August's early pace ({projAugDcSoFar} logged through Aug {projAugAsOfDay}) projecting a rebound to ~{projAugDc}.
-        Both August figures are projections from a partial month, not confirmed closes.
+        Churn (red) climbed for four straight months — 12.15% (Apr) → 24.55% (May) → 18.35% (Jun) → 20.52% (Jul) — then broke hard in August to {last.cr}% on this page's trailing-3-month formula, 7.75% on the billing sheet's published base. Either way it is the lowest reading in the series.
+        Deals Closed (blue) fell over the same stretch — {data[data.length-5].dc} (Apr) → {data[data.length-4].dc} (May) → {data[data.length-3].dc} (Jun) → {data[data.length-2].dc} (Jul). August deals closed is not yet confirmed in the billing sheet, so the blue line stops at July rather than showing a number that has not been verified.
       </div>
     </div>
 
@@ -3459,10 +3480,31 @@ function CompanyChurnTab(){
       </div>
     </div>
 
+    {/* per-SOM August churn */}
+    <div style={CS}>
+      <SectionLabel>August Churn by Sales Ops Manager</SectionLabel>
+      <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:-2,marginBottom:10}}>Three of August's seven losses match a SOM in the account map. The other four have no SOM on file, so they are shown as unassigned rather than spread across the team.</div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit, minmax(190px, 1fr))",gap:10,marginBottom:10}}>
+        {[["Grant Paris",1,"Quality Engineering Ltda"],
+          ["James Bellew",1,"Better Things OÜ"],
+          ["David Rosenthal",1,"WRS Health"],
+          ["Unassigned",4,"Coldwell Banker · Ascend Agency · CCH Australia · Stratosphere"]].map(row=>(
+          <div key={row[0]} style={{background:CARD,border:"1px solid "+(row[0]==="Unassigned"?"#E8C4C4":BORDER),borderRadius:8,padding:"12px 14px"}}>
+            <div style={{fontSize:11,fontWeight:700,color:row[0]==="Unassigned"?"#B43232":TEXT,fontFamily:FONT_DISPLAY,marginBottom:4}}>{row[0]}</div>
+            <div style={{fontSize:26,fontWeight:900,color:row[0]==="Unassigned"?"#B43232":"#D64242",fontFamily:FONT_DISPLAY,lineHeight:1}}>{row[1]}</div>
+            <div style={{fontSize:9.5,color:MUTED,fontFamily:FONT_BODY,marginTop:6,lineHeight:1.4}}>{row[2]}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,lineHeight:1.5}}>
+        No SOM lost more than one account in August. The four unassigned losses are the single biggest gap in this view and are worth fixing in the account map before next month.
+      </div>
+    </div>
+
     {/* per-SOM May churn */}
     <div style={CS}>
-      <SectionLabel>May Churn by Sales Ops Manager (month-end)</SectionLabel>
-      <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:-2,marginBottom:8}}>Latest month with a verified account→SOM assignment for every cancellation. A handful of June/July churned accounts couldn't yet be matched to a SOM with confidence — see Methodology.</div>
+      <SectionLabel>May Churn by Sales Ops Manager (last fully coded month)</SectionLabel>
+      <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:-2,marginBottom:8}}>Latest month with a verified account→SOM assignment for every cancellation. June, July and four of August's losses could not be matched to a SOM with confidence — see Methodology.</div>
       <table style={{width:"100%",borderCollapse:"collapse",fontFamily:FONT_BODY}}>
         <thead><tr style={{borderBottom:"1px solid "+BORDER2}}>
           {["SOM","May Churns","May Rate","Apr Rate","Accounts Lost"].map((h,i)=>(
