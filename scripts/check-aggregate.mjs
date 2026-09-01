@@ -4,7 +4,9 @@ import { readFileSync } from 'fs';
 import { periodFor, recentPeriods, preset } from '../lib/perf/periods.js';
 import { companyTotals, repTable, repHistory, churn, quality } from '../lib/perf/aggregate.js';
 
-const fx = JSON.parse(readFileSync(new URL('../lib/perf/fixture.json', import.meta.url)));
+import { gunzipSync } from 'zlib';
+const seed = JSON.parse(gunzipSync(readFileSync(new URL('../lib/perf/seed.json.gz', import.meta.url))).toString());
+const fx = { leads: seed.leads, allAccountsMinimal: seed.accounts };
 let failed = 0;
 const t = (label, ok, extra = '') => { if (!ok) failed++; console.log(`  ${ok ? '✓' : '✗'} ${label}${extra ? '  ' + extra : ''}`); };
 
@@ -17,7 +19,7 @@ const five = recentPeriods(5, new Date('2026-08-20T00:00:00Z'));
 t('five periods back from Aug 20 start Apr 16 (Aug 16→Sep 15 is the open one)', five[0].start === '2026-04-16', five.map((x) => x.start).join(','));
 t('preset last30 has 30-day span', (new Date(preset('last30').end) - new Date(preset('last30').start)) / 86400000 === 30);
 
-console.log('aggregation over fixture (sampled 1-in-20 leads, all accounts)');
+console.log('aggregation over the bundled full snapshot');
 const w = { start: '2026-07-16', end: '2026-08-15' };
 const ct = companyTotals(fx.leads, w);
 t('window totals are consistent (flip ⊆ sql ⊆ leads)', ct.flip <= ct.sql && ct.sql <= ct.leads, JSON.stringify({ leads: ct.leads, mql: ct.mql, sql: ct.sql, flip: ct.flip }));
