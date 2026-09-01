@@ -135,7 +135,7 @@ const RAW = [
   {m:"May 26",ac:103,dc:16,cl:27},
   {m:"Jun 26",ac:90,dc:12,cl:20},
   {m:"Jul 26",ac:80,dc:16,cl:21},
-  {m:"Aug 26",ac:83,dc:16,cl:7},
+  {m:"Aug 26",ac:83,dc:16,cl:8},
 ];
 const MO = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const mIdx = m => { const p=m.split(" "); return parseInt(p[1])*12+MO.indexOf(p[0]); };
@@ -3356,13 +3356,13 @@ function CompanyChurnTab(){
 
   const crColor=crCol(last.cr);
 
-  // August 2026 CLOSED. 7 accounts lost, confirmed by two independent sources: the Churn
-  // ratio table in Kayela's workbook and the per-client end dates on the August 2026 tab of
-  // Martal cashflow and billing. Published churn ratio 7.75% (finance base: BOM actives +
-  // gross adds). The trailing-3-month figure this page computes for every other month is
-  // 8.30%; both are the lowest in the series back to July 2021.
-  const augPublishedRate=7.75, augLost=7, augActive=83;
-  const augPrevPublished=20.66;
+  // August 2026 CLOSED. 8 accounts lost. The churn summary and the August 2026 tab of
+  // Martal cashflow and billing both documented 7; an 8th cancellation was confirmed after
+  // that pull, so finance's published ratio (7.75% on 7) will restate and is no longer
+  // quoted here. This page computes 8 / avg(103, 90, 80) = 8.79%, the same trailing-3-month
+  // formula used for every other month, and still the lowest reading back to July 2021
+  // (previous best: 9.29% in March 2023).
+  const augLost=8, augActive=83;
   const recentWithProj=[...recent];
 
   return (<div>
@@ -3387,8 +3387,8 @@ function CompanyChurnTab(){
             The <span style={{color:G}}>lowest churn month on record</span>, going back to July 2021.
           </div>
           <div style={{fontSize:13,color:MUTED,fontFamily:FONT_BODY,lineHeight:1.6}}>
-            Seven losses ties the all-time monthly low and beats every prior August outright: <span style={{color:TEXT,fontWeight:700}}>14 lost in 2025, 15 in 2024, 16 in 2023, 16 in 2022</span>. The billing sheet's published ratio on its own base is 7.75%, the same record either way.
-            <br/>New business went the other direction: <span style={{color:TEXT,fontWeight:700}}>16 deals closed against 7 lost</span>, the first month of net account growth since April. The base bottomed at 80 in July and closed at <span style={{color:TEXT,fontWeight:700}}>83</span>.
+            Previous best was 9.29% in March 2023. Eight losses is the second-lowest count ever (March 2023 had 7) but beats every prior August outright: <span style={{color:TEXT,fontWeight:700}}>13 lost in 2025, 15 in 2024, 16 in 2023, 16 in 2022</span>.
+            <br/>New business went the other direction: <span style={{color:TEXT,fontWeight:700}}>16 deals closed against 8 lost</span>, the first month of net account growth since April. The base bottomed at 80 in July and closed at <span style={{color:TEXT,fontWeight:700}}>83</span>.
           </div>
         </div>
       </div>
@@ -3396,17 +3396,17 @@ function CompanyChurnTab(){
 
     {/* supporting numbers */}
     <div style={{display:"flex",gap:12,flexWrap:"wrap",marginBottom:20}}>
-      <KpiCard label="ACCOUNTS LOST — AUG" value={augLost} sub="vs 21 in July · ties all-time low" valColor={G}/>
+      <KpiCard label="ACCOUNTS LOST — AUG" value={augLost} sub="vs 21 in July · 2nd-lowest ever" valColor={G}/>
       <KpiCard label="ACTIVE ACCOUNTS EOM" value={augActive} sub="80 in July · first growth since April" valColor={G}/>
-      <KpiCard label="DEALS CLOSED — AUG" value={last.dc} sub={"vs "+data[data.length-2].dc+" in July · 16 in, 7 out"} valColor="#1A6A98"/>
-      <KpiCard label="RECURRING BILLING LOST" value="~$41.0K" sub="per month · ~$492K annualized" valColor="#D64242"/>
-      <KpiCard label="2026 YTD LOST" value="133" sub="vs 140 Jan–Aug 2025" valColor="#E5A000"/>
-      <KpiCard label="TRAILING 12 MONTHS" value="187" sub="vs 231 prior 12 · 19% better" valColor={G}/>
+      <KpiCard label="DEALS CLOSED — AUG" value={last.dc} sub={"vs "+data[data.length-2].dc+" in July · 16 in, 8 out"} valColor="#1A6A98"/>
+      <KpiCard label="RECURRING BILLING LOST" value="~$41.0K" sub="7 of 8 accounts priced · ~$492K annualized" valColor="#D64242"/>
+      <KpiCard label="2026 YTD LOST" value={ytd} sub="vs 140 Jan–Aug 2025" valColor="#E5A000"/>
+      <KpiCard label="TRAILING 12 MONTHS" value={data.slice(-12).reduce((s,d)=>s+d.cl,0)} sub="vs 231 prior 12" valColor={G}/>
     </div>
 
     {/* the seven */}
     <div style={{background:CARD,border:"1px solid "+BORDER,borderRadius:10,padding:"18px 20px",marginBottom:20}}>
-      <div style={{fontSize:11,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY,marginBottom:12}}>The 7 accounts lost in August</div>
+      <div style={{fontSize:11,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY,marginBottom:12}}>The 8 accounts lost in August — 7 itemised</div>
       <div style={{overflowX:"auto"}}>
       <table style={{width:"100%",borderCollapse:"collapse",fontFamily:FONT_BODY,fontSize:12,minWidth:520}}>
         <thead><tr style={{borderBottom:"1px solid "+BORDER}}>
@@ -3447,7 +3447,7 @@ function CompanyChurnTab(){
     <div style={CS}>
       <SectionLabel>Contracts Lost per Month</SectionLabel>
       <SvgBarChart data={recentWithProj} dataKey="cl" colorFn={()=>"#D64242"} xKey="m" yFmt={v=>v} height={130}/>
-      <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:6}}>August closed at {augLost} accounts lost, down from 21 in July and 22 in June. Lowest single month in the series.</div>
+      <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:6}}>August closed at {augLost} accounts lost, down from 21 in July and 22 in June. Lowest churn rate in the series; second-lowest count.</div>
     </div>
 
     {/* churn vs deals closed trend line */}
@@ -3455,7 +3455,7 @@ function CompanyChurnTab(){
       <SectionLabel>Churn Rate vs Deals Closed — Trailing 18 Months</SectionLabel>
       <SvgLineChart data={recentWithProj} lines={[{key:'cr',name:'Churn Rate (%)',stroke:'#D64242',width:2.5},{key:'dc',name:'Deals Closed (#)',stroke:'#2D9CDB',width:2.5}]} xKey="m" height={170}/>
       <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:6,lineHeight:1.5}}>
-        Churn (red) climbed for four straight months — 12.15% (Apr) → 24.55% (May) → 18.35% (Jun) → {prevCr}% (Jul) — then broke hard in August to <b>{last.cr}%</b>, the lowest reading in the series. The billing sheet publishes 7.75% on its own base; both are records.
+        Churn (red) climbed for four straight months — 12.15% (Apr) → 24.55% (May) → 18.35% (Jun) → {prevCr}% (Jul) — then broke hard in August to <b>{last.cr}%</b>, the lowest reading in the series, beating March 2023's 9.29%.
         Deals Closed (blue) fell over the same stretch — {data[data.length-5].dc} (Apr) → {data[data.length-4].dc} (May) → {data[data.length-3].dc} (Jun) → {data[data.length-2].dc} (Jul) — and held at <b>{last.dc}</b> in August. The two lines cross for the first time this year: more accounts closed than lost.
       </div>
     </div>
