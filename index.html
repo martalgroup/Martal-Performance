@@ -135,7 +135,7 @@ const RAW = [
   {m:"May 26",ac:103,dc:16,cl:27},
   {m:"Jun 26",ac:90,dc:12,cl:20},
   {m:"Jul 26",ac:80,dc:16,cl:21},
-  {m:"Aug 26",ac:83,dc:null,cl:7},
+  {m:"Aug 26",ac:83,dc:16,cl:7},
 ];
 const MO = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const mIdx = m => { const p=m.split(" "); return parseInt(p[1])*12+MO.indexOf(p[0]); };
@@ -3377,18 +3377,18 @@ function CompanyChurnTab(){
         <div style={{minWidth:250}}>
           <div style={{fontSize:10,letterSpacing:"1.8px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY,fontWeight:800,marginBottom:6}}>August 2026 Churn — Closed</div>
           <div style={{display:"flex",alignItems:"baseline",gap:12,flexWrap:"wrap"}}>
-            <div style={{fontSize:64,fontWeight:900,color:G,fontFamily:FONT_DISPLAY,letterSpacing:"-2px",lineHeight:1}}>{augPublishedRate}%</div>
-            <div style={{fontSize:22,fontWeight:900,color:G,fontFamily:FONT_DISPLAY,letterSpacing:"-0.5px"}}>▼ {(((augPrevPublished-augPublishedRate)/augPrevPublished)*100).toFixed(0)}%</div>
+            <div style={{fontSize:64,fontWeight:900,color:G,fontFamily:FONT_DISPLAY,letterSpacing:"-2px",lineHeight:1}}>{last.cr}%</div>
+            <div style={{fontSize:22,fontWeight:900,color:G,fontFamily:FONT_DISPLAY,letterSpacing:"-0.5px"}}>▼ {(((prevCr-last.cr)/prevCr)*100).toFixed(0)}%</div>
           </div>
-          <div style={{fontSize:12,color:TEXT,fontFamily:FONT_BODY,marginTop:8,fontWeight:700}}>down from {augPrevPublished}% in July · {augLost} accounts lost vs 21</div>
+          <div style={{fontSize:12,color:TEXT,fontFamily:FONT_BODY,marginTop:8,fontWeight:700}}>down from {prevCr}% in July · {augLost} accounts lost vs 21</div>
         </div>
         <div style={{flex:1,minWidth:290}}>
           <div style={{fontSize:19,fontWeight:900,color:TEXT,fontFamily:FONT_DISPLAY,letterSpacing:"-0.3px",lineHeight:1.3,marginBottom:8}}>
             The <span style={{color:G}}>lowest churn month on record</span>, going back to July 2021.
           </div>
           <div style={{fontSize:13,color:MUTED,fontFamily:FONT_BODY,lineHeight:1.6}}>
-            Previous best was 9.29% in March 2023. Seven losses ties the all-time monthly low. It beats every prior August outright: <span style={{color:TEXT,fontWeight:700}}>14 lost in 2025, 15 in 2024, 16 in 2023, 16 in 2022</span>.
-            <br/>August is also the first month of net account growth since April. The base bottomed at 80 in July and closed at <span style={{color:TEXT,fontWeight:700}}>83</span>.
+            Seven losses ties the all-time monthly low and beats every prior August outright: <span style={{color:TEXT,fontWeight:700}}>14 lost in 2025, 15 in 2024, 16 in 2023, 16 in 2022</span>. The billing sheet's published ratio on its own base is 7.75%, the same record either way.
+            <br/>New business went the other direction: <span style={{color:TEXT,fontWeight:700}}>16 deals closed against 7 lost</span>, the first month of net account growth since April. The base bottomed at 80 in July and closed at <span style={{color:TEXT,fontWeight:700}}>83</span>.
           </div>
         </div>
       </div>
@@ -3398,7 +3398,7 @@ function CompanyChurnTab(){
     <div style={{display:"flex",gap:12,flexWrap:"wrap",marginBottom:20}}>
       <KpiCard label="ACCOUNTS LOST — AUG" value={augLost} sub="vs 21 in July · ties all-time low" valColor={G}/>
       <KpiCard label="ACTIVE ACCOUNTS EOM" value={augActive} sub="80 in July · first growth since April" valColor={G}/>
-      <KpiCard label="TRAILING 3-MO RATE" value={last.cr!=null?last.cr+"%":"—"} sub="this page's formula · 7.75% published" valColor={G}/>
+      <KpiCard label="DEALS CLOSED — AUG" value={last.dc} sub={"vs "+data[data.length-2].dc+" in July · 16 in, 7 out"} valColor="#1A6A98"/>
       <KpiCard label="RECURRING BILLING LOST" value="~$41.0K" sub="per month · ~$492K annualized" valColor="#D64242"/>
       <KpiCard label="2026 YTD LOST" value="133" sub="vs 140 Jan–Aug 2025" valColor="#E5A000"/>
       <KpiCard label="TRAILING 12 MONTHS" value="187" sub="vs 231 prior 12 · 19% better" valColor={G}/>
@@ -3455,8 +3455,8 @@ function CompanyChurnTab(){
       <SectionLabel>Churn Rate vs Deals Closed — Trailing 18 Months</SectionLabel>
       <SvgLineChart data={recentWithProj} lines={[{key:'cr',name:'Churn Rate (%)',stroke:'#D64242',width:2.5},{key:'dc',name:'Deals Closed (#)',stroke:'#2D9CDB',width:2.5}]} xKey="m" height={170}/>
       <div style={{fontSize:10,color:MUTED2,fontFamily:FONT_BODY,marginTop:6,lineHeight:1.5}}>
-        Churn (red) climbed for four straight months — 12.15% (Apr) → 24.55% (May) → 18.35% (Jun) → 20.52% (Jul) — then broke hard in August to {last.cr}% on this page's trailing-3-month formula, 7.75% on the billing sheet's published base. Either way it is the lowest reading in the series.
-        Deals Closed (blue) fell over the same stretch — {data[data.length-5].dc} (Apr) → {data[data.length-4].dc} (May) → {data[data.length-3].dc} (Jun) → {data[data.length-2].dc} (Jul). August deals closed is not yet confirmed in the billing sheet, so the blue line stops at July rather than showing a number that has not been verified.
+        Churn (red) climbed for four straight months — 12.15% (Apr) → 24.55% (May) → 18.35% (Jun) → {prevCr}% (Jul) — then broke hard in August to <b>{last.cr}%</b>, the lowest reading in the series. The billing sheet publishes 7.75% on its own base; both are records.
+        Deals Closed (blue) fell over the same stretch — {data[data.length-5].dc} (Apr) → {data[data.length-4].dc} (May) → {data[data.length-3].dc} (Jun) → {data[data.length-2].dc} (Jul) — and held at <b>{last.dc}</b> in August. The two lines cross for the first time this year: more accounts closed than lost.
       </div>
     </div>
 
