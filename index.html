@@ -2272,10 +2272,15 @@ function somStatus(g){
 }
 
 function KpiCard(props){
-  return (<div style={{flex:1,minWidth:140,background:CARD,border:"1px solid "+BORDER,borderRadius:8,padding:"16px 18px",minHeight:108,display:"flex",flexDirection:"column",justifyContent:"space-between",position:"relative",overflow:"hidden"}}>
-    <div style={{fontSize:9,letterSpacing:"1.5px",textTransform:"uppercase",color:MUTED,fontFamily:FONT_BODY,fontWeight:700}}>{props.label}</div>
-    <div style={{fontSize:32,fontWeight:900,color:props.valColor||TEXT,fontFamily:FONT_DISPLAY,whiteSpace:"nowrap",margin:"8px 0",letterSpacing:"-0.5px",lineHeight:1}}>{props.value}</div>
-    <div style={{fontSize:10,color:MUTED,fontFamily:FONT_BODY,minHeight:12,letterSpacing:"0.3px"}}>{props.sub||"\u00A0"}</div>
+  // Exact StatCard format from the pricing app design system
+  // (components/ds/surfaces/StatCard.jsx): value / label / caption, --space-6
+  // padding, --radius-card, --shadow-sm, --border-subtle.
+  return (<div style={{flex:1,minWidth:170,background:"var(--surface-card)",border:"1px solid var(--border-subtle)",borderRadius:16,boxShadow:"0 2px 6px rgba(24,24,24,.08)",padding:24,color:"var(--text-strong)"}}>
+    <div style={{display:"flex",flexDirection:"column",gap:6,textAlign:"left"}}>
+      <span style={{fontFamily:FONT_DISPLAY,fontWeight:700,fontSize:48,lineHeight:1,letterSpacing:"-0.02em",color:props.valColor||"var(--text-strong)"}}>{props.value}</span>
+      <span style={{fontFamily:FONT_BODY,fontWeight:600,fontSize:16,color:"inherit"}}>{props.label}</span>
+      {props.sub && <span style={{fontFamily:FONT_BODY,fontSize:14,color:"var(--text-muted)",lineHeight:1.35}}>{props.sub}</span>}
+    </div>
   </div>);
 }
 
@@ -3399,9 +3404,6 @@ function CompanyChurnTab(){
       <KpiCard label="ACCOUNTS LOST — AUG" value={augLost} sub="vs 21 in July · 2nd-lowest ever" valColor={G}/>
       <KpiCard label="ACTIVE ACCOUNTS EOM" value={augActive} sub="80 in July · first growth since April" valColor={G}/>
       <KpiCard label="DEALS CLOSED — AUG" value={last.dc} sub={"vs "+data[data.length-2].dc+" in July · 16 in, 8 out"} valColor="#1A6A98"/>
-      <KpiCard label="RECURRING BILLING LOST" value="~$41.0K" sub="7 of 8 accounts priced · ~$492K annualized" valColor="#D64242"/>
-      <KpiCard label="2026 YTD LOST" value={ytd} sub="vs 140 Jan–Aug 2025" valColor="#E5A000"/>
-      <KpiCard label="TRAILING 12 MONTHS" value={data.slice(-12).reduce((s,d)=>s+d.cl,0)} sub="vs 231 prior 12" valColor={G}/>
     </div>
 
     {/* the seven */}
