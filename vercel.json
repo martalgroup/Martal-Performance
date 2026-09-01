@@ -1,13 +1,4 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "mkdir -p .vercel-empty && touch .vercel-empty/.keep",
-  "outputDirectory": ".vercel-empty",
-  "functions": {
-    "api/dashboard.js": { "includeFiles": "{index.html,lib/**}" },
-    "api/login.js": { "includeFiles": "lib/**" },
-    "api/callback.js": { "includeFiles": "lib/**" },
-    "api/logout.js": { "includeFiles": "lib/**" },
-    "api/denied.js": { "includeFiles": "lib/**" }
-  },
-  "rewrites": [{ "source": "/((?!api/).*)", "destination": "/api/dashboard" }]
+  "crons": [{ "path": "/api/refresh", "schedule": "0 * * * *" }]
 }

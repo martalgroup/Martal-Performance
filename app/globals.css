@@ -1,0 +1,645 @@
+@import './ds/styles.css';
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--text-body);
+  background: var(--surface-muted);
+}
+
+a { color: var(--text-link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Native form controls do NOT inherit font-family — without this they render
+   in the browser's own UI font (San Francisco / Segoe) while everything around
+   them is Montserrat, which is what made the app look like two typefaces.
+   .field already did this locally; this makes it true everywhere. */
+input, select, textarea, button, optgroup, option {
+  font-family: inherit;
+  letter-spacing: inherit;
+}
+
+.center {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  text-align: center;
+  padding: 24px;
+  background: var(--liquid-aurora-light);
+}
+
+.mesh-duo { background: var(--liquid-duo-light); }
+.mesh-aurora { background: var(--liquid-aurora-light); }
+
+/* ── App bar ───────────────────────────────────────────────────────────────
+   Dark charcoal with the brand green entering from the left and the brand blue
+   from the right, so the two signals meet in the middle. Its own class rather
+   than reusing .mesh-duo, which PackageBuilder still needs as a LIGHT panel. */
+.appbar {
+  position: relative;
+  background:
+    radial-gradient(88% 300% at -4% 118%, rgba(128,177,34,.88) 0%, rgba(128,177,34,.36) 26%, rgba(128,177,34,.07) 52%, rgba(128,177,34,0) 70%),
+    radial-gradient(88% 300% at 104% -18%, rgba(45,156,219,.95) 0%, rgba(45,156,219,.46) 26%, rgba(45,156,219,.10) 52%, rgba(45,156,219,0) 70%),
+    linear-gradient(90deg, #1b2410 0%, #171a13 30%, #16181a 50%, #14202c 76%, #102434 100%);
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 10px 34px rgba(13,13,13,.30);
+}
+/* Hairline of brand colour along the bottom edge, green→blue, matching the
+   direction the two washes come from. */
+.appbar::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+  background: linear-gradient(90deg, rgba(128,177,34,.85) 0%, rgba(128,177,34,.15) 34%, rgba(45,156,219,.15) 66%, rgba(45,156,219,.85) 100%);
+  pointer-events: none;
+}
+.appbar a { color: rgba(255,255,255,.78); }
+.appbar a:hover { color: #fff; text-decoration: none; }
+/* Bold and letter-spaced so the nav reads as the page's primary titles
+   rather than incidental links. */
+.appbar .appbar-link {
+  position: relative; padding-bottom: 2px; transition: color .15s ease;
+  font-weight: 700; letter-spacing: .05em;
+}
+.appbar .appbar-link:hover::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -3px; height: 2px;
+  border-radius: 2px; background: linear-gradient(90deg, var(--mg-green-500), var(--mg-blue-500));
+}
+/* Nav lives in CSS, not inline styles, so the media queries below can actually
+   win — an inline gap would beat any stylesheet rule. */
+.appbar-nav {
+  display: flex; justify-content: center; flex-wrap: wrap;
+  gap: 10px 56px; font-size: 13.5px;
+}
+/* 24px, not the 16px browser default this used to inherit from body. At this
+   size bold text wants slightly tighter tracking, not looser. */
+.appbar-brand {
+  white-space: nowrap; color: #fff;
+  font-size: 24px; font-weight: 700; letter-spacing: -.01em; line-height: 1;
+}
+@media (max-width: 1180px) { .appbar-brand { font-size: 21px; } }
+@media (max-width: 1040px) { .appbar-brand { font-size: 19px; } }
+
+/* Degrade in stages instead of letting the wordmark collide with the first nav
+   item: tighten the nav, then drop the wordmark to just the symbol. */
+@media (max-width: 1180px) { .appbar-nav { gap: 10px 40px; } }
+@media (max-width: 1040px) { .appbar-nav { gap: 10px 28px; font-size: 13px; } }
+@media (max-width: 940px)  { .appbar-brand { display: none; } }
+@media (max-width: 780px)  { .appbar-nav { gap: 8px 20px; } }
+
+/* Sign out reads as a control on the dark bar without shouting. */
+.appbar .btn--ghost {
+  white-space: nowrap;
+  color: rgba(255,255,255,.82);
+  border-color: rgba(255,255,255,.22);
+  background: rgba(255,255,255,.06);
+}
+.appbar .btn--ghost:hover { background: rgba(255,255,255,.14); color: #fff; }
+
+/* Console page backdrop. The cards are translucent, so they need something
+   behind them to actually read as glass — a flat grey would just look like a
+   slightly grey card. */
+.app-canvas {
+  min-height: 100vh;
+  background:
+    radial-gradient(52% 38% at 4% 2%, rgba(128,177,34,.30) 0%, rgba(128,177,34,0) 62%),
+    radial-gradient(50% 36% at 98% 8%, rgba(45,156,219,.30) 0%, rgba(45,156,219,0) 62%),
+    radial-gradient(64% 44% at 82% 96%, rgba(128,177,34,.16) 0%, rgba(128,177,34,0) 66%),
+    radial-gradient(58% 40% at 12% 88%, rgba(45,156,219,.16) 0%, rgba(45,156,219,0) 66%),
+    linear-gradient(180deg, #f6f9f2 0%, #f2f6f9 100%);
+  background-attachment: fixed;
+}
+
+.logo {
+  border-radius: var(--radius-md);
+  background: var(--action-primary);
+  color: var(--text-on-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--fw-bold);
+}
+
+.gbtn {
+  border: 1px solid var(--border-default);
+  background: var(--surface-card);
+  border-radius: var(--radius-pill);
+  padding: 10px 22px;
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-body-sm);
+  cursor: pointer;
+}
+.gbtn:hover { border-color: var(--mg-blue-500); color: var(--text-link); }
+.gbtn:disabled { opacity: .6; cursor: default; }
+
+.err {
+  color: var(--mg-danger);
+  font-size: 13px;
+  background: #fdf1ef;
+  border: 1px solid #f3d3cd;
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--fs-overline);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-overline);
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+}
+.badge--draft { background: var(--mg-ink-100); color: var(--mg-ink-500); }
+.badge--pending { background: #fff4e0; color: #92660f; }
+.badge--approved { background: var(--mg-green-50); color: var(--mg-green-700); }
+.badge--sent { background: var(--mg-blue-50); color: var(--mg-blue-700); }
+.badge--completed { background: var(--mg-charcoal); color: #fff; }
+.badge--rejected { background: #fdf1ef; color: var(--mg-danger); }
+/* Used by the Users page role pills and the PDF labels. Was only ever
+   defined inside .pr-native-scope, so outside the pricing page it gave a
+   pill shape with no fill — the same invisible-control bug as a bare .btn. */
+.badge--neutral { background: var(--mg-ink-100); color: var(--mg-ink-500); }
+
+/* ── Responsive primitives for the deal page ───────────────────────────────
+   These are intentionally INTRINSIC (wrap / auto-fit) rather than viewport
+   media queries: the deal cards sit inside a column whose width depends on the
+   nav rail, so they should respond to the space they actually have. It also
+   means the behaviour can be verified by narrowing the real container, instead
+   of only ever showing up on a real phone. */
+
+/* Two-up card grids. Below ~2x260px the tracks stop fitting and the cards
+   stack instead of being squeezed side by side. min() so a single card can
+   never demand more width than the container has. */
+.grid-duo {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+}
+
+/* Label / value rows. The value wraps under the label as soon as it no longer
+   fits beside it, rather than being crushed into a few characters. */
+.kv-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 13.5px;
+}
+.kv-row > .kv-label { flex: 0 0 160px; color: var(--text-muted); }
+.kv-row > .kv-value { flex: 1 1 200px; min-width: 0; overflow-wrap: anywhere; }
+
+/* Button groups wrap instead of overflowing the card. */
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* Card header: title on the left, actions on the right, wrapping when there
+   isn't room for both on one line. */
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* A list row: description on the left, actions on the right; wraps rather than
+   letting a long filename shove the buttons off the edge. */
+.list-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.list-row > :first-child { min-width: 0; overflow-wrap: anywhere; }
+
+/* Floating glass. Three things make it read as floating rather than just pale:
+   a wide soft shadow well below the card, a 1px near-white top edge (inset) so
+   the top catches light, and backdrop-filter so the page's colour wash bleeds
+   through. -webkit- prefix included for Safari, which still needs it. */
+.card {
+  position: relative;
+  background: rgba(255,255,255,.58);
+  border: 1px solid rgba(255,255,255,.72);
+  border-radius: var(--radius-card);
+  backdrop-filter: blur(22px) saturate(1.5);
+  -webkit-backdrop-filter: blur(22px) saturate(1.5);
+  box-shadow:
+    0 22px 48px -18px rgba(24,24,24,.20),
+    0 6px 16px -8px rgba(24,24,24,.10),
+    inset 0 1px 0 rgba(255,255,255,.92);
+  padding: var(--space-6);
+  transition: box-shadow .22s ease, transform .22s ease;
+}
+/* Lifts slightly on hover — enough to feel physical, not enough to jitter the
+   page while you are reading a table. */
+.card:hover {
+  box-shadow:
+    0 30px 60px -20px rgba(24,24,24,.24),
+    0 8px 20px -10px rgba(24,24,24,.12),
+    inset 0 1px 0 rgba(255,255,255,.95);
+}
+/* Glass has no opaque ground, so zebra/hover rows inside a card need to be
+   tinted rather than solid, or they punch a grey hole through the blur. */
+.card table.list tr:hover td { background: rgba(24,24,24,.035); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 10px 18px;
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-body-sm);
+  font-family: var(--font-sans);
+  cursor: pointer;
+}
+.btn--primary { background: var(--action-primary); color: #fff; }
+.btn--primary:hover { background: var(--action-primary-hover); }
+.btn--accent { background: var(--action-accent); color: #fff; }
+.btn--accent:hover { background: var(--action-accent-hover); }
+.btn--info { background: var(--action-info); color: #fff; }
+.btn--info:hover { background: var(--action-info-hover); }
+.btn--danger { background: var(--mg-danger); color: #fff; }
+.btn--ghost { background: transparent; color: var(--text-strong); border: 1px solid var(--border-default); }
+.btn--ghost:hover { background: var(--surface-muted); }
+.btn:disabled { opacity: .55; cursor: default; }
+
+table.list { width: 100%; border-collapse: collapse; font-size: var(--fs-body-sm); }
+table.list th {
+  text-align: left;
+  font-size: var(--fs-overline);
+  letter-spacing: var(--ls-overline);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+table.list td { padding: 10px 12px; border-bottom: 1px solid var(--border-subtle); }
+table.list tr:hover td { background: var(--surface-muted); }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 12px; font-weight: var(--fw-semibold); color: var(--text-muted); }
+.field input, .field select, .field textarea {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.rep-slider {
+  -webkit-appearance: none; appearance: none;
+  height: 6px; border-radius: var(--radius-pill);
+  background: var(--mg-ink-200); outline: none;
+}
+.rep-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--mg-green-500); border: 2px solid #fff;
+  box-shadow: var(--shadow-sm); cursor: pointer;
+}
+.rep-slider::-moz-range-thumb {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--mg-green-500); border: 2px solid #fff;
+  box-shadow: var(--shadow-sm); cursor: pointer;
+}
+
+.section-label {
+  font-size: var(--fs-overline);
+  letter-spacing: var(--ls-overline);
+  text-transform: uppercase;
+  color: var(--text-brand);
+  font-weight: var(--fw-semibold);
+  margin-bottom: 10px;
+}
+
+/* Dark hero band -- the design system's page-header recipe (blue glow
+   top-left, green glow top-right, faint blue glow bottom-center, over solid
+   charcoal). Standard opener for a console page's title area. */
+.hero-dark {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(120% 120% at 12% 8%, rgba(45, 156, 219, .30) 0%, transparent 46%),
+    radial-gradient(120% 120% at 88% 22%, rgba(128, 177, 34, .26) 0%, transparent 44%),
+    radial-gradient(140% 140% at 60% 100%, rgba(45, 156, 219, .16) 0%, transparent 55%),
+    var(--mg-charcoal);
+  color: var(--mg-white);
+  padding: 32px 36px;
+}
+.hero-dark .eyebrow {
+  color: var(--mg-blue-300);
+  font-size: var(--fs-overline);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-overline);
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+.hero-dark h1 {
+  color: var(--mg-white);
+  font-size: 1.6rem;
+  font-weight: var(--fw-extrabold);
+  letter-spacing: -.02em;
+  margin: 0;
+}
+.hero-dark p {
+  color: var(--mg-ink-300);
+}
+
+/* ── Login: split hero ──────────────────────────────────────────────────────
+   Matches the Academy's sign-in (martal-academy.vercel.app): dark branded
+   panel on the left, sign-in on the right. Ported to plain CSS because this
+   app has no Tailwind. Below 900px the hero is dropped and a compact brand
+   lockup takes its place, so the sign-in never gets squeezed. */
+.login-split { min-height: 100vh; display: grid; grid-template-columns: 1fr; }
+
+.login-hero { display: none; }
+@media (min-width: 900px) {
+  .login-split { grid-template-columns: 1fr 1fr; }
+  .login-hero {
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 48px; position: relative; overflow: hidden; color: #fff;
+    background:
+      radial-gradient(120% 120% at 12% 8%, rgba(45,156,219,.30) 0%, transparent 46%),
+      radial-gradient(120% 120% at 88% 22%, rgba(128,177,34,.26) 0%, transparent 44%),
+      radial-gradient(140% 140% at 60% 100%, rgba(45,156,219,.16) 0%, transparent 55%),
+      var(--mg-charcoal);
+  }
+}
+
+.login-lockup { display: flex; align-items: center; gap: 10px; }
+.login-lockup .bar { color: rgba(255,255,255,.30); }
+.login-lockup .name {
+  font-size: 14px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .18em; color: var(--mg-green-500); white-space: nowrap;
+}
+
+.login-eyebrow {
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .24em; color: #8ecdee; margin: 0;
+}
+.login-h1 {
+  margin: 20px 0 0; max-width: 34rem;
+  font-size: clamp(30px, 3.1vw, 42px); font-weight: 800;
+  line-height: 1.08; letter-spacing: -.02em;
+}
+.login-sub {
+  margin: 22px 0 0; max-width: 30rem; font-size: 17px; line-height: 1.6;
+  color: rgba(255,255,255,.72);
+}
+.login-stats {
+  margin-top: 38px; display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; max-width: 34rem;
+}
+.login-stat {
+  border: 1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.04);
+  border-radius: 16px; padding: 16px;
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.login-stat-v { font-size: 24px; font-weight: 800; line-height: 1.1; }
+.login-stat-c { margin-top: 8px; font-size: 12px; line-height: 1.35; color: rgba(255,255,255,.55); }
+.login-foot { margin: 0; font-size: 13px; color: rgba(255,255,255,.45); }
+
+.login-pane {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 48px 24px;
+  background:
+    radial-gradient(70% 55% at 88% 6%, rgba(45,156,219,.10) 0%, transparent 62%),
+    radial-gradient(60% 50% at 4% 96%, rgba(128,177,34,.09) 0%, transparent 62%),
+    #fbfbfa;
+}
+@media (min-width: 640px) { .login-pane { padding: 48px 64px; } }
+.login-card { margin: 0 auto; width: 100%; max-width: 24rem; }
+.login-badge {
+  display: grid; place-items: center; height: 40px; width: 40px;
+  border-radius: 12px; background: var(--mg-charcoal); color: #fff;
+}
+.login-h2 {
+  margin: 30px 0 0; font-size: 34px; font-weight: 800; line-height: 1.12;
+  letter-spacing: -.02em; color: var(--mg-charcoal);
+}
+.login-p { margin: 12px 0 0; color: var(--text-muted); line-height: 1.6; }
+
+/* Full-width Google pill, same shape as the Academy's. */
+.login-google {
+  margin-top: 30px; width: 100%; display: inline-flex; align-items: center;
+  justify-content: center; gap: 12px; padding: 13px 20px;
+  border: 1px solid var(--border-default); border-radius: var(--radius-pill);
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  font-family: inherit; font-size: 15px; font-weight: 600;
+  color: var(--mg-charcoal); cursor: pointer;
+  box-shadow: 0 1px 2px rgba(24,24,24,.06);
+  transition: border-color .16s ease, box-shadow .16s ease;
+}
+.login-google:hover { border-color: var(--mg-charcoal); box-shadow: 0 6px 18px -8px rgba(24,24,24,.28); }
+.login-google:disabled { opacity: .6; cursor: default; }
+
+.login-rule { display: flex; align-items: center; gap: 14px; margin-top: 30px; }
+.login-rule .line { height: 1px; flex: 1; background: var(--border-subtle); }
+.login-rule .txt {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .16em; color: var(--text-muted); text-align: center;
+}
+.login-fine { margin: 28px 0 0; font-size: 12px; line-height: 1.65; color: var(--text-muted); }
+@media (min-width: 900px) { .login-hide-lg { display: none; } }
+
+/* Signed-in user chip on the app bar: avatar + name in a pill, so it reads as
+   one object next to Sign out rather than loose text. */
+.appbar-user {
+  display: inline-flex; align-items: center; gap: 8px;
+  /* Sized so the 30px brand mark, not this chip, sets the bar's height. */
+  padding: 3px 11px 3px 3px; border-radius: var(--radius-pill);
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+  color: rgba(255,255,255,.86); font-size: 13px; font-weight: 600;
+  white-space: nowrap; max-width: 230px;
+}
+.appbar-user .name { overflow: hidden; text-overflow: ellipsis; }
+.appbar-avatar {
+  height: 24px; width: 24px; flex: 0 0 auto; border-radius: 50%;
+  object-fit: cover; background: rgba(255,255,255,.16);
+  border: 1px solid rgba(255,255,255,.22); display: block;
+}
+/* Initials stand in when Google returns no picture. */
+.appbar-avatar--fallback {
+  display: grid; place-items: center;
+  font-size: 11px; font-weight: 700; letter-spacing: .02em;
+  color: #fff; text-transform: uppercase;
+}
+
+/* ── Console shell: collapsible left nav ────────────────────────────────────
+   Replaces the top app bar, which ran out of room at six items. The rail keeps
+   the same identity as the old bar: dark charcoal with green bleeding from one
+   end and blue from the other, only now vertically. */
+.shell {
+  --nav-w: 240px;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: var(--nav-w) minmax(0, 1fr);
+  max-width: 100%;
+  overflow-x: clip;
+  transition: grid-template-columns .18s ease;
+}
+.shell[data-collapsed='true'] { --nav-w: 68px; }
+
+.sidenav {
+  position: sticky; top: 0; align-self: start;
+  height: 100vh; display: flex; flex-direction: column;
+  overflow: hidden; color: #fff;
+  background:
+    radial-gradient(120% 60% at 0% 0%, rgba(128,177,34,.42) 0%, rgba(128,177,34,.08) 42%, rgba(128,177,34,0) 66%),
+    radial-gradient(120% 60% at 100% 100%, rgba(45,156,219,.46) 0%, rgba(45,156,219,.10) 42%, rgba(45,156,219,0) 68%),
+    linear-gradient(180deg, #1b2410 0%, #171a13 26%, #16181a 52%, #14202c 78%, #0e1b2a 100%);
+  border-right: 1px solid rgba(255,255,255,.10);
+  box-shadow: 10px 0 34px rgba(13,13,13,.22);
+}
+/* Brand hairline down the trailing edge, green -> blue. */
+.sidenav::after {
+  content: ''; position: absolute; top: 0; bottom: 0; right: -1px; width: 1px;
+  background: linear-gradient(180deg, rgba(128,177,34,.85) 0%, rgba(128,177,34,.12) 34%,
+              rgba(45,156,219,.12) 66%, rgba(45,156,219,.85) 100%);
+  pointer-events: none;
+}
+
+.sidenav-top {
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px 14px; min-height: 66px;
+}
+.sidenav-brand {
+  display: flex; align-items: center; gap: 9px; min-width: 0; overflow: hidden;
+  white-space: nowrap; text-decoration: none;
+}
+.sidenav-brand .name {
+  font-size: 15px; font-weight: 700; letter-spacing: -.01em; color: #fff;
+}
+.shell[data-collapsed='true'] .sidenav-brand { display: none; }
+
+.hamburger {
+  flex: 0 0 auto; display: grid; place-items: center;
+  height: 36px; width: 36px; border-radius: 10px; cursor: pointer;
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+  color: rgba(255,255,255,.86); font: inherit; padding: 0;
+}
+.hamburger:hover { background: rgba(255,255,255,.16); color: #fff; }
+
+.sidenav-items {
+  display: flex; flex-direction: column; gap: 3px;
+  padding: 8px 10px; overflow-y: auto; flex: 1 1 auto;
+}
+.sidenav-link {
+  position: relative; display: flex; align-items: center; gap: 11px;
+  padding: 10px 11px; border-radius: 10px; text-decoration: none;
+  color: rgba(255,255,255,.74); font-size: 13.5px; font-weight: 700;
+  letter-spacing: .01em; white-space: nowrap; overflow: hidden;
+}
+.sidenav-link:hover { background: rgba(255,255,255,.09); color: #fff; text-decoration: none; }
+.sidenav-link svg { flex: 0 0 auto; }
+.sidenav-link[aria-current='page'] { background: rgba(255,255,255,.13); color: #fff; }
+/* The active marker uses the same green-to-blue gradient as the hover underline
+   the top bar used to have. */
+.sidenav-link[aria-current='page']::before {
+  content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: linear-gradient(180deg, var(--mg-green-500), var(--mg-blue-500, #2d9cdb));
+}
+.shell[data-collapsed='true'] .sidenav-link { justify-content: center; padding: 10px 0; }
+.shell[data-collapsed='true'] .sidenav-link .label { display: none; }
+
+/* Ghost buttons on the rail need the same light treatment the app bar gave
+   them: .btn--ghost alone is dark text on a transparent ground, which is
+   invisible against the dark rail. */
+.sidenav .btn--ghost {
+  color: rgba(255,255,255,.86);
+  border-color: rgba(255,255,255,.22);
+  background: rgba(255,255,255,.06);
+}
+.sidenav .btn--ghost:hover { background: rgba(255,255,255,.16); color: #fff; }
+
+.sidenav-foot {
+  border-top: 1px solid rgba(255,255,255,.10);
+  padding: 16px 10px 18px; display: flex; flex-direction: column; gap: 16px;
+}
+.sidenav-user {
+  display: flex; align-items: center; gap: 9px; min-width: 0;
+  font-size: 13px; font-weight: 600; color: rgba(255,255,255,.86);
+}
+.sidenav-user .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.shell[data-collapsed='true'] .sidenav-user .name { display: none; }
+.shell[data-collapsed='true'] .sidenav-user { justify-content: center; }
+.shell[data-collapsed='true'] .sidenav-signout .label { display: none; }
+
+.shell-main {
+  min-width: 0;
+  padding: 28px 28px 56px;
+  /* Hard containment. min-width:0 stops most grid blowout, but any single wide
+     child — a slider row, an injected preview, a long unbreakable string — was
+     still able to push the column out and hang a horizontal scrollbar under the
+     whole app, which then let content slide beneath the rail. `clip` (not
+     `hidden`) prevents that without creating a scroll container, so sticky
+     positioning inside the column keeps working. */
+  overflow-x: clip;
+}
+@media (min-width: 1100px) { .shell-main { padding: 32px 40px 64px; } }
+
+/* Grid and flex children default to min-width:auto, so one wide child (a long
+   table, an unbreakable string) pushes its track past the column and puts a
+   horizontal scrollbar under the whole page. This is the standard guard. */
+.shell-main :where(.card, table, .list) { min-width: 0; }
+
+/* The column clips, so anything genuinely wider than a phone has to scroll
+   INSIDE its own card rather than be cut off. Tables are the case that
+   matters: the deals list has six columns and is unreadable at 412px if it is
+   simply clipped.
+   Phone widths only. `overflow-x: auto` also forces overflow-y to auto, which
+   would clip anything meant to escape a card on desktop, and desktop does not
+   need it because the tables fit. */
+@media (max-width: 899px) {
+  .shell-main .card { overflow-x: auto; }
+  .shell-main .card > table,
+  .shell-main .card table.list { min-width: max-content; }
+}
+
+/* ── mobile: the rail goes off-canvas ─────────────────────────────────────── */
+.shell-topbar { display: none; }
+@media (max-width: 899px) {
+  /* One column, and — critically — an explicit row pair. `.shell` is
+     min-height:100vh with implicit `auto` rows, so on a short page the grid
+     distributed the leftover height into the topbar row and rendered the bar
+     as a 400px dark slab. It showed up worst on the Approval Queue because an
+     empty queue leaves the most free space. `auto 1fr` pins the bar to its
+     content and gives the remainder to the page. */
+  .shell { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; }
+  .shell-topbar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 14px; position: sticky; top: 0; z-index: 30; color: #fff;
+    background: linear-gradient(90deg, #1b2410 0%, #16181a 52%, #0e1b2a 100%);
+    border-bottom: 1px solid rgba(255,255,255,.10);
+  }
+  .sidenav {
+    position: fixed; top: 0; bottom: 0; left: 0; width: 260px; z-index: 40;
+    transform: translateX(-100%); transition: transform .2s ease;
+  }
+  .shell[data-open='true'] .sidenav { transform: translateX(0); }
+  .shell[data-collapsed='true'] .sidenav-brand,
+  .shell[data-collapsed='true'] .sidenav-link .label,
+  .shell[data-collapsed='true'] .sidenav-user .name,
+  .shell[data-collapsed='true'] .sidenav-signout .label { display: revert; }
+  .shell[data-collapsed='true'] .sidenav-link { justify-content: flex-start; padding: 10px 11px; }
+  .shell-scrim {
+    position: fixed; inset: 0; z-index: 35; background: rgba(13,13,13,.5);
+    backdrop-filter: blur(2px);
+  }
+  .shell-main { padding: 20px 16px; }
+}

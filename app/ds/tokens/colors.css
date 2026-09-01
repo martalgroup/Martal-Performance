@@ -1,0 +1,88 @@
+/* ============================================================
+   MARTAL GROUP — COLOR TOKENS
+   Brand palette (from MG Branding Guide):
+   Primary   Charcoal Black  #181818
+   Secondary Vibrant Green   #80b122
+   Accent    Bright Blue     #2d9cdb
+   ============================================================ */
+:root {
+  /* --- Brand core --- */
+  --mg-charcoal: #181818;      /* Primary — Charcoal Black */
+  --mg-green: #80b122;         /* Secondary — Vibrant Green */
+  --mg-blue: #2d9cdb;          /* Accent — Bright Blue */
+
+  /* --- Charcoal / neutral ramp (built around #181818) --- */
+  --mg-black: #0d0d0d;
+  --mg-ink-900: #181818;       /* charcoal, base surface for dark UI */
+  --mg-ink-800: #242424;
+  --mg-ink-700: #303030;
+  --mg-ink-600: #3d3d3d;
+  --mg-ink-500: #565656;
+  --mg-ink-400: #7a7a7a;
+  --mg-ink-300: #a3a3a3;
+  --mg-ink-200: #cfcfcf;
+  --mg-ink-100: #e7e7e7;
+  --mg-ink-50:  #f4f4f4;
+  --mg-white:   #ffffff;
+
+  /* --- Green ramp (secondary) --- */
+  --mg-green-700: #4f6e13;
+  --mg-green-600: #66901b;
+  --mg-green-500: #80b122;     /* brand green */
+  --mg-green-400: #98c548;
+  --mg-green-300: #b6d67e;
+  --mg-green-100: #e6f1cf;
+  --mg-green-50:  #f3f8e6;
+
+  /* --- Blue ramp (accent) --- */
+  --mg-blue-700: #1c6d9c;
+  --mg-blue-600: #2588bf;
+  --mg-blue-500: #2d9cdb;      /* brand blue */
+  --mg-blue-400: #57b2e5;
+  --mg-blue-300: #8ecdee;
+  --mg-blue-100: #d5edf8;
+  --mg-blue-50:  #eaf6fc;
+
+  /* --- Semantic status --- */
+  --mg-success: #80b122;
+  --mg-info: #2d9cdb;
+  --mg-warning: #e0a020;
+  --mg-danger: #d1483a;
+
+  /* ============================================================
+     SEMANTIC ALIASES — reference these in components
+     ============================================================ */
+  /* Surfaces */
+  --surface-page: var(--mg-white);
+  --surface-card: var(--mg-white);
+  --surface-muted: var(--mg-ink-50);
+  --surface-sunken: var(--mg-ink-100);
+  --surface-inverse: var(--mg-charcoal);      /* dark blocks / hero */
+  --surface-inverse-2: var(--mg-ink-800);
+
+  /* Text */
+  --text-strong: var(--mg-charcoal);
+  --text-body: var(--mg-ink-700);
+  --text-muted: var(--mg-ink-400);
+  --text-on-dark: var(--mg-white);
+  --text-on-dark-muted: var(--mg-ink-300);
+  --text-brand: var(--mg-green-600);
+  --text-link: var(--mg-blue-600);
+
+  /* Actions */
+  --action-primary: var(--mg-charcoal);        /* dark CTA — brand default */
+  --action-primary-hover: var(--mg-ink-800);
+  --action-accent: var(--mg-green-500);         /* green CTA */
+  --action-accent-hover: var(--mg-green-600);
+  --action-info: var(--mg-blue-500);
+  --action-info-hover: var(--mg-blue-600);
+
+  /* Borders */
+  --border-subtle: var(--mg-ink-100);
+  --border-default: var(--mg-ink-200);
+  --border-strong: var(--mg-ink-400);
+  --border-on-dark: rgba(255,255,255,.14);
+
+  /* Focus ring */
+  --focus-ring: var(--mg-blue-500);
+}

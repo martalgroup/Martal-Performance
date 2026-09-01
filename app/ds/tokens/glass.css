@@ -1,0 +1,76 @@
+/* ============================================================
+   MARTAL GROUP — GLASS & LIQUID TOKENS
+   Modern glassmorphism layer on top of the brand palette.
+   Frosted translucent surfaces, backdrop blur, liquid gradients,
+   glossy top highlights. Charcoal / green / blue only.
+   ============================================================ */
+:root {
+  /* --- Glass fills (light context, over imagery / tints) --- */
+  --glass-light: rgba(255,255,255,.55);
+  --glass-light-strong: rgba(255,255,255,.72);
+  --glass-light-faint: rgba(255,255,255,.35);
+
+  /* --- Glass fills (dark / charcoal context) --- */
+  --glass-dark: rgba(24,24,24,.45);
+  --glass-dark-strong: rgba(24,24,24,.62);
+  --glass-tint-green: rgba(128,177,34,.16);
+  --glass-tint-blue: rgba(45,156,219,.18);
+
+  /* --- Glass borders & hairlines (the lit edge) --- */
+  --glass-border: rgba(255,255,255,.55);
+  --glass-border-soft: rgba(255,255,255,.30);
+  --glass-border-dark: rgba(255,255,255,.14);
+
+  /* --- Blur strengths --- */
+  --blur-sm: 8px;
+  --blur-md: 16px;
+  --blur-lg: 28px;
+  --blur-xl: 44px;
+
+  /* --- Glossy top highlight (the "liquid" sheen) --- */
+  --glass-sheen: linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.08) 42%, rgba(255,255,255,0) 60%); /* @kind color */
+  --glass-sheen-soft: linear-gradient(180deg, rgba(255,255,255,.35) 0%, rgba(255,255,255,0) 55%); /* @kind color */
+
+  /* --- Glass shadows (soft, floating, cool) --- */
+  --glass-shadow: 0 8px 32px rgba(24,24,24,.18), inset 0 1px 0 rgba(255,255,255,.5);
+  --glass-shadow-lg: 0 20px 60px rgba(24,24,24,.28), inset 0 1px 0 rgba(255,255,255,.55);
+  --glass-shadow-dark: 0 12px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.12);
+
+  /* --- Liquid gradient backdrops (mesh-like, for hero/section fills) --- */
+  --liquid-brand: radial-gradient(120% 120% at 0% 0%, #202a12 0%, #181818 42%, #0d0d0d 100%); /* @kind color */
+  --liquid-green: radial-gradient(130% 130% at 15% 10%, #98c548 0%, #66901b 45%, #2f4210 100%); /* @kind color */
+  --liquid-blue: radial-gradient(130% 130% at 85% 15%, #57b2e5 0%, #2588bf 48%, #123246 100%); /* @kind color */
+  --liquid-duo: radial-gradient(90% 130% at 12% 8%, rgba(128,177,34,.55) 0%, rgba(128,177,34,0) 45%),
+                radial-gradient(90% 120% at 92% 20%, rgba(45,156,219,.55) 0%, rgba(45,156,219,0) 48%),
+                linear-gradient(160deg, #181818 0%, #0d0d0d 100%); /* @kind color */
+  --liquid-aurora: radial-gradient(60% 90% at 20% 20%, rgba(128,177,34,.35), transparent 60%),
+                   radial-gradient(60% 90% at 80% 30%, rgba(45,156,219,.38), transparent 62%),
+                   radial-gradient(80% 100% at 50% 100%, rgba(45,156,219,.12), transparent 70%),
+                   #101010; /* @kind color */
+
+  /* --- Semantic glass aliases --- */
+  --glass-radius: var(--radius-lg);
+  --glass-panel-bg: var(--glass-light-strong);
+  --glass-panel-border: var(--glass-border-soft);
+  --glass-panel-blur: var(--blur-lg);
+}
+
+/* ============================================================
+   APP EXTENSION — not present in the upstream Martal Group
+   Design System zip. Light-mode liquid mesh backdrops, added
+   for the martal-pricing-app console theme relaunch (2026-08).
+   Same shapes/positions as --liquid-duo/--liquid-aurora above,
+   re-hued onto a near-white base (not pure #fff) so GlassCard's
+   rgba(255,255,255,.72) fill still has color underneath it once
+   its own backdrop-filter: saturate(1.4) amplifies the wash.
+   Keep below this marker if re-syncing tokens from upstream.
+   ============================================================ */
+:root {
+  --liquid-duo-light: radial-gradient(90% 130% at 12% 8%, rgba(128,177,34,.42) 0%, rgba(128,177,34,0) 45%),
+                       radial-gradient(90% 120% at 92% 20%, rgba(45,156,219,.40) 0%, rgba(45,156,219,0) 48%),
+                       linear-gradient(160deg, #f3f8e6 0%, #eaf6fc 55%, #ffffff 100%); /* @kind color */
+  --liquid-aurora-light: radial-gradient(60% 90% at 20% 20%, rgba(128,177,34,.38), transparent 60%),
+                          radial-gradient(60% 90% at 80% 30%, rgba(45,156,219,.40), transparent 62%),
+                          radial-gradient(80% 100% at 50% 100%, rgba(45,156,219,.14), transparent 70%),
+                          #fbfcf8; /* @kind color */
+}
