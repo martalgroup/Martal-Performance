@@ -1,0 +1,98 @@
+
+/* ── Login: split hero ──────────────────────────────────────────────────────
+   Matches the Academy's sign-in (martal-academy.vercel.app): dark branded
+   panel on the left, sign-in on the right. Ported to plain CSS because this
+   app has no Tailwind. Below 900px the hero is dropped and a compact brand
+   lockup takes its place, so the sign-in never gets squeezed. */
+.login-split { min-height: 100vh; display: grid; grid-template-columns: 1fr; }
+
+.login-hero { display: none; }
+@media (min-width: 900px) {
+  .login-split { grid-template-columns: 1fr 1fr; }
+  .login-hero {
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 48px; position: relative; overflow: hidden; color: #fff;
+    background:
+      radial-gradient(120% 120% at 12% 8%, rgba(45,156,219,.30) 0%, transparent 46%),
+      radial-gradient(120% 120% at 88% 22%, rgba(128,177,34,.26) 0%, transparent 44%),
+      radial-gradient(140% 140% at 60% 100%, rgba(45,156,219,.16) 0%, transparent 55%),
+      var(--mg-charcoal);
+  }
+}
+
+.login-lockup { display: flex; align-items: center; gap: 10px; }
+.login-lockup .bar { color: rgba(255,255,255,.30); }
+.login-lockup .name {
+  font-size: 14px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .18em; color: var(--mg-green-500); white-space: nowrap;
+}
+
+.login-eyebrow {
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .24em; color: #8ecdee; margin: 0;
+}
+.login-h1 {
+  margin: 20px 0 0; max-width: 34rem;
+  font-size: clamp(30px, 3.1vw, 42px); font-weight: 800;
+  line-height: 1.08; letter-spacing: -.02em;
+}
+.login-sub {
+  margin: 22px 0 0; max-width: 30rem; font-size: 17px; line-height: 1.6;
+  color: rgba(255,255,255,.72);
+}
+.login-stats {
+  margin-top: 38px; display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; max-width: 34rem;
+}
+.login-stat {
+  border: 1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.04);
+  border-radius: 16px; padding: 16px;
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.login-stat-v { font-size: 24px; font-weight: 800; line-height: 1.1; }
+.login-stat-c { margin-top: 8px; font-size: 12px; line-height: 1.35; color: rgba(255,255,255,.55); }
+.login-foot { margin: 0; font-size: 13px; color: rgba(255,255,255,.45); }
+
+.login-pane {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 48px 24px;
+  background:
+    radial-gradient(70% 55% at 88% 6%, rgba(45,156,219,.10) 0%, transparent 62%),
+    radial-gradient(60% 50% at 4% 96%, rgba(128,177,34,.09) 0%, transparent 62%),
+    #fbfbfa;
+}
+@media (min-width: 640px) { .login-pane { padding: 48px 64px; } }
+.login-card { margin: 0 auto; width: 100%; max-width: 24rem; }
+.login-badge {
+  display: grid; place-items: center; height: 40px; width: 40px;
+  border-radius: 12px; background: var(--mg-charcoal); color: #fff;
+}
+.login-h2 {
+  margin: 30px 0 0; font-size: 34px; font-weight: 800; line-height: 1.12;
+  letter-spacing: -.02em; color: var(--mg-charcoal);
+}
+.login-p { margin: 12px 0 0; color: var(--text-muted); line-height: 1.6; }
+
+/* Full-width Google pill, same shape as the Academy's. */
+.login-google {
+  margin-top: 30px; width: 100%; display: inline-flex; align-items: center;
+  justify-content: center; gap: 12px; padding: 13px 20px;
+  border: 1px solid var(--border-default); border-radius: var(--radius-pill);
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  font-family: inherit; font-size: 15px; font-weight: 600;
+  color: var(--mg-charcoal); cursor: pointer;
+  box-shadow: 0 1px 2px rgba(24,24,24,.06);
+  transition: border-color .16s ease, box-shadow .16s ease;
+}
+.login-google:hover { border-color: var(--mg-charcoal); box-shadow: 0 6px 18px -8px rgba(24,24,24,.28); }
+.login-google:disabled { opacity: .6; cursor: default; }
+
+.login-rule { display: flex; align-items: center; gap: 14px; margin-top: 30px; }
+.login-rule .line { height: 1px; flex: 1; background: var(--border-subtle); }
+.login-rule .txt {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .16em; color: var(--text-muted); text-align: center;
+}
+.login-fine { margin: 28px 0 0; font-size: 12px; line-height: 1.65; color: var(--text-muted); }
+@media (min-width: 900px) { .login-hide-lg { display: none; } }
