@@ -4,7 +4,7 @@ import PeriodPicker from '../../../components/PeriodPicker';
 import SourceNote from '../../../components/SourceNote';
 import Sparkline from '../../../components/Sparkline';
 import { repsView } from '../../../lib/perf/data';
-import { getProfile } from '../../../lib/supabase/server';
+import { requireTab } from '../../../lib/perf/guard';
 import { isAdminRole } from '../../../lib/roles';
 import { canSee, homeFor } from '../../../lib/perf/access';
 export const dynamic = 'force-dynamic';
@@ -53,8 +53,7 @@ function Podium({ rows, cmpLabel }) {
 }
 
 export default async function RepsPage({ searchParams }) {
-  const [{ ds, w, prev, inProgress, daysIn, periods, table, totals, history }, profile] = await Promise.all([repsView(searchParams), getProfile()]);
-  if (!canSee(profile?.role, '/console/reps')) redirect(homeFor(profile?.role));
+  const [{ ds, w, prev, inProgress, daysIn, periods, table, totals, history }, { profile }] = await Promise.all([repsView(searchParams), requireTab('/console/reps')]);
   const ranked = table.filter((r) => r.ranked);
   const top = ranked[0];
   const climbers = ranked.filter((r) => r.move > 0).length;

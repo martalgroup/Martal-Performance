@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { createClient, getProfile } from '../../lib/supabase/server';
 import { fetchLoginContent } from '../../lib/login-content';
-import { homeFor } from '../../lib/perf/access';
+import { homeFor, loadTabs } from '../../lib/perf/access';
 import LoginForm from './LoginForm';
 
 // Server component so the hero copy is read per request. The messaging is
@@ -14,7 +14,7 @@ export default async function LoginPage() {
   // renders for an authenticated user, which is where the nav-bar-above-the-
   // sign-in-screen state came from.
   const profile = await getProfile();
-  if (profile) redirect(homeFor(profile.role));
+  if (profile) redirect(homeFor(await loadTabs(supabase), profile.role));
 
   const supabase = await createClient();
   const content = await fetchLoginContent(supabase);

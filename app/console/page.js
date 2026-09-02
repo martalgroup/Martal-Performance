@@ -1,11 +1,9 @@
-import { redirect } from 'next/navigation';
-import { canSee, homeFor } from '../../lib/perf/access';
 import Hero from '../../components/Hero';
 import Stat from '../../components/Stat';
 import PeriodPicker from '../../components/PeriodPicker';
 import SourceNote from '../../components/SourceNote';
 import { companyView } from '../../lib/perf/data';
-import { getProfile } from '../../lib/supabase/server';
+import { requireTab } from '../../lib/perf/guard';
 import { isAdminRole } from '../../lib/roles';
 export const dynamic = 'force-dynamic';
 
@@ -13,8 +11,7 @@ const pct = (a, b) => (b ? `${a >= b ? '+' : ''}${(((a - b) / b) * 100).toFixed(
 const n = (x) => Number(x || 0).toLocaleString('en-US');
 
 export default async function CompanyPage({ searchParams }) {
-  const [{ ds, w, now, prev, prevToDate, inProgress, daysIn, daysTotal, series, open }, profile] = await Promise.all([companyView(searchParams), getProfile()]);
-  if (!canSee(profile?.role, '/console')) redirect(homeFor(profile?.role));
+  const [{ ds, w, now, prev, prevToDate, inProgress, daysIn, daysTotal, series, open }, { profile }] = await Promise.all([companyView(searchParams), requireTab('/console')]);
   const showOpenStrip = !inProgress && open.w.start !== w.start;
   const rises = series.slice(1).filter((p, i) => p.flip > series[i].flip).length;
   const cmp = inProgress ? prevToDate : prev;               // like-for-like baseline
