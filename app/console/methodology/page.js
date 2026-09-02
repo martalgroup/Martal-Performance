@@ -23,6 +23,7 @@ export default async function MethodologyPage() {
           <Row k="MQL" v="Qualifying and objection-handling statuses only. Dead dispositions (Not interested, No answer, DNC) are never counted." />
           <Row k="Unattributed" v="Leads logged with no rep. Counted in company totals, shown on the rep table, never ranked." />
           <Row k="Churn" v="Read from the account record's status and churn or end date, with its monthly revenue. Not inferred from lead activity." />
+          <Row k="Campaign dashboard columns" v="MQLs → MQLs · SQL 1 → SQLs · SQL 2 → Booked meetings. Set both dashboards to the same dates and the three figures match to the unit." />
         </tbody></table>
       </div>
       <div className="card">
