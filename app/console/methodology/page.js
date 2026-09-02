@@ -23,6 +23,8 @@ export default async function MethodologyPage() {
           <Row k="MQL" v="Qualifying and objection-handling statuses only. Dead dispositions (Not interested, No answer, DNC) are never counted." />
           <Row k="Unattributed" v="Leads logged with no rep. Counted in company totals, shown on the rep table, never ranked." />
           <Row k="Churn" v="Read from the account record's status and churn or end date, with its monthly revenue. Not inferred from lead activity. Measured on calendar months, 1st to last day." />
+          <Row k="Started" v="Accounts whose start date falls in the month, excluding MYT (pre-start) and MYT Lost. Duplicate account rows in the source are counted once." />
+          <Row k="Lost before start" v="MYT Lost accounts: lost during onboarding, never live. Reported separately; neither a start nor a churn." />
           <Row k="Two calendars" v="Performance and rep ranking run the 16th to the 15th. Churn runs the 1st to the last day of the month. They are not interchangeable." />
           <Row k="Campaign dashboard columns" v="MQLs → MQLs · SQL 1 → SQLs · SQL 2 → Booked meetings. Set both dashboards to the same dates and the three figures match to the unit." />
         </tbody></table>

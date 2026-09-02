@@ -47,6 +47,10 @@ console.log('churn from account records');
 const ch = churn(fx.allAccountsMinimal, { start: '2026-08-01', end: '2026-08-31' });
 t('churned accounts have an end/churn date inside Aug 2026', ch.churned.every((a) => a.end >= '2026-08-01' && a.end <= '2026-08-31'), `${ch.churnedCount} churned, $${ch.churnedMrr.toLocaleString()} MRR`);
 t('active count matches status filter', ch.activeCount === fx.allAccountsMinimal.filter((a) => a.status === 'Active').length, `${ch.activeCount} active, $${ch.activeMrr.toLocaleString()} MRR`);
+t('started excludes MYT and MYT Lost', ch.started.every((a) => a.status !== 'MYT' && a.status !== 'MYT Lost'), `${ch.startedCount} started, $${ch.startedMrr.toLocaleString()} MRR`);
+t('Questco (MYT Lost, $73,200) is not counted as started', !ch.started.some((a) => a.name === 'Questco'));
+t('MYT Lost reported on its own line', ch.mytLost.some((a) => a.name === 'Questco'), `${ch.mytLostCount} lost before start, $${ch.mytLostMrr.toLocaleString()} MRR`);
+t('churned excludes MYT Lost', ch.churned.every((a) => a.status !== 'MYT Lost'));
 
 console.log('quality report');
 const q = quality(fx.leads, fx.allAccountsMinimal);

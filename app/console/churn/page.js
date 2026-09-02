@@ -34,7 +34,15 @@ export default async function ChurnPage({ searchParams }) {
         <Stat value={churn.startedCount} label="Started" note={usd(churn.startedMrr) + ' MRR'} tone="green" />
         <Stat value={churn.activeCount} label="Active" note={usd(churn.activeMrr) + ' MRR'} tone="blue" />
         <Stat value={churn.pendingCount} label="Churn pending" note={usd(churn.pendingMrr) + ' MRR at risk'} />
+        <Stat value={churn.mytLostCount} label="Lost before start" note={usd(churn.mytLostMrr) + ' MRR · MYT lost, not churn'} tone={churn.mytLostCount ? 'red' : 'plain'} />
       </div>
+      {churn.mytLost.length > 0 && (
+        <div className="card" style={{ marginBottom: 18 }}>
+          <h2 style={{ fontSize: 18, margin: '0 0 12px', borderLeft: '3px solid #a13b2f', paddingLeft: 10 }}>Lost before start in {w.label}</h2>
+          <table className="list"><thead><tr><th>Account</th><th>Tier</th><th>Owner</th><th>Planned start</th><th style={{ textAlign: 'right' }}>MRR</th></tr></thead>
+            <tbody>{churn.mytLost.map((a) => (<tr key={a.name + a.start}><td style={{ fontWeight: 600 }}>{a.name}</td><td>{a.tier || '—'}</td><td>{a.owner || '—'}</td><td>{a.start || '—'}</td><td style={{ textAlign: 'right' }}>{usd(a.mrr)}</td></tr>))}</tbody></table>
+        </div>
+      )}
       <div className="card" style={{ marginBottom: 18 }}>
         <h2 style={{ fontSize: 18, margin: '0 0 12px', borderLeft: '3px solid #a13b2f', paddingLeft: 10 }}>Churned in {w.label}</h2>
         <table className="list"><thead><tr><th>Account</th><th>Tier</th><th>Owner</th><th>SOM</th><th>Started</th><th>Ended</th><th style={{ textAlign: 'right' }}>MRR</th></tr></thead>
