@@ -11,7 +11,8 @@ const pct = (a, b) => (b ? `${a >= b ? '+' : ''}${(((a - b) / b) * 100).toFixed(
 const n = (x) => Number(x || 0).toLocaleString('en-US');
 
 export default async function CompanyPage({ searchParams }) {
-  const [{ ds, w, now, prev, prevToDate, inProgress, daysIn, daysTotal, series }, profile] = await Promise.all([companyView(searchParams), getProfile()]);
+  const [{ ds, w, now, prev, prevToDate, inProgress, daysIn, daysTotal, series, open }, profile] = await Promise.all([companyView(searchParams), getProfile()]);
+  const showOpenStrip = !inProgress && open.w.start !== w.start;
   const rises = series.slice(1).filter((p, i) => p.flip > series[i].flip).length;
   const cmp = inProgress ? prevToDate : prev;               // like-for-like baseline
   const cmpLabel = inProgress ? `vs prior period to day ${daysIn}` : 'vs prior period';
@@ -23,6 +24,20 @@ export default async function CompanyPage({ searchParams }) {
             meta={`${rises} of the last ${series.length - 1} periods rose on meetings · SQLs include booked meetings${inProgress ? ` · prior full period: ${n(prev.flip)} meetings` : ''}`} />
       <SourceNote ds={ds} isAdmin={isAdminRole(profile?.role)} />
       <PeriodPicker base="/console" current={w} />
+      {showOpenStrip && (
+        <div className="card" style={{ marginBottom: 18, borderLeft: '3px solid var(--mg-blue-500)' }}>
+          <div className="card-head">
+            <div>
+              <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>In progress · {open.w.label} · day {open.daysIn} of {open.daysTotal}</div>
+              <div style={{ fontSize: 15, fontWeight: 700, marginTop: 4 }}>
+                {n(open.now.flip)} booked meetings so far, {pct(open.now.flip, open.prevToDate.flip)} vs the prior period to day {open.daysIn}
+                <span style={{ color: 'var(--text-muted)', fontWeight: 500 }}> · {n(open.now.sql)} SQLs · {n(open.now.mql)} MQLs</span>
+              </div>
+            </div>
+            <a href="/console?p=open" className="btn btn--ghost" style={{ fontSize: 12, padding: '6px 12px', lineHeight: 1, textDecoration: 'none' }}>Open period</a>
+          </div>
+        </div>
+      )}
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 18 }}>
         <Stat value={n(now.flip)} label="Booked meetings" note={`${pct(now.flip, cmp.flip)} ${cmpLabel}`} tone="green" />
         <Stat value={n(now.sql)} label="SQLs" note={`${pct(now.sql, cmp.sql)} ${cmpLabel} · incl. meetings`} tone="blue" />
