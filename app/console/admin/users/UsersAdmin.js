@@ -93,7 +93,7 @@ export default function UsersAdmin({
       <div className="card" style={{ padding: 0 }}>
         <table className="list">
           <thead>
-            <tr><th>Email</th><th>Name</th><th>Role</th><th>Last sign-in</th><th>Last activity</th><th></th></tr>
+            <tr><th>Email</th><th>Name</th><th>Role</th><th>Last sign-in</th><th></th></tr>
           </thead>
           <tbody>
             {profiles.map((p) => (
@@ -117,7 +117,6 @@ export default function UsersAdmin({
                   )}
                 </td>
                 <td><Stamp iso={lastSignIn[p.id]} never="never" /></td>
-                <td><Stamp iso={lastActivity[p.id]} never="no deals yet" /></td>
                 <td style={{ textAlign: 'right' }}>
                   {p.id !== currentUserId && (
                     <button

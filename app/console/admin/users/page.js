@@ -64,7 +64,7 @@ export default async function AdminUsersPage() {
     supabase.from('invites').select('*').order('created_at', { ascending: false }),
     supabase.from('app_settings').select('allowed_domains').maybeSingle(),
     loadLastSignIn(admin),
-    loadLastActivity(admin),
+    Promise.resolve({}),
   ]);
 
   const { data: tabs } = await supabase.from('perf_tab_access').select('href, label, min_role, sort').order('sort');
