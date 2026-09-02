@@ -28,6 +28,7 @@ export default async function MethodologyPage() {
           <Row k="Churn headline" v="The marketing churn measurement: accounts lost, active accounts at month end, and churn ratio = lost ÷ prior month's active accounts (Marketing and Sales Rev and Exp workbook, tab Churn ratio). Deals closed come from the cashflow workbook; its contracts-lost row is shown as a cross-check and flagged when it differs." />
           <Row k="History" v="Performance periods are reported from Dec 16 2025 onward. Columns follow the campaign dashboard: MQLs, SQL 1 (SQLs), SQL 2 (booked meetings)." />
           <Row k="Churn record" v="The churn measurement sheet begins July 2021 (its header row is unlabelled for the first seventeen months; the series is aligned on December 2022). 'Lowest churn since <month>' names the most recent earlier month at or below the current ratio, or July 2021 when none is." />
+          <Row k="Not ranked" v="Angela Hamilton and Paige Givinsky are Sales Operations Managers. Their MQLs, SQLs and booked meetings count in every company total, but they are not ranked against the SDRs; their rows appear unranked at the foot of the leaderboard." />
           <Row k="Two calendars" v="Performance and rep ranking run the 16th to the 15th. Churn runs the 1st to the last day of the month. They are not interchangeable." />
           <Row k="Campaign dashboard columns" v="MQLs → MQLs · SQL 1 → SQLs · SQL 2 → Booked meetings. Set both dashboards to the same dates and the three figures match to the unit." />
         </tbody></table>

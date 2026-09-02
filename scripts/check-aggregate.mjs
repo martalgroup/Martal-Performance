@@ -2,7 +2,7 @@
 // math fails the build rather than the dashboard.
 import { readFileSync } from 'fs';
 import { periodFor, recentPeriods, preset, monthFor, lastCompleteMonth, recentMonths, periodsSince } from '../lib/perf/periods.js';
-import { companyTotals, repTable, repHistory, churn, quality } from '../lib/perf/aggregate.js';
+import { companyTotals, repTable, repHistory, churn, quality, NON_RANKED } from '../lib/perf/aggregate.js';
 
 import { gunzipSync } from 'zlib';
 const seed = JSON.parse(gunzipSync(readFileSync(new URL('../lib/perf/seed.json.gz', import.meta.url))).toString());
@@ -35,6 +35,20 @@ const rm = recentMonths(3, new Date('2026-09-01T00:00:00Z'));
 t('recent 3 months = Jul, Aug, Sep', rm.map((x) => x.start).join(',') === '2026-07-01,2026-08-01,2026-09-01');
 t('month labels read as Mon YYYY', lm.label === 'Aug 2026', lm.label);
 
+console.log('non-ranked SOMs');
+{
+  const w9 = { start: '2026-07-16', end: '2026-08-15' };
+  const tbl = repTable(fx.leads, w9);
+  const ang = tbl.find((r) => r.rep === 'Angela Hamilton'), pai = tbl.find((r) => r.rep === 'Paige Givinsky');
+  t('Angela present but unranked', !!ang && ang.ranked === false && ang.rank === null, JSON.stringify(ang && { flip: ang.flip, rank: ang.rank }));
+  t('Paige present but unranked', !!pai && pai.ranked === false && pai.rank === null, JSON.stringify(pai && { flip: pai.flip, rank: pai.rank }));
+  t('no stray "Angela Hamlton" row', !tbl.some((r) => r.rep === 'Angela Hamlton'));
+  const tot = companyTotals(fx.leads, w9); const sumRows = tbl.reduce((a, r) => a + r.flip, 0);
+  t('company booked meetings still include them', tot.flip === sumRows, `${tot.flip} company vs ${sumRows} summed rows`);
+  const ranked = tbl.filter((r) => r.ranked);
+  t('ranks are 1..N over ranked reps only', ranked.every((r, i) => r.rank === i + 1), ranked.slice(0, 3).map((r) => r.rank + ':' + r.rep).join(', '));
+}
+
 console.log('aggregation over the bundled full snapshot');
 const w = { start: '2026-07-16', end: '2026-08-15' };
 const ct = companyTotals(fx.leads, w);
@@ -42,7 +56,7 @@ t('window totals are consistent (flip ⊆ sql ⊆ leads)', ct.flip <= ct.sql && 
 t('every dated in-window lead counted exactly once', ct.leads === fx.leads.filter((l) => l.dateISO && l.dateISO >= w.start && l.dateISO <= w.end).length);
 const reps = repTable(fx.leads, w);
 t('rep table sums to company totals', reps.reduce((s, r) => s + r.flip, 0) === ct.flip && reps.reduce((s, r) => s + r.mql, 0) === ct.mql);
-t('Unattributed is present but unranked', reps.every((r) => (r.rep === 'Unattributed') === (r.rank === null)));
+t('unranked rows are exactly Unattributed + the non-ranked SOMs', reps.every((r) => (r.rep === 'Unattributed' || NON_RANKED.has(r.rep)) === (r.rank === null)));
 t('ranks are dense 1..n over ranked reps', reps.filter((r) => r.rank).map((r) => r.rank).join(',') === reps.filter((r) => r.rank).map((_, i) => i + 1).join(','));
 const hist = repHistory(fx.leads, five);
 const someRep = Object.keys(hist).find((k) => k !== 'Unattributed');
