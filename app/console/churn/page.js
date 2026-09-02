@@ -20,7 +20,7 @@ export default async function ChurnPage({ searchParams }) {
   let title = 'Company Churn';
   if (fin?.mkt_churn_ratio != null) {
     const r = `${(Number(fin.mkt_churn_ratio) * 100).toFixed(2)}% churn`;
-    if (lowest?.kind === 'record') title = `${r} · lowest on record since ${monthYear(lowest.since)}`;
+    if (lowest?.kind === 'record') title = `${r} · lowest churn since ${monthYear(lowest.since)}`;
     else if (lowest?.kind === 'since') title = `${r} · lowest since ${monthYear(lowest.since)}`;
     else title = r;
   }
