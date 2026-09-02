@@ -1,3 +1,5 @@
+import { redirect } from 'next/navigation';
+import { canSee, homeFor } from '../../../lib/perf/access';
 import Hero from '../../../components/Hero';
 import SourceNote from '../../../components/SourceNote';
 import { loadDataset } from '../../../lib/perf/data';
@@ -9,6 +11,7 @@ const n = (x) => Number(x || 0).toLocaleString('en-US');
 
 export default async function MethodologyPage() {
   const [ds, profile] = await Promise.all([loadDataset(), getProfile()]);
+  if (!canSee(profile?.role, '/console/methodology')) redirect(homeFor(profile?.role));
   const q = quality(ds.leads, ds.accounts);
   const Row = ({ k, v }) => <tr><td style={{ fontWeight: 600 }}>{k}</td><td>{v}</td></tr>;
   return (

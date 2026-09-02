@@ -3,6 +3,7 @@ import { createClient } from '../../../lib/supabase/server';
 import { createAdminClient } from '../../../lib/supabase/admin';
 import { seedRoleFor } from '../../../lib/roles';
 import { resolveAccess } from '../../../lib/access';
+import { homeFor } from '../../../lib/perf/access';
 
 // OAuth redirect target: exchange the code for a session, check the email is
 // allowed in (by domain OR by invite), ensure a profiles row exists (creating
@@ -68,7 +69,9 @@ export async function GET(request) {
           .eq('email', email);
       }
 
-      return NextResponse.redirect(`${origin}/console`);
+      // Land by role: admins on the company view, everyone else on Sales Reps.
+      const { data: prof } = await admin.from('profiles').select('role').eq('id', user.id).maybeSingle();
+      return NextResponse.redirect(`${origin}${homeFor(prof?.role)}`);
     }
   }
   return NextResponse.redirect(`${origin}/login`);

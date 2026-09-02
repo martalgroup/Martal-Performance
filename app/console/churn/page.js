@@ -1,3 +1,5 @@
+import { redirect } from 'next/navigation';
+import { canSee, homeFor } from '../../../lib/perf/access';
 import Hero from '../../../components/Hero';
 import Stat from '../../../components/Stat';
 import MonthPicker from '../../../components/MonthPicker';
@@ -10,6 +12,7 @@ const usd = (x) => `$${Number(x || 0).toLocaleString('en-US')}`;
 
 export default async function ChurnPage({ searchParams }) {
   const [{ ds, w, finance: fin, financePrev: prev, ratioRank, lowest, dashboard: dash, series, inProgress }, profile] = await Promise.all([churnView(searchParams), getProfile()]);
+  if (!canSee(profile?.role, '/console/churn')) redirect(homeFor(profile?.role));
   const monthYear = (iso) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
   // The title is the ratio plus its standing against every month on record,
   // recomputed from the sheet's figures. It never says more than the data does:
