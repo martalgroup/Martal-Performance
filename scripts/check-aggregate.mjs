@@ -1,7 +1,7 @@
 // Runs the aggregation over the captured fixture so a change that breaks the
 // math fails the build rather than the dashboard.
 import { readFileSync } from 'fs';
-import { periodFor, recentPeriods, preset } from '../lib/perf/periods.js';
+import { periodFor, recentPeriods, preset, monthFor, lastCompleteMonth, recentMonths } from '../lib/perf/periods.js';
 import { companyTotals, repTable, repHistory, churn, quality } from '../lib/perf/aggregate.js';
 
 import { gunzipSync } from 'zlib';
@@ -19,6 +19,17 @@ const five = recentPeriods(5, new Date('2026-08-20T00:00:00Z'));
 t('five periods back from Aug 20 start Apr 16 (Aug 16→Sep 15 is the open one)', five[0].start === '2026-04-16', five.map((x) => x.start).join(','));
 t('preset last30 has 30-day span', (new Date(preset('last30').end) - new Date(preset('last30').start)) / 86400000 === 30);
 
+console.log('calendar months (churn)');
+const m = monthFor(new Date('2026-09-01T12:00:00Z'));
+t('Sep 1 is in Sep 1 → Sep 30', m.start === '2026-09-01' && m.end === '2026-09-30', `${m.start}..${m.end}`);
+const lm = lastCompleteMonth(new Date('2026-09-01T12:00:00Z'));
+t('last complete month on Sep 1 is Aug 1 → Aug 31', lm.start === '2026-08-01' && lm.end === '2026-08-31', `${lm.start}..${lm.end}`);
+const feb = monthFor(new Date('2026-02-10T00:00:00Z'));
+t('Feb 2026 ends on the 28th', feb.end === '2026-02-28');
+const rm = recentMonths(3, new Date('2026-09-01T00:00:00Z'));
+t('recent 3 months = Jul, Aug, Sep', rm.map((x) => x.start).join(',') === '2026-07-01,2026-08-01,2026-09-01');
+t('month labels read as Mon YYYY', lm.label === 'Aug 2026', lm.label);
+
 console.log('aggregation over the bundled full snapshot');
 const w = { start: '2026-07-16', end: '2026-08-15' };
 const ct = companyTotals(fx.leads, w);
@@ -33,8 +44,8 @@ const someRep = Object.keys(hist).find((k) => k !== 'Unattributed');
 t('rep history is [mtg,sql,mql] × periods', hist[someRep].length === 5 && hist[someRep].every((x) => x.length === 3), someRep);
 
 console.log('churn from account records');
-const ch = churn(fx.allAccountsMinimal, w);
-t('churned accounts have an end/churn date in window', ch.churned.every((a) => a.end >= w.start && a.end <= w.end), `${ch.churnedCount} churned, $${ch.churnedMrr.toLocaleString()} MRR`);
+const ch = churn(fx.allAccountsMinimal, { start: '2026-08-01', end: '2026-08-31' });
+t('churned accounts have an end/churn date inside Aug 2026', ch.churned.every((a) => a.end >= '2026-08-01' && a.end <= '2026-08-31'), `${ch.churnedCount} churned, $${ch.churnedMrr.toLocaleString()} MRR`);
 t('active count matches status filter', ch.activeCount === fx.allAccountsMinimal.filter((a) => a.status === 'Active').length, `${ch.activeCount} active, $${ch.activeMrr.toLocaleString()} MRR`);
 
 console.log('quality report');
