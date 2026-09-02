@@ -38,7 +38,7 @@ function Lockup({ dark = false }) {
     <div className="login-lockup">
       <MartalMark style={{ height: 30, width: 30, color: dark ? 'var(--mg-charcoal)' : '#fff' }} />
       <span className="bar" style={dark ? { color: 'rgba(24,24,24,.2)' } : undefined}>|</span>
-      <span className="name">Deal Room</span>
+      <span className="name">Performance</span>
     </div>
   );
 }
@@ -97,9 +97,9 @@ export default function LoginForm({ content = DEFAULT_LOGIN_CONTENT }) {
             <MartalMark style={{ height: 20, width: 20, color: '#fff' }} />
           </div>
 
-          <h2 className="login-h2">Welcome to the Deal Room</h2>
+          <h2 className="login-h2">Welcome to Performance Intelligence</h2>
           <p className="login-p">
-            Sign in to build a quote, draft the contract, and send it for approval.
+            Sign in to see how every rep and account is performing, period by period.
           </p>
 
           <button className="login-google" onClick={signIn} disabled={busy}>
@@ -117,7 +117,7 @@ export default function LoginForm({ content = DEFAULT_LOGIN_CONTENT }) {
 
           <p className="login-fine">
             Access is limited to Martal Group and Landbase team members, plus addresses that
-            have been invited. Prices quoted here come from the current pricing sheet.
+            have been invited. Figures here are computed from the campaign sheets.
           </p>
         </div>
       </section>

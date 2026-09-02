@@ -45,7 +45,7 @@ export default async function Denied({ searchParams }) {
           <>
             <h1 style={{ margin: 0 }}>Access not enabled</h1>
             <p style={{ color: 'var(--text-muted)', maxWidth: 430, lineHeight: 1.6 }}>
-              The Deal Room is open to {domainSentence} Google accounts, plus anyone who has been
+              Performance Intelligence is open to {domainSentence} Google accounts, plus anyone who has been
               invited individually.
             </p>
             <p style={{ color: 'var(--text-muted)', maxWidth: 430, lineHeight: 1.6, fontSize: 13 }}>
