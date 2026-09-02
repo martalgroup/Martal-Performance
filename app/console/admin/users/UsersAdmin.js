@@ -93,7 +93,7 @@ export default function UsersAdmin({
       <div className="card" style={{ padding: 0 }}>
         <table className="list">
           <thead>
-            <tr><th>Email</th><th>Name</th><th>Role</th><th>View all deals</th><th>Platform Pricing</th><th>Last sign-in</th><th>Last activity</th><th></th></tr>
+            <tr><th>Email</th><th>Name</th><th>Role</th><th>Last sign-in</th><th>Last activity</th><th></th></tr>
           </thead>
           <tbody>
             {profiles.map((p) => (
@@ -114,28 +114,6 @@ export default function UsersAdmin({
                         <button className="btn btn--ghost" disabled={busy} onClick={() => patch(p.id, { role: 'user' })}>Demote to user</button>
                       )}
                     </>
-                  )}
-                </td>
-                <td>
-                  {p.role === 'admin' || p.role === 'super_admin' ? (
-                    <span style={{ color: 'var(--text-muted)', fontSize: 12.5 }}>always (admin)</span>
-                  ) : (
-                    <Switch
-                      checked={p.can_view_all}
-                      disabled={busy}
-                      onChange={(checked) => patch(p.id, { canViewAll: checked })}
-                    />
-                  )}
-                </td>
-                <td>
-                  {p.role === 'admin' || p.role === 'super_admin' ? (
-                    <span style={{ color: 'var(--text-muted)', fontSize: 12.5 }}>always (admin)</span>
-                  ) : (
-                    <Switch
-                      checked={p.can_view_platform}
-                      disabled={busy}
-                      onChange={(checked) => patch(p.id, { canViewPlatform: checked })}
-                    />
                   )}
                 </td>
                 <td><Stamp iso={lastSignIn[p.id]} never="never" /></td>

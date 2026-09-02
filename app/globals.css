@@ -643,3 +643,14 @@ table.list tr:hover td { background: var(--surface-muted); }
   }
   .shell-main { padding: 20px 16px; }
 }
+
+
+/* Brand lockup in the rail matches the Academy: mark, divider bar, name in
+   green uppercase. The same lockup the sign-in heroes use. */
+.sidenav-brand .bar { color: rgba(255,255,255,.30); font-weight: 400; }
+.sidenav-brand .name {
+  font-size: 14px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--mg-green-500);
+}
+.shell[data-collapsed='true'] .sidenav-brand .bar { display: none; }
+@media (max-width: 899px) { .shell[data-collapsed='true'] .sidenav-brand .bar { display: revert; } }

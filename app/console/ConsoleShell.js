@@ -70,6 +70,7 @@ export default function ConsoleShell({ items, name, avatarUrl, children }) {
   const brand = (
     <Link href="/console" className="sidenav-brand">
       <MartalMark style={{ height: 26, width: 26, color: '#fff', flex: '0 0 auto' }} />
+      <span className="bar" aria-hidden="true">|</span>
       <span className="name">Performance</span>
     </Link>
   );
