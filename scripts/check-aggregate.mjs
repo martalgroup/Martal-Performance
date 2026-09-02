@@ -1,7 +1,7 @@
 // Runs the aggregation over the captured fixture so a change that breaks the
 // math fails the build rather than the dashboard.
 import { readFileSync } from 'fs';
-import { periodFor, recentPeriods, preset, monthFor, lastCompleteMonth, recentMonths } from '../lib/perf/periods.js';
+import { periodFor, recentPeriods, preset, monthFor, lastCompleteMonth, recentMonths, periodsSince } from '../lib/perf/periods.js';
 import { companyTotals, repTable, repHistory, churn, quality } from '../lib/perf/aggregate.js';
 
 import { gunzipSync } from 'zlib';
@@ -18,6 +18,11 @@ t('Sep 16 opens Sep 16 → Oct 15', p2.start === '2026-09-16' && p2.end === '202
 const five = recentPeriods(5, new Date('2026-08-20T00:00:00Z'));
 t('five periods back from Aug 20 start Apr 16 (Aug 16→Sep 15 is the open one)', five[0].start === '2026-04-16', five.map((x) => x.start).join(','));
 t('preset last30 has 30-day span', (new Date(preset('last30').end) - new Date(preset('last30').start)) / 86400000 === 30);
+
+const ps = periodsSince('2025-12-16', new Date('2026-09-01T00:00:00Z'));
+t('periods since Dec 16 2025 through the open one = 9', ps.length === 9, ps.map((x) => x.start).join(','));
+t('first is Dec 16 2025 → Jan 15 2026', ps[0].start === '2025-12-16' && ps[0].end === '2026-01-15');
+t('last is the open Aug 16 → Sep 15', ps[8].start === '2026-08-16');
 
 console.log('calendar months (churn)');
 const m = monthFor(new Date('2026-09-01T12:00:00Z'));

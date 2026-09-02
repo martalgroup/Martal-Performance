@@ -5,7 +5,7 @@ import { recentMonths } from '../lib/perf/periods';
 // performance periods. Default is the last complete month; the current month
 // is available but labelled as in progress.
 export default function MonthPicker({ base, current }) {
-  const months = recentMonths(7).reverse();
+  const months = recentMonths(21).filter((m) => m.start >= '2025-01-01').reverse();
   const pill = (href, label, on) => (
     <Link key={href} href={href} className={on ? 'btn btn--primary' : 'btn btn--ghost'} style={{ fontSize: 12, padding: '6px 12px', lineHeight: 1, textDecoration: 'none' }}>{label}</Link>
   );

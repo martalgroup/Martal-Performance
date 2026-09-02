@@ -25,6 +25,8 @@ export default async function MethodologyPage() {
           <Row k="Churn" v="Read from the account record's status and churn or end date, with its monthly revenue. Not inferred from lead activity. Measured on calendar months, 1st to last day." />
           <Row k="Started" v="Accounts whose start date falls in the month, excluding MYT (pre-start) and MYT Lost. Duplicate account rows in the source are counted once." />
           <Row k="Lost before start" v="MYT Lost accounts: lost during onboarding, never live. Reported separately; neither a start nor a churn." />
+          <Row k="Churn headline" v="Finance's monthly contracts-lost count from the cashflow workbook (with deals closed and active clients). The campaign dashboard's per-account end dates are shown as detail and will not always match." />
+          <Row k="History" v="Performance periods are reported from Dec 16 2025 onward. Columns follow the campaign dashboard: MQLs, SQL 1 (SQLs), SQL 2 (booked meetings)." />
           <Row k="Two calendars" v="Performance and rep ranking run the 16th to the 15th. Churn runs the 1st to the last day of the month. They are not interchangeable." />
           <Row k="Campaign dashboard columns" v="MQLs → MQLs · SQL 1 → SQLs · SQL 2 → Booked meetings. Set both dashboards to the same dates and the three figures match to the unit." />
         </tbody></table>
