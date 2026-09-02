@@ -69,11 +69,8 @@ export default function UsersAdmin({
     <div>
       <h1 style={{ fontSize: 20 }}>Users</h1>
       <p style={{ color: 'var(--text-muted)', marginTop: -6 }}>
-        Everyone can see the Service Pricing tab and build their own deals. Admins see every deal and
-        contract by default; toggle <strong>View all deals</strong> to grant that same visibility
-        to a specific user (e.g. your inside sales team) without making them an admin.
-        <strong> Platform Pricing</strong> is hidden by default because it carries reseller
-        pricing and the internal playbook; switch it on for whoever sells the platform.
+        Accounts, roles and invites are shared with the Deal Room and the Academy: a change here applies
+        everywhere. Which tabs each role can see in this app is set in the Tabs panel above.
       </p>
       <AccessPanel
         invites={invites}
