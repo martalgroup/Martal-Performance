@@ -484,7 +484,10 @@ table.list tr:hover td { background: var(--surface-muted); }
    the same identity as the old bar: dark charcoal with green bleeding from one
    end and blue from the other, only now vertically. */
 .shell {
-  --nav-w: 240px;
+  /* 264px: wide enough for the longest brand lockup across the three apps
+     ("| PERFORMANCE" measures 187px beside the hamburger), so the rails match
+     when the apps are linked. */
+  --nav-w: 264px;
   min-height: 100vh;
   display: grid;
   grid-template-columns: var(--nav-w) minmax(0, 1fr);
