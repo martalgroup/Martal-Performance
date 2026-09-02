@@ -2,7 +2,7 @@
 // math fails the build rather than the dashboard.
 import { readFileSync } from 'fs';
 import { periodFor, recentPeriods, preset, monthFor, lastCompleteMonth, recentMonths, periodsSince } from '../lib/perf/periods.js';
-import { companyTotals, repTable, repHistory, churn, quality, NON_RANKED } from '../lib/perf/aggregate.js';
+import { companyTotals, repTable, repHistory, churn, quality, NON_RANKED, visibleRepRows, visibleRepHistory } from '../lib/perf/aggregate.js';
 
 import { gunzipSync } from 'zlib';
 const seed = JSON.parse(gunzipSync(readFileSync(new URL('../lib/perf/seed.json.gz', import.meta.url))).toString());
@@ -40,8 +40,13 @@ console.log('non-ranked SOMs');
   const w9 = { start: '2026-07-16', end: '2026-08-15' };
   const tbl = repTable(fx.leads, w9);
   const ang = tbl.find((r) => r.rep === 'Angela Hamilton'), pai = tbl.find((r) => r.rep === 'Paige Givinsky');
-  t('Angela present but unranked', !!ang && ang.ranked === false && ang.rank === null, JSON.stringify(ang && { flip: ang.flip, rank: ang.rank }));
-  t('Paige present but unranked', !!pai && pai.ranked === false && pai.rank === null, JSON.stringify(pai && { flip: pai.flip, rank: pai.rank }));
+  t('Angela counted in raw table but unranked', !!ang && ang.rank === null, JSON.stringify(ang && { flip: ang.flip, rank: ang.rank }));
+  t('Paige counted in raw table but unranked', !!pai && pai.rank === null, JSON.stringify(pai && { flip: pai.flip, rank: pai.rank }));
+  const shown = visibleRepRows(tbl);
+  t('SOMs removed from the dashboard rows', !shown.some((r) => NON_RANKED.has(r.rep)), `${tbl.length} raw rows → ${shown.length} shown`);
+  t('SOM history removed too', !Object.keys(visibleRepHistory(repHistory(fx.leads, [w9]))).some((k) => NON_RANKED.has(k)));
+  t('company totals still include SOM meetings', companyTotals(fx.leads, w9).flip === tbl.reduce((a, r) => a + r.flip, 0) && companyTotals(fx.leads, w9).flip > shown.reduce((a, r) => a + r.flip, 0),
+    `${companyTotals(fx.leads, w9).flip} company vs ${shown.reduce((a, r) => a + r.flip, 0)} shown-row sum (difference = SOMs ${(ang?.flip||0)+(pai?.flip||0)})`);
   t('no stray "Angela Hamlton" row', !tbl.some((r) => r.rep === 'Angela Hamlton'));
   const tot = companyTotals(fx.leads, w9); const sumRows = tbl.reduce((a, r) => a + r.flip, 0);
   t('company booked meetings still include them', tot.flip === sumRows, `${tot.flip} company vs ${sumRows} summed rows`);

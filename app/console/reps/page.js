@@ -64,7 +64,7 @@ export default async function RepsPage({ searchParams }) {
       <Hero eyebrow={`Sales Reps · ${w.label} · ${inProgress ? `day ${daysIn} of ${Math.round((new Date(w.end) - new Date(w.start)) / 86400000) + 1}` : 'period complete'}`}
             title={top ? `${top.rep} leads with ${n(top.flip)} booked meetings` : 'Sales Reps'}
             lede={`${ranked.length} ranked reps · ${n(totals.flip)} booked meetings, ${n(totals.sql)} SQLs, ${n(totals.mql)} MQLs across the team${climbers ? ` · ${climbers} rep${climbers === 1 ? '' : 's'} climbed the board` : ''}.`}
-            meta={`Ranked by booked meetings (SQL 2), then SQLs (SQL 1), then MQLs · movement is ${cmpLabel} · Unattributed rows count for the company, never for a rep`} />
+            meta={`Ranked by booked meetings (SQL 2), then SQLs (SQL 1), then MQLs · movement is ${cmpLabel} · Unattributed rows and SOM-booked meetings count for the company but are not shown per rep`} />
       <SourceNote ds={ds} isAdmin={isAdminRole(profile?.role)} />
       <PeriodPicker base="/console/reps" current={w} />
       <Podium rows={table} cmpLabel={cmpLabel} />
