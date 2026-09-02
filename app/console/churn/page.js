@@ -9,7 +9,18 @@ export const dynamic = 'force-dynamic';
 const usd = (x) => `$${Number(x || 0).toLocaleString('en-US')}`;
 
 export default async function ChurnPage({ searchParams }) {
-  const [{ ds, w, finance: fin, financePrev: prev, ratioRank, dashboard: dash, series, inProgress }, profile] = await Promise.all([churnView(searchParams), getProfile()]);
+  const [{ ds, w, finance: fin, financePrev: prev, ratioRank, lowest, dashboard: dash, series, inProgress }, profile] = await Promise.all([churnView(searchParams), getProfile()]);
+  const monthYear = (iso) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+  // The title is the ratio plus its standing against every month on record,
+  // recomputed from the sheet's figures. It never says more than the data does:
+  // the churn sheet begins Dec 2022, so "on record" means since then.
+  let title = 'Company Churn';
+  if (fin?.mkt_churn_ratio != null) {
+    const r = `${(Number(fin.mkt_churn_ratio) * 100).toFixed(2)}% churn`;
+    if (lowest?.kind === 'record') title = `${r} · lowest on record since ${monthYear(lowest.since)}`;
+    else if (lowest?.kind === 'since') title = `${r} · lowest since ${monthYear(lowest.since)}`;
+    else title = r;
+  }
   const n = (x) => (x == null ? '—' : Number(x).toLocaleString('en-US'));
   const pctf = (x) => (x == null ? '—' : `${(Number(x) * 100).toFixed(2)}%`);
   const monthName = (iso) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'long', timeZone: 'UTC' });
@@ -25,8 +36,8 @@ export default async function ChurnPage({ searchParams }) {
   const disagree = fin && fin.contracts_lost != null && fin.mkt_lost != null && fin.contracts_lost !== fin.mkt_lost;
   return (
     <div>
-      <Hero eyebrow={`${w.label} · ${inProgress ? 'month in progress' : 'month complete'} · calendar month`}
-            title="Company Churn"
+      <Hero eyebrow={`Company Churn · ${w.label} · ${inProgress ? 'month in progress' : 'month complete'} · calendar month`}
+            title={title}
             lede={sentence || `No churn measurement recorded for ${w.label} yet.`}
             meta={`Churn ratio = accounts lost ÷ prior month's active accounts · ${n(fin?.mkt_active_eom)} active at month end · ${n(fin?.deals_closed)} deals closed${disagree ? ` · cashflow sheet records ${n(fin.contracts_lost)} lost` : ''}`} />
       <SourceNote ds={ds} isAdmin={isAdminRole(profile?.role)} />
