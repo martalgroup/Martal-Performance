@@ -47,9 +47,9 @@ export default async function CompanyPage({ searchParams }) {
       <div className="card">
         <h2 style={{ fontSize: 18, margin: '0 0 12px', borderLeft: '3px solid var(--mg-green-500)', paddingLeft: 10 }}>Period history · since Dec 16 2025</h2>
         <table className="list">
-          <thead><tr><th>Period</th><th style={{ textAlign: 'right' }}>MQLs</th><th style={{ textAlign: 'right' }}>SQLs (SQL 1)</th><th style={{ textAlign: 'right' }}>Booked meetings (SQL 2)</th><th style={{ textAlign: 'right' }}>Mtg / MQL</th><th style={{ textAlign: 'right' }}>Undated</th></tr></thead>
+          <thead><tr><th>Period</th><th style={{ textAlign: 'right' }}>MQLs</th><th style={{ textAlign: 'right' }}>SQLs (SQL 1)</th><th style={{ textAlign: 'right' }}>Booked meetings (SQL 2)</th><th style={{ textAlign: 'right' }}>Mtg / MQL</th></tr></thead>
           <tbody>{[...series].reverse().map((p) => (
-            <tr key={p.start}><td>{p.label}</td><td style={{ textAlign: 'right' }}>{n(p.mql)}</td><td style={{ textAlign: 'right' }}>{n(p.sql)}</td><td style={{ textAlign: 'right', fontWeight: 700 }}>{n(p.flip)}</td><td style={{ textAlign: 'right' }}>{(p.mtgPerMql * 100).toFixed(1)}%</td><td style={{ textAlign: 'right', color: 'var(--text-muted)' }}>{n(p.undated)}</td></tr>
+            <tr key={p.start}><td>{p.label}</td><td style={{ textAlign: 'right' }}>{n(p.mql)}</td><td style={{ textAlign: 'right' }}>{n(p.sql)}</td><td style={{ textAlign: 'right', fontWeight: 700 }}>{n(p.flip)}</td><td style={{ textAlign: 'right' }}>{(p.mtgPerMql * 100).toFixed(1)}%</td></tr>
           ))}</tbody>
         </table>
       </div>
