@@ -11,20 +11,22 @@ const pct = (a, b) => (b ? `${a >= b ? '+' : ''}${(((a - b) / b) * 100).toFixed(
 const n = (x) => Number(x || 0).toLocaleString('en-US');
 
 export default async function CompanyPage({ searchParams }) {
-  const [{ ds, w, now, prev, series }, profile] = await Promise.all([companyView(searchParams), getProfile()]);
+  const [{ ds, w, now, prev, prevToDate, inProgress, daysIn, daysTotal, series }, profile] = await Promise.all([companyView(searchParams), getProfile()]);
   const rises = series.slice(1).filter((p, i) => p.flip > series[i].flip).length;
+  const cmp = inProgress ? prevToDate : prev;               // like-for-like baseline
+  const cmpLabel = inProgress ? `vs prior period to day ${daysIn}` : 'vs prior period';
   return (
     <div>
-      <Hero eyebrow={`${w.label} · ${w.end >= new Date().toISOString().slice(0, 10) ? 'period in progress' : 'period complete'}`}
-            title={`Booked meetings ${pct(now.flip, prev.flip)} vs the prior period`}
-            lede={`${n(now.flip)} booked meetings, ${n(now.sql)} SQLs and ${n(now.mql)} MQLs so far this period. Meetings per MQL ${(now.mtgPerMql * 100).toFixed(1)}%.`}
-            meta={`${rises} of the last ${series.length - 1} periods rose on meetings · SQLs include booked meetings`} />
+      <Hero eyebrow={`${w.label} · ${inProgress ? `day ${daysIn} of ${daysTotal}` : 'period complete'}`}
+            title={`Booked meetings ${pct(now.flip, cmp.flip)} ${cmpLabel}`}
+            lede={`${n(now.flip)} booked meetings, ${n(now.sql)} SQLs and ${n(now.mql)} MQLs ${inProgress ? 'so far' : ''} this period. Meetings per MQL ${(now.mtgPerMql * 100).toFixed(1)}%.`}
+            meta={`${rises} of the last ${series.length - 1} periods rose on meetings · SQLs include booked meetings${inProgress ? ` · prior full period: ${n(prev.flip)} meetings` : ''}`} />
       <SourceNote ds={ds} isAdmin={isAdminRole(profile?.role)} />
       <PeriodPicker base="/console" current={w} />
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 18 }}>
-        <Stat value={n(now.flip)} label="Booked meetings" note={`${pct(now.flip, prev.flip)} vs prior`} tone="green" />
-        <Stat value={n(now.sql)} label="SQLs" note={`${pct(now.sql, prev.sql)} vs prior · incl. meetings`} tone="blue" />
-        <Stat value={n(now.mql)} label="MQLs" note={`${pct(now.mql, prev.mql)} vs prior`} />
+        <Stat value={n(now.flip)} label="Booked meetings" note={`${pct(now.flip, cmp.flip)} ${cmpLabel}`} tone="green" />
+        <Stat value={n(now.sql)} label="SQLs" note={`${pct(now.sql, cmp.sql)} ${cmpLabel} · incl. meetings`} tone="blue" />
+        <Stat value={n(now.mql)} label="MQLs" note={`${pct(now.mql, cmp.mql)} ${cmpLabel}`} />
         <Stat value={`${(now.mtgPerMql * 100).toFixed(1)}%`} label="Meetings per MQL" note="conversion, not volume" tone="green" />
       </div>
       <div className="card">
