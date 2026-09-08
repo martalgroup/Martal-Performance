@@ -3,6 +3,7 @@ import { createClient } from '../../../lib/supabase/server';
 import { createAdminClient } from '../../../lib/supabase/admin';
 import { seedRoleFor } from '../../../lib/roles';
 import { resolveAccess } from '../../../lib/access';
+import { ensureProfile } from '../../../lib/provision';
 import { homeFor, loadTabs } from '../../../lib/perf/access';
 
 // OAuth redirect target: exchange the code for a session, check the email is
@@ -40,38 +41,37 @@ export async function GET(request) {
         return NextResponse.redirect(`${origin}/denied`);
       }
 
-      const { data: existing } = await admin
-        .from('profiles')
-        .select('id')
-        .eq('id', user.id)
-        .maybeSingle();
-
-      if (!existing) {
-        // access.role is set whenever an active invite row exists — for an
-        // invited user that IS their grant, and for someone on an allowed
-        // domain it is a role pre-assigned before they ever logged in. Only
-        // with no row at all do we fall back to the seed list (Edd and Matt)
-        // and otherwise 'user'.
-        await admin.from('profiles').insert({
-          id: user.id,
-          email,
-          full_name: user.user_metadata?.full_name || user.user_metadata?.name || null,
-          role: access.role || seedRoleFor(email),
-          can_view_all: access.canViewAll,
-        });
+      // access.role is set whenever an active invite row exists — for an
+      // invited user that IS their grant, and for someone on an allowed domain
+      // it is a role pre-assigned before they ever logged in. Only with no row
+      // at all do we fall back to the seed list (Edd and Matt), else 'user'.
+      const provisioned = await ensureProfile({
+        admin, supabase, user, email, access, seedRole: seedRoleFor(email),
+      });
+      if (!provisioned.ok) {
+        // A profile is what the middleware checks on every later request, so
+        // without one this session is dead anyway. Say it is our problem
+        // rather than sending them to "Access not enabled", which is a lie
+        // when the allowlist has just admitted them.
+        console.error('auth callback: could not provision', email, provisioned.error);
+        await supabase.auth.signOut();
+        return NextResponse.redirect(`${origin}/denied?reason=error`);
       }
+      if (provisioned.warning) console.warn('auth callback:', provisioned.warning);
 
       // Record that the invite was actually taken up, so the admin list shows
       // who has turned up rather than just who was asked.
       if (access.invite && !access.invite.accepted_at) {
-        await admin.from('invites')
+        const { error: acceptErr } = await admin.from('invites')
           .update({ accepted_at: new Date().toISOString() })
           .eq('email', email);
+        if (acceptErr) console.error('auth callback: accepted_at not recorded', email, acceptErr.message);
       }
 
-      // Land by role: admins on the company view, everyone else on Sales Reps.
-      const { data: prof } = await admin.from('profiles').select('role').eq('id', user.id).maybeSingle();
-      return NextResponse.redirect(`${origin}${homeFor(await loadTabs(admin), prof?.role)}`);
+      // Land by role: admins on Performance, everyone else on Sales Reps.
+      return NextResponse.redirect(
+        `${origin}${homeFor(await loadTabs(supabase), provisioned.role)}`,
+      );
     }
   }
   return NextResponse.redirect(`${origin}/login`);
