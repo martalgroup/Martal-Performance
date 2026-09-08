@@ -10,13 +10,17 @@ import LoginForm from './LoginForm';
 export const dynamic = 'force-dynamic';
 
 export default async function LoginPage() {
+  // `supabase` has to exist before the redirect below uses it. It was
+  // declared after, which threw a server-side exception (digest 1835890360)
+  // for any signed-in visitor to /login and compiled without complaint.
+  const supabase = await createClient();
+
   // Already signed in? There is nothing to log into. Without this, /login
   // renders for an authenticated user, which is where the nav-bar-above-the-
   // sign-in-screen state came from.
   const profile = await getProfile();
   if (profile) redirect(homeFor(await loadTabs(supabase), profile.role));
 
-  const supabase = await createClient();
   const content = await fetchLoginContent(supabase);
   return <LoginForm content={content} />;
 }

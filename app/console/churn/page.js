@@ -5,6 +5,11 @@ import SourceNote from '../../../components/SourceNote';
 import { churnView } from '../../../lib/perf/data';
 import { requireTab } from '../../../lib/perf/guard';
 import { isAdminRole } from '../../../lib/roles';
+
+// Above its use on purpose: module scope means it is initialised before any
+// render, but reading it before its declaration is the exact shape of the
+// use-before-define bug that took down the login page.
+const ordinal = (k) => k + (['th', 'st', 'nd', 'rd'][(k % 100 > 10 && k % 100 < 14) ? 0 : (k % 10 < 4 ? k % 10 : 0)]);
 export const dynamic = 'force-dynamic';
 const usd = (x) => `$${Number(x || 0).toLocaleString('en-US')}`;
 
@@ -64,4 +69,3 @@ export default async function ChurnPage({ searchParams }) {
     </div>
   );
 }
-const ordinal = (k) => k + (['th', 'st', 'nd', 'rd'][(k % 100 > 10 && k % 100 < 14) ? 0 : (k % 10 < 4 ? k % 10 : 0)]);

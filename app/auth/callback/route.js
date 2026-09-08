@@ -4,6 +4,7 @@ import { createAdminClient } from '../../../lib/supabase/admin';
 import { seedRoleFor } from '../../../lib/roles';
 import { resolveAccess } from '../../../lib/access';
 import { ensureProfile } from '../../../lib/provision';
+import { AFTER_LOGIN_COOKIE, safeAfterLogin } from '../../../lib/after-login';
 import { homeFor, loadTabs } from '../../../lib/perf/access';
 
 // OAuth redirect target: exchange the code for a session, check the email is
@@ -68,10 +69,15 @@ export async function GET(request) {
         if (acceptErr) console.error('auth callback: accepted_at not recorded', email, acceptErr.message);
       }
 
-      // Land by role: admins on Performance, everyone else on Sales Reps.
-      return NextResponse.redirect(
-        `${origin}${homeFor(await loadTabs(supabase), provisioned.role)}`,
-      );
+      // Land on the page they were originally headed for, so the portal's
+      // tiles keep their promise; otherwise by role, admins on Performance and
+      // everyone else on Sales Reps. requireTab still backstops a destination
+      // this person is not allowed to see.
+      const after = safeAfterLogin(request.cookies.get(AFTER_LOGIN_COOKIE)?.value);
+      const home = homeFor(await loadTabs(supabase), provisioned.role);
+      const done = NextResponse.redirect(`${origin}${after || home}`);
+      done.cookies.delete(AFTER_LOGIN_COOKIE);
+      return done;
     }
   }
   return NextResponse.redirect(`${origin}/login`);
