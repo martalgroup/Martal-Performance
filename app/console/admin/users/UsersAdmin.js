@@ -116,7 +116,9 @@ export default function UsersAdmin({
                     </>
                   )}
                 </td>
-                <td><Stamp iso={lastSignIn[p.id]} never="never" /></td>
+                <td>{lastSignIn.error
+                  ? <span title={lastSignIn.error} style={{ color: 'var(--mg-danger, #b3261e)' }}>unavailable</span>
+                  : <Stamp iso={lastSignIn[p.id]} never="never" />}</td>
                 <td style={{ textAlign: 'right' }}>
                   {p.id !== currentUserId && (
                     <button
