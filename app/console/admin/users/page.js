@@ -18,8 +18,14 @@ async function loadLastSignIn(admin) {
   const byId = {};
   for (let page = 1; page <= 20; page += 1) {
     const { data, error } = await admin.auth.admin.listUsers({ page, perPage: 200 });
+    if (error) {
+      // This used to break silently, so a broken service-role key rendered as
+      // "never" against every account, including whoever was reading the page
+      // at that moment. A column that quietly lies is worse than a blank one.
+      console.error('users page: auth listUsers failed', error.status || '', error.message);
+      return { error: error.message };
+    }
     const users = data?.users || [];
-    if (error) break;
     users.forEach((u) => { byId[u.id] = u.last_sign_in_at || null; });
     if (users.length < 200) break;
   }
