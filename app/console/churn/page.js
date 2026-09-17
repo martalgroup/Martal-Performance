@@ -40,7 +40,7 @@ export default async function ChurnPage({ searchParams }) {
             title={title}
             lede={sentence || `No churn measurement recorded for ${w.label} yet.`}
             meta={`Churn ratio = accounts lost ÷ prior month's active accounts · ${n(fin?.mkt_active_eom)} active at month end · ${n(fin?.deals_closed)} deals closed${disagree ? ` · cashflow sheet records ${n(fin.contracts_lost)} lost` : ''}`} />
-      <SourceNote ds={ds} isAdmin={isAdminRole(profile?.role)} />
+      <SourceNote ds={ds} w={w} isAdmin={isAdminRole(profile?.role)} />
       <MonthPicker base="/console/churn" current={w} />
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 18 }}>
         <Stat value={n(fin?.mkt_lost)} label="Accounts lost" note={prev?.mkt_lost != null ? `${monthName(prev.month)}: ${n(prev.mkt_lost)}` : 'marketing churn sheet'} tone="red" />

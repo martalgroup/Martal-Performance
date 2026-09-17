@@ -22,7 +22,7 @@ export default async function CompanyPage({ searchParams }) {
             title={`Booked meetings ${pct(now.flip, cmp.flip)} ${cmpLabel}`}
             lede={`${n(now.flip)} booked meetings, ${n(now.sql)} SQLs and ${n(now.mql)} MQLs ${inProgress ? 'so far' : ''} this period. Meetings per MQL ${(now.mtgPerMql * 100).toFixed(1)}%.`}
             meta={`${rises} of the last ${series.length - 1} periods rose on meetings · SQLs include booked meetings${inProgress ? ` · prior full period: ${n(prev.flip)} meetings` : ''}`} />
-      <SourceNote ds={ds} isAdmin={isAdminRole(profile?.role)} />
+      <SourceNote ds={ds} w={w} isAdmin={isAdminRole(profile?.role)} />
       <PeriodPicker base="/console" current={w} />
       {showOpenStrip && (
         <div className="card" style={{ marginBottom: 18, borderLeft: '3px solid var(--mg-blue-500)' }}>

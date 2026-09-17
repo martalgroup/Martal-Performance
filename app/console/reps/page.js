@@ -65,7 +65,7 @@ export default async function RepsPage({ searchParams }) {
             title={top ? `${top.rep} leads with ${n(top.flip)} booked meetings` : 'Sales Reps'}
             lede={`${ranked.length} ranked reps · ${n(totals.flip)} booked meetings, ${n(totals.sql)} SQLs, ${n(totals.mql)} MQLs across the team${climbers ? ` · ${climbers} rep${climbers === 1 ? '' : 's'} climbed the board` : ''}.`}
             meta={`Ranked by booked meetings (SQL 2), then SQLs (SQL 1), then MQLs · movement is ${cmpLabel} · Unattributed rows and SOM-booked meetings count for the company but are not shown per rep`} />
-      <SourceNote ds={ds} isAdmin={isAdminRole(profile?.role)} />
+      <SourceNote ds={ds} w={w} isAdmin={isAdminRole(profile?.role)} />
       <PeriodPicker base="/console/reps" current={w} />
       <Podium rows={table} cmpLabel={cmpLabel} />
       <div className="card" style={{ padding: '8px 10px 10px' }}>
