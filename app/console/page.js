@@ -1,6 +1,7 @@
 import Hero from '../../components/Hero';
 import Stat from '../../components/Stat';
 import PeriodPicker from '../../components/PeriodPicker';
+import TrendChart from '../../components/TrendChart';
 import SourceNote from '../../components/SourceNote';
 import { companyView } from '../../lib/perf/data';
 import { requireTab } from '../../lib/perf/guard';
@@ -15,6 +16,13 @@ export default async function CompanyPage({ searchParams }) {
   const showOpenStrip = !inProgress && open.w.start !== w.start;
   const rises = series.slice(1).filter((p, i) => p.flip > series[i].flip).length;
   const cmp = inProgress ? prevToDate : prev;               // like-for-like baseline
+  // Complete periods only. A trend line whose last point is three days of a
+  // thirty-day window reads as a collapse; the in-progress strip above already
+  // reports the open period against the prior one cut at the same day.
+  const today = new Date().toISOString().slice(0, 10);
+  const trend = series.filter((p) => p.end < today).map((p) => ({
+    start: p.start, label: p.label, short: p.label.split('\u2013')[0].trim(), flip: p.flip, sql: p.sql,
+  }));
   const cmpLabel = inProgress ? `vs prior period to day ${daysIn}` : 'vs prior period';
   return (
     <div>
@@ -44,6 +52,15 @@ export default async function CompanyPage({ searchParams }) {
         <Stat value={n(now.mql)} label="MQLs" note={`${pct(now.mql, cmp.mql)} ${cmpLabel}`} />
         <Stat value={`${(now.mtgPerMql * 100).toFixed(1)}%`} label="Meetings per MQL" note="conversion, not volume" tone="green" />
       </div>
+      {trend.length >= 2 && (
+        <div className="card" style={{ marginBottom: 18 }}>
+          <h2 style={{ fontSize: 18, margin: '0 0 2px', borderLeft: '3px solid var(--mg-green-500)', paddingLeft: 10 }}>Trend · period over period</h2>
+          <p style={{ fontSize: 12, color: 'var(--text-muted)', margin: '0 0 10px', paddingLeft: 13 }}>
+            Complete periods only, {trend[0].label} to {trend[trend.length - 1].label}. The open period is excluded until it closes.
+          </p>
+          <TrendChart points={trend} currentStart={w.start} />
+        </div>
+      )}
       <div className="card">
         <h2 style={{ fontSize: 18, margin: '0 0 12px', borderLeft: '3px solid var(--mg-green-500)', paddingLeft: 10 }}>Period history · since Dec 16 2025</h2>
         <table className="list">
