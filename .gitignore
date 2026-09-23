@@ -8,3 +8,21 @@ out/
 !.env.local.example
 .DS_Store
 *.log
+
+# Synology Drive and macOS filesystem artifacts.
+#
+# These belong to the NAS and the Finder, not to the application. They appear
+# and disappear as the drive syncs, and _Conflict copies in particular show up
+# whenever Synology restores a folder that was moved while it was running.
+# Committing any of them puts one machine's filesystem state into everyone's
+# checkout.
+.DS_Store
+._*
+Icon?
+.SynologyWorkingDirectory
+@eaDir/
+\#recycle/
+.@__thumb/
+*_Conflict
+*_Conflict.*
+*_Conflict/
