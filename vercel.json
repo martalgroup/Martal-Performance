@@ -1,5 +1,26 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "crons": [{ "path": "/api/refresh", "schedule": "0 6 * * *" }]
+  "redirects": [
+    {
+      "source": "/console/:path*",
+      "destination": "https://martal-portal.vercel.app/performance/:path*",
+      "permanent": false
+    },
+    {
+      "source": "/console",
+      "destination": "https://martal-portal.vercel.app/performance",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "destination": "https://martal-portal.vercel.app/performance",
+      "permanent": false
+    },
+    {
+      "source": "/login",
+      "destination": "https://martal-portal.vercel.app/login",
+      "permanent": false
+    }
+  ]
 }

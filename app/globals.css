@@ -657,3 +657,24 @@ table.list tr:hover td { background: var(--surface-muted); }
 }
 .shell[data-collapsed='true'] .sidenav-brand .bar { display: none; }
 @media (max-width: 899px) { .shell[data-collapsed='true'] .sidenav-brand .bar { display: revert; } }
+
+/* Secondary text, and the success counterpart to .err. Added for the manual
+   upload screen, which needs to say "that worked" as loudly as it says
+   "that failed", and to mark explanatory copy as subordinate. */
+.muted { color: var(--text-muted); }
+
+.ok {
+  background: #eef7dc;
+  border: 1px solid #cfe4a4;
+  color: #44630f;
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 13.5px;
+}
+
+/* The back-to-portal link that every app carries. Set apart from the app's own
+   pages because it leaves the app: it is a way out, not another tab. */
+.sidenav-portal { color: rgba(255,255,255,.92); }
+.sidenav-portal:hover { background: rgba(255,255,255,.14); }
+.sidenav-rule { height: 1px; background: rgba(255,255,255,.10); margin: 10px 11px; }
+.shell[data-collapsed='true'] .sidenav-rule { margin: 8px 8px; }

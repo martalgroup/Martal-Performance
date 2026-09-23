@@ -6,9 +6,10 @@
     "dev": "next dev -p 3014",
     "build": "next build",
     "start": "next start",
-    "prebuild": "node scripts/check-aggregate.mjs",
+    "prebuild": "node scripts/check-aggregate.mjs && node scripts/check-ingest.mjs",
     "smoke": "node scripts/smoke.mjs",
-    "postbuild": "node scripts/smoke.mjs"
+    "postbuild": "node scripts/smoke.mjs",
+    "ingest:check": "node scripts/check-ingest.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.5.2",

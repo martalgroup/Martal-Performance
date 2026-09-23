@@ -99,6 +99,19 @@ export default function ConsoleShell({ items, name, avatarUrl, children }) {
         </div>
 
         <nav className="sidenav-items">
+          {/* Back to the portal. Every app carries this so the full list of
+              dashboards is always one click away, rather than something you
+              reach by remembering a URL. A plain anchor, not next/link: it
+              leaves this app entirely, so there is nothing to prefetch. */}
+          <a href="https://martal-portal.vercel.app" className="sidenav-link sidenav-portal" title="All dashboards">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M10 19l-7-7 7-7" /><path d="M3 12h13a5 5 0 0 1 5 5v2" />
+            </svg>
+            <span className="label">Main menu</span>
+          </a>
+          <div className="sidenav-rule" />
+
           {items.map((it) => {
             // Exact match, or a child route of it. Ordered longest-first by the
             // caller so /console/admin/users does not light up /console/admin.
